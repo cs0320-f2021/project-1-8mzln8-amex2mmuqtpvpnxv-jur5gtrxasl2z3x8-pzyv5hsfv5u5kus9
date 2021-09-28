@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main;
+package main.java.edu.brown.cs.student.main;
 
 /**
  * Class representing a star.
