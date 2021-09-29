@@ -1,4 +1,4 @@
-package main.java.edu.brown.cs.student.main;
+package edu.brown.cs.student.main;
 
 import java.util.List;
 
@@ -6,15 +6,17 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
   private final List<T> coordinates;
   private Node<T> leftChild = null;
   private Node<T> rightChild = null;
+  private Node<T> parent = null;
   private double distanceToTarget;
 
   public Node(List<T> coordinates) {
     this.coordinates = coordinates;
   }
-  public Node(List<T> coordinates, Node<T> leftChild, Node<T> rightChild) {
+  public Node(List<T> coordinates, Node<T> leftChild, Node<T> rightChild, Node<T> parent) {
     this.coordinates = coordinates;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
+    this.parent = parent;
   }
 
   @Override
@@ -37,6 +39,8 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
   public void setRightChild(Node<T> rightChild) {
     this.rightChild = rightChild;
   }
+
+  public void setParent(Node<T> parent) {this.parent = parent; }
 
   public double distance(List<T> targetCoordinates) {
     double distanceSquared = 0;
