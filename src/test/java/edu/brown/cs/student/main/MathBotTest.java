@@ -1,8 +1,7 @@
-package test.java.edu.brown.cs.student.main;
+package edu.brown.cs.student.main;
 
 import static org.junit.Assert.assertEquals;
 
-import main.java.edu.brown.cs.student.main.MathBot;
 import org.junit.Test;
 
 public class MathBotTest {
