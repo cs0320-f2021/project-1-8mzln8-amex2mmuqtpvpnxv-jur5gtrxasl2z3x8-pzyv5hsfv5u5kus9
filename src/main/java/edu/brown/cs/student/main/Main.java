@@ -82,7 +82,19 @@ public final class Main {
               if (arguments[1].equals("0")) {
                 System.out.println("Read " + this.galaxy.getSize() + " stars from "
                     + this.galaxy.getStarDataFile());
-              } else {
+              }
+              //TODO:Implement API Command
+              else if (arguments[0].equals("users")) {
+
+                //TODO: API online implementation
+                if(arguments[1].equals("online")) {
+                } else {
+                  //TODO: URL Implementation
+                }
+
+
+              }
+              else {
                 if (arguments.length > 3) {
                   nearestKNeighbors = this.galaxy.getNearestKNeighbors(arguments[1], arguments[2],
                       arguments[3], arguments[4]);

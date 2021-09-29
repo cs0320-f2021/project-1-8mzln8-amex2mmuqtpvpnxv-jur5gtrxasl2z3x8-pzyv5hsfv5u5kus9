@@ -97,13 +97,18 @@ return request;
       taName = "?taName=" + param;
       System.out.println("Getting star sign for " + param );
     }
-    // TODO set the taName. It should either be empty "" if the param is empty, or else of the format "?taName=param"
-    String reqUri =
-        "https://epb3u4xo11.execute-api.us-east-1.amazonaws.com/Prod/horoscopeResource/" + taName;
-
+    
     // TODO get the secret API key by using the ClientAuth class.
     ClientAuth clientAuth = new ClientAuth();
     String apiKey = clientAuth.getApiKey();
+    
+    String[] ApiKeyArray = apiKey.
+    
+    // TODO set the taName. It should either be empty "" if the param is empty, or else of the format "?taName=param"
+    String reqUri =
+        param + "?auth=<" +"msulima2" + " >&key=<" + "MgBStIP" +  ">";
+
+  
 
 
     // TODO build and return a new GET request with the api key header.
@@ -111,7 +116,7 @@ return request;
 
       HttpRequest request = HttpRequest.newBuilder()
               .uri(URI.create(reqUri))
-              .header("x-api-key", apiKey)
+              .header("x-api-key", apiKeyMazine)
               .build();
 
     return request;
