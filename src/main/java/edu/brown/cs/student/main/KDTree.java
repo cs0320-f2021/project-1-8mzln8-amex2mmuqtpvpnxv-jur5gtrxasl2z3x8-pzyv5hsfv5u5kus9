@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+/**
+ * Class representing a k-d tree object.
+ * @param <T> - nodes contain data of type T
+ */
 public class KDTree<T extends Comparable<T>> {
   private Node<T> root;
   private final int dimensions;
   private PriorityQueue<Node<T>> kNearestNeighbors;
 
+  /**
+   * Constructor for a KDTree object.
+   * @param dataList - a list containing coordinate data
+   */
   public KDTree(List<List<T>> dataList) {
     List<Node<T>> nodeList = new ArrayList<>();
 
@@ -18,10 +26,21 @@ public class KDTree<T extends Comparable<T>> {
     }
 
     this.dimensions = nodeList.get(0).getCoordinates().size();
-    this.root = createTree(nodeList, 0, 0, nodeList.size() - 1, null);
+    this.root = createTree(nodeList, 0, 0, nodeList.size() - 1,
+        null);
   }
 
-  public Node<T> createTree(List<Node<T>> nodeList, int depth, int beginningIndex, int endIndex, Node<T> parent) {
+  /**
+   * Recursive method to create a k-d tree.
+   * @param nodeList - list of nodes to put into the tree
+   * @param depth - the number of levels from the root of the tree
+   * @param beginningIndex - the starting index of nodes to consider in the list
+   * @param endIndex - the ending index of nodes to consider in the list
+   * @param parent - the parent node
+   * @return the root node of the k-d tree
+   */
+  public Node<T> createTree(List<Node<T>> nodeList, int depth,
+                            int beginningIndex, int endIndex, Node<T> parent) {
     if (nodeList.size() == 0) {
       return null;
     }
