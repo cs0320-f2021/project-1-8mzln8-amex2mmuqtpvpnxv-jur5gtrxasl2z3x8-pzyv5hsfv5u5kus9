@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
   private final List<T> coordinates;
+  private int axis;
   private Node<T> leftChild = null;
   private Node<T> rightChild = null;
   private Node<T> parent = null;
@@ -43,7 +44,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
    */
   @Override
   public int compareTo(Node<T> o) {
-    return Double.compare(o.distanceToTarget, this.distanceToTarget);
+    return Double.compare(this.distanceToTarget, o.distanceToTarget);
   }
 
   /**
@@ -60,6 +61,38 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
    */
   public double getDistanceToTarget() {
     return distanceToTarget;
+  }
+
+  /**
+   * Gets the leftChild field of Node object.
+   * @return the leftChild field
+   */
+  public Node<T> getLeftChild() {
+    return leftChild;
+  }
+
+  /**
+   * Gets the rightChild field of Node object.
+   * @return the rightChild field
+   */
+  public Node<T> getRightChild() {
+    return rightChild;
+  }
+
+  /**
+   * Gets the parent field of Node object.
+   * @return the parent field
+   */
+  public Node<T> getParent() {
+    return parent;
+  }
+
+  /**
+   * Gets the axis field of Node object.
+   * @return the axis field
+   */
+  public int getAxis() {
+    return axis;
   }
 
   /**
@@ -84,21 +117,36 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
    */
   public void setParent(Node<T> parent) {this.parent = parent; }
 
+  /**
+   * Sets the axis field with the given axis value
+   * @param axis - axis value to set
+   */
+  public void setAxis(int axis) {
+    this.axis = axis;
+  }
+
+  /**
+   * Sets the distanceToTarget field of Node object with the appropriate Euclidean distance
+   * @param targetCoordinates - the desired set of coordinates to calculate distance to
+   */
+  public void setDistanceToTarget(List<T> targetCoordinates) {
+    this.distanceToTarget = calculateDistance(targetCoordinates);
+  }
 
   /**
    * Calculates the Euclidean distance between a Node object and the given set of coordinates.
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
-   * @return the Euclidean distance from the current Node object to the target coordinates
    */
-
-  public double distance(List<T> targetCoordinates) {
+  public double calculateDistance(List<T> targetCoordinates) {
     double distanceSquared = 0;
     for (int i = 0; i < targetCoordinates.size(); i++) {
-      distanceSquared += Math.pow((double) this.coordinates.get(i) - (double) targetCoordinates.get(i), 2);
+      if (this.coordinates.get(i) instanceof Number && targetCoordinates.get(i) instanceof Number) {
+        distanceSquared += Math.pow((double) this.coordinates.get(i)
+            - (double) targetCoordinates.get(i), 2);
+      }
       // added a typecast here in an effort to maintain type T but should find alternative fix
     }
-    this.distanceToTarget = Math.sqrt(distanceSquared);
-    return distanceSquared;
+    return Math.sqrt(distanceSquared);
   }
 
 }
