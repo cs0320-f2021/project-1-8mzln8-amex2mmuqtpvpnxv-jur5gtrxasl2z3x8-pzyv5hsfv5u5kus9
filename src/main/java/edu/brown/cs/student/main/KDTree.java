@@ -75,7 +75,7 @@ public class KDTree<T extends Number> {
     root.setDistanceToTarget(targetCoordinates);
 
     if (this.kNearestNeighbors.size() < k || (this.kNearestNeighbors.peek() != null
-        && root.getDistanceToTarget() < this.kNearestNeighbors.peek().getDistanceToTarget())) {
+        && root.compareTo(this.kNearestNeighbors.peek()) < 0)) {
       this.kNearestNeighbors.add(root);
     }
 
