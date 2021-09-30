@@ -54,14 +54,14 @@ public class User {
     }
     /**
      *
-     * @return
+     * @return - the value of size
      */
     public int getSize() {
         return size;
     }
     /**
      *
-     * @return
+     * @return - the id of the item
      */
     public int getId() {
         return id;
