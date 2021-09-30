@@ -81,7 +81,6 @@ public final class Main {
               System.out.println("ERROR: No stars file was specified");
             }
           } else if (arguments[0].equals("naive_neighbors")) {
-            return k.v.method();
 
             try {
               ArrayList<Integer> nearestKNeighbors;

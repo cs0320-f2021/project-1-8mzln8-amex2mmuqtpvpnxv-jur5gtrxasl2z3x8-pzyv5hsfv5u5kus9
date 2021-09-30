@@ -17,7 +17,8 @@ public class Rent {
 
     /**
      * Constructors for given rent data
-      * @param fit -- the fit of user of type String
+     * @param fit -- the fit of user of type String
+    * @param fit1
      * @param userID -- UserID of user of type int
      * @param itemID -- ItemID of user of type int
      * @param rating -- rating of user of type int
@@ -29,7 +30,7 @@ public class Rent {
     public Rent(String fit, int userID, int itemID,
                 int rating, String rentedFor, String category,
                 int size, int ID) {
-        this.Fit = fit;
+        this.fit = fit;
         this.userID = userID;
         this.itemID = itemID;
         this.rating = rating;
