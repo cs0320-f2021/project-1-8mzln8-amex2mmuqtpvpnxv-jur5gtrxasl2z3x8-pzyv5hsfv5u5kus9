@@ -11,6 +11,8 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import edu.brown.cs.student.client.ApiClient;
+import edu.brown.cs.student.client.ClientRequestGenerator;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -50,7 +52,7 @@ public final class Main {
   private void run() {
     // set up parsing of command line flags
     OptionParser parser = new OptionParser();
-
+    ApiClient client = new ApiClient();
     // "./run --gui" will start a web server
     parser.accepts("gui");
 
@@ -70,7 +72,9 @@ public final class Main {
           input = input.trim();
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
-          if (arguments[0].equals("stars")) {
+          if(arguments[0].equals("test")){
+            client.makeRequest(ClientRequestGenerator.getSecuredRequest(arguments[1]));
+          } else if (arguments[0].equals("stars")) {
             try {
               this.galaxy = new Galaxy(arguments[1]);
             } catch (Exception e) {
@@ -85,7 +89,9 @@ public final class Main {
               }
               //TODO:Implement API Command
               else if (arguments[0].equals("users")) {
+                if (arguments[0].equals("basicGet")) { // Basic GET request
 
+                }
                 //TODO: API online implementation
                 if(arguments[1].equals("online")) {
                 } else {
