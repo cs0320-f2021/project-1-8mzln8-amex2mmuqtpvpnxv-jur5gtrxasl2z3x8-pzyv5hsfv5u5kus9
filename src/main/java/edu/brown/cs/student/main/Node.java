@@ -6,7 +6,7 @@ import java.util.List;
  * Class representing a node in a k-d tree.
  * @param <T> - node coordinates contain data of type T
  */
-public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
+public class Node<T extends Number> implements Comparable<Node<T>> {
   private final List<T> coordinates;
   private int axis;
   private Node<T> leftChild = null;
@@ -137,14 +137,12 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
    * Calculates the Euclidean distance between a Node object and the given set of coordinates.
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
-  public double calculateDistance(List<T> targetCoordinates) {
+  private double calculateDistance(List<T> targetCoordinates) {
     double distanceSquared = 0;
     for (int i = 0; i < targetCoordinates.size(); i++) {
-      if (this.coordinates.get(i) instanceof Number && targetCoordinates.get(i) instanceof Number) {
-        distanceSquared += Math.pow((double) this.coordinates.get(i)
-            - (double) targetCoordinates.get(i), 2);
-      }
-      // added a typecast here in an effort to maintain type T but should find alternative fix
+      distanceSquared += Math.pow(
+          Math.subtractExact(this.coordinates.get(i).longValue(),
+              targetCoordinates.get(i).longValue()), 2);
     }
     return Math.sqrt(distanceSquared);
   }

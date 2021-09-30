@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
  * Class representing a k-d tree object.
  * @param <T> - nodes contain data of type T
  */
-public class KDTree<T extends Comparable<T>> {
+public class KDTree<T extends Number> {
   private Node<T> root;
   private final int dimensions;
   private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
@@ -39,7 +39,7 @@ public class KDTree<T extends Comparable<T>> {
    * @param parent - the parent node
    * @return the root node of the k-d tree
    */
-  public Node<T> createTree(List<Node<T>> nodeList, int depth,
+  private Node<T> createTree(List<Node<T>> nodeList, int depth,
                             int beginningIndex, int endIndex, Node<T> parent) {
     if (nodeList.size() == 0) {
       return null;
@@ -64,7 +64,7 @@ public class KDTree<T extends Comparable<T>> {
    * @param k - the number of closest neighbors to find
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
-  public void searchForKNearestNeighborsHelper(Node<T> root, int k, List<T> targetCoordinates) {
+  private void searchForKNearestNeighborsHelper(Node<T> root, int k, List<T> targetCoordinates) {
     if (root == null) {
       return;
     }
@@ -74,20 +74,18 @@ public class KDTree<T extends Comparable<T>> {
     T targetCoordinate = targetCoordinates.get(currAxis);
     root.setDistanceToTarget(targetCoordinates);
 
-    if ((this.kNearestNeighbors.peek() != null
-        && root.getDistanceToTarget() < this.kNearestNeighbors.peek().getDistanceToTarget())
-        || this.kNearestNeighbors.size() < k) {
+    if (this.kNearestNeighbors.size() < k || (this.kNearestNeighbors.peek() != null
+        && root.getDistanceToTarget() < this.kNearestNeighbors.peek().getDistanceToTarget())) {
       this.kNearestNeighbors.add(root);
     }
-    if (this.kNearestNeighbors.size() > k) {
-      while (this.kNearestNeighbors.size() > k) {
-        this.kNearestNeighbors.poll();
-      }
+
+    while (this.kNearestNeighbors.size() > k) {
+      this.kNearestNeighbors.poll();
     }
 
-    if (targetCoordinate.compareTo(rootCoordinate) < 0) {
+    if (targetCoordinate.doubleValue() < rootCoordinate.doubleValue()) {
       searchForKNearestNeighborsHelper(root.getLeftChild(), k, targetCoordinates);
-    } else if (targetCoordinate.compareTo(rootCoordinate) > 0) {
+    } else if (targetCoordinate.doubleValue() > rootCoordinate.doubleValue()) {
       searchForKNearestNeighborsHelper(root.getRightChild(), k, targetCoordinates);
     }
   }

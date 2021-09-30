@@ -6,7 +6,7 @@ import java.util.Comparator;
  * Class containing a Comparator for the Node class.
  * @param <T> - node coordinates contain data of type T
  */
-public class NodeComparator<T extends Comparable<T>> implements Comparator<Node<T>> {
+public class NodeComparator<T extends Number> implements Comparator<Node<T>> {
   private final int axisToCompare;
 
   /**
@@ -25,8 +25,7 @@ public class NodeComparator<T extends Comparable<T>> implements Comparator<Node<
    */
   @Override
   public int compare(Node<T> o1, Node<T> o2) {
-    return Integer.compare(0,
-        o1.getCoordinates().get(this.axisToCompare)
-            .compareTo(o2.getCoordinates().get(this.axisToCompare)));
+    return Double.compare(o2.getCoordinates().get(this.axisToCompare).doubleValue(),
+        o1.getCoordinates().get(this.axisToCompare).doubleValue());
   }
 }
