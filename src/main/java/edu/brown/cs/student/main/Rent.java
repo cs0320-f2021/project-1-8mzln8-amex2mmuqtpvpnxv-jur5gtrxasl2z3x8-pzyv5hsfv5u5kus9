@@ -1,6 +1,8 @@
 package edu.brown.cs.student.main;
 
 
+import com.google.gson.Gson;
+
 /**
  * Rent class displaying rent data for a given user
  */
@@ -102,6 +104,11 @@ public class Rent {
      */
     public int getID() {
         return ID;
+    }
+
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 

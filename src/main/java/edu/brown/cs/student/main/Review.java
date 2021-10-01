@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import com.google.gson.Gson;
+
 public class Review {
     final private String review_text;
     final private String review_summary;
@@ -28,4 +30,10 @@ public class Review {
     public int getId() {
         return id;
     }
+
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
 }

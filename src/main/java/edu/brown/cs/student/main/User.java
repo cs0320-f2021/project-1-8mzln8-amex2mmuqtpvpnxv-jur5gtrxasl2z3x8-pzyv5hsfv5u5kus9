@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import com.google.gson.Gson;
+
 public class User {
     private String fit;
     private int user_id;
@@ -65,5 +67,10 @@ public class User {
      */
     public int getId() {
         return id;
+    }
+
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

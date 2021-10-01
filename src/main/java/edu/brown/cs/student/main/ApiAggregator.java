@@ -6,52 +6,42 @@ import edu.brown.cs.student.client.ApiClient;
 import edu.brown.cs.student.client.ClientRequestGenerator;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ApiAggregator {
     Object data;
     private final ApiClient client = new ApiClient();
-    private final String error_message = "{\"message\": \"Your API call failed due to a malicious error by the course staff\"}";
-    public List<Object> getData(String response, String dataType) throws Exception {
+
+    public List<Object> getData(String dataType) throws Exception {
         Gson gson = new Gson();
+        Type type;
         String filepath = "https://runwayapi.herokuapp.com/" + dataType + "-";
-        if(dataType == "rent"){
-            // Get the data
-            // Verify that its correct and of the correct length and then return it
-            String response1 = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "three"));
-            String response2 = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "one"));
-            Type type = new TypeToken<List<Rent>>(){}.getType();
-
-        }else if(dataType == "review"){
-            // Get the data
-            // Verify that its correct and of the correct length and then return it
-
-
-
-        }else if (dataType == "users"){
-            // Get the data
-            // Verify that its correct and of the correct length and then return it
-
-
-
-        }else{
+        if(dataType.equals("rent")){
+             type = new TypeToken<List<Rent>>(){}.getType();
+        }else if(dataType.equals("reviews")){
+             type = new TypeToken<List<Review>>(){}.getType();
+        }else if (dataType.equals("users")){
+             type = new TypeToken<List<Rent>>(){}.getType();
+        }else {
             throw new Exception("The aggregator does not contain a content type called: " + dataType);
         }
-
-        Type type = new TypeToken<List<Review>>(){}.getType();
-        List<Review> review = gson.fromJson(response,type);
+        String response1 = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "one?auth="));
+        String response2 = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "three?auth="));
+        response1 = generateExtras("one",filepath,response1);
+        response2 = generateExtras("two",filepath,response2);
+        String best_response = response1.length() > response2.length() ? response1 : response2;
+        return gson.fromJson(best_response,type);
     }
 
-    public String generateExtras(int attempts, int server, String filepath) {
-        String result = error_message;
-        for(int i = 0; i < attempts; i++){
-            if(result.equals(error_message)){
-                result = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "one"));
+    private String generateExtras(String server, String filepath, String response) {
+        String error_message = "{\"message\": \"Your API call failed due to a malicious error by the course staff\"}";
+        try{
+        for(int i = 0; i < 5; i++){
+            if(response.equals(error_message)){
+                response = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + server + "?auth="));
             }else break;
         }
-        return result;
+        }catch (Exception e) {}
+        return response;
     }
 }
