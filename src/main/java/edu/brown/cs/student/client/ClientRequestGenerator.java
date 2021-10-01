@@ -1,6 +1,7 @@
 package edu.brown.cs.student.client;
 
 import edu.brown.cs.student.client.ClientAuth;
+import edu.brown.cs.student.main.Api;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -28,10 +29,11 @@ public class ClientRequestGenerator {
     String apiKey = clientAuth.getApiKey();
     // UserName is in index 0 , Key is in index 1
     String[] ApiKeyArray = apiKey.split(" ");
-    String reqUri = "https://runwayapi.herokuapp.com/reviews-one";
+    String reqUri = "https://runwayapi.herokuapp.com/reviews-one?auth=msulima2&key=MgBStIP";
       HttpRequest request = HttpRequest.newBuilder()
               .uri(URI.create(reqUri))
-              .header("x-api-key", "MgBStIP")
+              //.header("x-cs-login", "msulima2")
+              //.header("x-api-key", "MgBStIP")
               .build();
     return request;
   }
