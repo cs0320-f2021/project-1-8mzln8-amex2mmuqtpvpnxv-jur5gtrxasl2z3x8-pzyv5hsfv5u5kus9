@@ -4,9 +4,9 @@ public class Review {
     final private String review_text;
     final private String review_summary;
     final private String review_date;
-    final int id;
+    final String id;
 
-    public Review(String review_text, String review_summary, String review_date, int id){
+    public Review(String review_text, String review_summary, String review_date, String id){
         this.review_text = review_text;
         this.review_summary = review_text;
         this.review_date = review_date;
@@ -25,7 +25,7 @@ public class Review {
         return review_date;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 }

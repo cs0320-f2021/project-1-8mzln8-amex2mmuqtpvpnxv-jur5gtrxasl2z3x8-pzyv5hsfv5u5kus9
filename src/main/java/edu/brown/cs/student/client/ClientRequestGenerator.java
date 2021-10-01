@@ -29,7 +29,7 @@ public class ClientRequestGenerator {
     String apiKey = clientAuth.getApiKey();
     // UserName is in index 0 , Key is in index 1
     String[] ApiKeyArray = apiKey.split(" ");
-    String reqUri = "https://runwayapi.herokuapp.com/reviews-one?auth=msulima2&key=MgBStIP";
+    String reqUri = "https://runwayapi.herokuapp.com/reviews-two?auth=msulima2&key=MgBStIP";
       HttpRequest request = HttpRequest.newBuilder()
               .uri(URI.create(reqUri))
               //.header("x-cs-login", "msulima2")

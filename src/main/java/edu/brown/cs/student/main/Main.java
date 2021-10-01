@@ -73,6 +73,7 @@ public final class Main {
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
           if(arguments[0].equals("test")){
+
             client.makeRequest(ClientRequestGenerator.getSecuredRequest(arguments[1]));
           } else if (arguments[0].equals("stars")) {
             try {

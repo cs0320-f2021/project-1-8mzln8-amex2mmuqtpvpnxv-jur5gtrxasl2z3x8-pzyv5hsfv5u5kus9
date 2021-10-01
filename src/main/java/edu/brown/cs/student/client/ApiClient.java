@@ -1,5 +1,7 @@
 package edu.brown.cs.student.client;
 
+import edu.brown.cs.student.main.Api;
+
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
@@ -31,8 +33,8 @@ public class ApiClient {
 
     try {
       HttpResponse<String> apiResponse = client.send(req, HttpResponse.BodyHandlers.ofString());
-      System.out.println("Status " + apiResponse.statusCode());
-      System.out.println(apiResponse.body());
+      Api api = new Api();
+      api.createObject(apiResponse.body());
 
     } catch (IOException ioe) {
       System.out.println("An I/O error occurred when sending or receiving data.");
