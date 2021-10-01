@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -11,7 +12,8 @@ import java.util.PriorityQueue;
 public class KDTree<T extends Number> {
   private Node<T> root;
   private final int dimensions;
-  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
+  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>(5,
+      Collections.reverseOrder());
 
   /**
    * Constructor for a KDTree object.
@@ -58,36 +60,84 @@ public class KDTree<T extends Number> {
     return medianNode;
   }
 
-  /**
-   * Helper method to find the k closest neighbors to a set of target coordinates
-   * @param root - the root of the k-d tree we are traversing through
-   * @param k - the number of closest neighbors to find
-   * @param targetCoordinates - the desired set of coordinates to calculate distance to
-   */
-  private void searchForKNearestNeighborsHelper(Node<T> root, int k, List<T> targetCoordinates) {
-    if (root == null) {
-      return;
-    }
 
-    int currAxis = root.getAxis();
-    T rootCoordinate = root.getCoordinates().get(currAxis);
-    T targetCoordinate = targetCoordinates.get(currAxis);
-    root.setDistanceToTarget(targetCoordinates);
-
-    if (this.kNearestNeighbors.size() < k || (this.kNearestNeighbors.peek() != null
-        && root.compareTo(this.kNearestNeighbors.peek()) < 0)) {
-      this.kNearestNeighbors.add(root);
-    }
-
+  private void tidyHeap(int k) {
     while (this.kNearestNeighbors.size() > k) {
       this.kNearestNeighbors.poll();
     }
+  }
+
+
+  private int compareNodeToRadiusOnAxis(Node<T> root, List<Number> targetCoordinates) {
+    Node<T> best = this.kNearestNeighbors.peek();
+    int comparisonAxis = root.getAxis();
+    long bestDistanceOnAxis = Math.subtractExact(best.getCoordinates().get(comparisonAxis).longValue(),
+        targetCoordinates.get(comparisonAxis).longValue());
+    long rootDistanceOnAxis = Math.subtractExact(root.getCoordinates().get(comparisonAxis).longValue(),
+        targetCoordinates.get(comparisonAxis).longValue());
+    if (rootDistanceOnAxis < bestDistanceOnAxis) {
+      return 1;
+    }
+    return 0;
+  }
+
+  /**
+   * Algorithm to backtrack
+   * @param node - node to start backtracking from
+   * @param targetCoordinates - target
+   */
+  private void knnBacktracking(Node<T> node, Node<T> top, List<Number> targetCoordinates) {
+    this.kNearestNeighbors.add(node);
+    Node<T> parent = node.getParent();
+    if (parent.equals(top) || parent == null) { // checks to see if we hit top of tree or visited subtree
+      return;
+    }
+    // checks to see if there's valid space on other side of parent node
+    if (this.compareNodeToRadiusOnAxis(parent, targetCoordinates) == 1) {
+      if (parent.getRightChild().equals(node) && parent.getLeftChild() != null) {
+        // gets relevant leaf node and backtracks until it reaches parent
+        Node<T> leaf = basicBSTSearch(parent.getLeftChild(), targetCoordinates);
+        knnBacktracking(leaf, parent, targetCoordinates);
+      }
+      if (parent.getLeftChild().equals(node) && parent.getRightChild() != null) {
+        // gets relevant leaf node and backtracks until it reaches parent
+        Node<T> leaf = basicBSTSearch(parent.getRightChild(), targetCoordinates);
+        knnBacktracking(leaf, parent, targetCoordinates);
+      }
+    }
+    // no valid space on other side of parent, so recurs.
+    knnBacktracking(parent, null, targetCoordinates);
+  }
+
+
+  /**
+   * Helper method to find the k closest neighbors to a set of target coordinates
+   * @param root - the root of the k-d tree we are traversing through
+   * @param targetCoordinates - the desired set of coordinates to calculate distance to
+   * @throws ArithmeticException,NullPointerException - an error message if traversal failed or produced incorrect output
+   */
+  private Node<T> basicBSTSearch(Node<T> root, List<Number> targetCoordinates) throws ArithmeticException, NullPointerException {
+    if (root == null) {
+      throw new NullPointerException("Hit a null leaf without returning");
+    }
+
+    int currAxis = root.getAxis();
+    Number rootCoordinate = root.getCoordinates().get(currAxis);
+    Number targetCoordinate = targetCoordinates.get(currAxis);
+    root.setDistanceToTarget(targetCoordinates);
 
     if (targetCoordinate.doubleValue() < rootCoordinate.doubleValue()) {
-      searchForKNearestNeighborsHelper(root.getLeftChild(), k, targetCoordinates);
-    } else if (targetCoordinate.doubleValue() > rootCoordinate.doubleValue()) {
-      searchForKNearestNeighborsHelper(root.getRightChild(), k, targetCoordinates);
+      if (root.getLeftChild() == null) {
+        return root;
+      }
+      basicBSTSearch(root.getLeftChild(), targetCoordinates);
+    } else if (targetCoordinate.doubleValue() >= rootCoordinate.doubleValue()) {
+      if (root.getRightChild() == null) {
+        return root;
+      }
+      basicBSTSearch(root.getRightChild(), targetCoordinates);
     }
+    throw new ArithmeticException("At a valid node but did not pass comparator conditions");
   }
 
   /**
@@ -96,12 +146,15 @@ public class KDTree<T extends Number> {
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    * @return a list containing the k nearest neighbors to the given target coordinates
    */
-  public PriorityQueue<Node<T>> searchForKNearestNeighbors(int k, List<T> targetCoordinates) {
+  public PriorityQueue<Node<T>> searchForKNearestNeighbors(int k, List<Number> targetCoordinates) {
     if (this.root == null) {
       return null;
     }
-    searchForKNearestNeighborsHelper(this.root, k, targetCoordinates);
+    Node<T> bottom = basicBSTSearch(this.root, targetCoordinates);
+    this.knnBacktracking(bottom, null, targetCoordinates);
+    this.tidyHeap(k);
     return this.kNearestNeighbors;
   }
+
 
 }

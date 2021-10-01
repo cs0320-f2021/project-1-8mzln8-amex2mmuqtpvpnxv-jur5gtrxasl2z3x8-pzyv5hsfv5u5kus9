@@ -129,7 +129,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    * Sets the distanceToTarget field of Node object with the appropriate Euclidean distance
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
-  public void setDistanceToTarget(List<T> targetCoordinates) {
+  public void setDistanceToTarget(List<Number> targetCoordinates) {
     this.distanceToTarget = calculateDistance(targetCoordinates);
   }
 
@@ -137,7 +137,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    * Calculates the Euclidean distance between a Node object and the given set of coordinates.
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
-  private double calculateDistance(List<T> targetCoordinates) {
+  private double calculateDistance(List<Number> targetCoordinates) {
     double distanceSquared = 0;
     for (int i = 0; i < targetCoordinates.size(); i++) {
       distanceSquared += Math.pow(
@@ -146,5 +146,6 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
     }
     return Math.sqrt(distanceSquared);
   }
+
 
 }
