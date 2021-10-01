@@ -12,11 +12,9 @@ import java.util.List;
 public class Api {
     Object data;
     public void createObject(String response) {
-        response = response.substring(1,response.length()-1);
         Gson gson = new Gson();
         if(response.equals("{\"message\": \"Your API call failed due to a malicious error by the course staff\"}")) return;
-        String[] list = response.split("},");
-        Review review = gson.fromJson(list[0],Review.class);
-        System.out.println(review);
+        Type type = new TypeToken<List<Review>>(){}.getType();
+        List<Review> review = gson.fromJson(response,type);
     }
 }
