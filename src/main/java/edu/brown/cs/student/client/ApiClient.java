@@ -1,11 +1,8 @@
 package edu.brown.cs.student.client;
 
-import edu.brown.cs.student.main.Api;
+import edu.brown.cs.student.main.ApiAggregator;
 
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.InetSocketAddress;
-import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -29,12 +26,12 @@ public class ApiClient {
 
   }
 
-  public void makeRequest(HttpRequest req) {
+  public String makeRequest(HttpRequest req) throws Exception {
 
     try {
       HttpResponse<String> apiResponse = client.send(req, HttpResponse.BodyHandlers.ofString());
-      Api api = new Api();
-      api.createObject(apiResponse.body());
+      ApiAggregator api = new ApiAggregator();
+      return apiResponse.body();
 
     } catch (IOException ioe) {
       System.out.println("An I/O error occurred when sending or receiving data.");
@@ -53,5 +50,6 @@ public class ApiClient {
       System.out.println("There was a security configuration error.");
       System.out.println(se.getMessage());
     }
+    throw new Exception("ERROR: Request Failed");
   }
 }

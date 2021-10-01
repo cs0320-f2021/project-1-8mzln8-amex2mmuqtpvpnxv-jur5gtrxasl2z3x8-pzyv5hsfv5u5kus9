@@ -1,13 +1,7 @@
 package edu.brown.cs.student.client;
 
-import edu.brown.cs.student.client.ClientAuth;
-import edu.brown.cs.student.main.Api;
-
 import java.net.URI;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
 
 /**
  * This class generates the HttpRequests that are then used to make requests from the ApiClient.
@@ -27,13 +21,12 @@ public class ClientRequestGenerator {
     // TODO get the secret API key by using the ClientAuth class.
     ClientAuth clientAuth = new ClientAuth();
     String apiKey = clientAuth.getApiKey();
-    // UserName is in index 0 , Key is in index 1
-    String[] ApiKeyArray = apiKey.split(" ");
-    String reqUri = "https://runwayapi.herokuapp.com/reviews-two?auth=msulima2&key=MgBStIP";
+    String[] apiKeyArray = apiKey.split(" ");
+    String user = apiKeyArray[0];
+    String password = apiKeyArray[1];
+    String reqUri = filepath + user + "&key=" + password;
       HttpRequest request = HttpRequest.newBuilder()
               .uri(URI.create(reqUri))
-              //.header("x-cs-login", "msulima2")
-              //.header("x-api-key", "MgBStIP")
               .build();
     return request;
   }
