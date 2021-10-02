@@ -12,8 +12,7 @@ import java.util.PriorityQueue;
 public class KDTree<T extends Number> {
   private Node<T> root;
   private final int dimensions;
-  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>(5,
-      Collections.reverseOrder());
+  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
 
   public Node<T> getTree() {
     return root;
