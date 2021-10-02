@@ -176,6 +176,10 @@ public class KDTreeTest {
     testcoords.add(-1);
     Node result = testTree.basicBSTSearch(testTree.getTree(),testcoords);
     assertEquals(node1.getCoordinates(), result.getCoordinates());
+
+    testTree.KNN(3,testcoords);
+    assertEquals(new ArrayList<Integer>(Arrays.asList(4,2)),
+        testTree.getkNearestNeighbors().peek().getCoordinates());
   }
 
 
