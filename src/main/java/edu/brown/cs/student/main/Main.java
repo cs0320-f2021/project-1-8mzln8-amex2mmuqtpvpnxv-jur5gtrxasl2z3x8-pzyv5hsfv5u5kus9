@@ -71,36 +71,23 @@ public final class Main {
           input = input.trim();
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
+
           if(arguments[0].equals("test")) {
             ApiAggregator api = new ApiAggregator();
             List<Object> list = api.getData(arguments[1]);
             for (Object o : list) {
               System.out.print(o.toString());
             }
-<<<<<<< Updated upstream
           }else if  (arguments[0].equals("json")){
-              Gson gson = new Gson();
-              Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
-              List<Object> list = gson.fromJson(reader, Rent.class);
-              reader.close();
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
+            Rent list = gson.fromJson(reader, Rent.class);
+            reader.close();
           } else if (arguments[0].equals("stars")) {
-            try {
-              this.galaxy = new Galaxy(arguments[1]);
-            } catch (Exception e) {
-              System.out.println("ERROR: No stars file was specified");
-            }
+            StarsCommands operations = new StarsCommands();
+            operations.createGalaxy(arguments[1]);
+
           } else if (arguments[0].equals("naive_neighbors")) {
-=======
-          }
-
-          else if (arguments[0].equals("stars")) {
-        StarsCommands operations = new StarsCommands();
-        operations.createGalaxy(arguments[1]);
-          }
-
-          else if (arguments[0].equals("naive_neighbors")) {
->>>>>>> Stashed changes
-
             try {
               ArrayList<Integer> nearestKNeighbors;
               if (arguments[1].equals("0")) {
