@@ -35,17 +35,19 @@ public class NaiveNeighborsCommands {
      */
     public void NN_Star(String args1,String args2,Galaxy g) {
         nearestKNeighbors =
-                g.getNearestKNeighborsWithName(args1, args2,);
+                g.getNearestKNeighborsWithName(args1, args2);
         System.out.println(
                 "Read " + g.getSize() + " stars from "
                         + g.getStarDataFile());
         for (Integer starId : nearestKNeighbors) {
             System.out.println(starId);
+        }
     }
-
-
-
-
-
 }
+
+
+
+
+
+
 
