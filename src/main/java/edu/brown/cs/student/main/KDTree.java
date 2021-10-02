@@ -12,7 +12,7 @@ import java.util.PriorityQueue;
 public class KDTree<T extends Number> {
   private Node<T> root;
   private final int dimensions;
-  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
+  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>(Collections.reverseOrder());
 
   public Node<T> getTree() {
     return root;
@@ -56,16 +56,19 @@ public class KDTree<T extends Number> {
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
-    medianNode.setLeftChild(createTree(nodeList, depth + 1, beginningIndex,
+
+    List<Node<T>> leftNodes = nodeList.subList(beginningIndex, medianIndex-1);
+    List<Node<T>> rightNodes = nodeList.subList(medianIndex+1, endIndex);
+    medianNode.setLeftChild(createTree(leftNodes, depth + 1, beginningIndex,
         medianIndex - 1, medianNode));
-    medianNode.setRightChild(createTree(nodeList, depth + 1, medianIndex + 1,
+    medianNode.setRightChild(createTree(rightNodes, depth + 1, medianIndex + 1,
         endIndex, medianNode));
     return medianNode;
   }
 
 
   private void tidyHeap(int k) {
-    while (this.kNearestNeighbors.size() > k++) {
+    while (this.kNearestNeighbors.size() > k) {
       this.kNearestNeighbors.poll();
     }
   }
