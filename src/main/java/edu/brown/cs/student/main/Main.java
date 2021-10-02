@@ -73,12 +73,11 @@ public final class Main {
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
           switch (arguments[0]) {
-            case "test": {
+            case "data": {
               ApiAggregator api = new ApiAggregator();
               List<Object> list = api.getData(arguments[1]);
-              User user = (User) list.get(0);
-              int[] coords = user.getCoords();
-              System.out.println(coords);
+              Gson gson = new Gson();
+              System.out.println(gson.toJson(list));
               break;
             }
             case "json": {
