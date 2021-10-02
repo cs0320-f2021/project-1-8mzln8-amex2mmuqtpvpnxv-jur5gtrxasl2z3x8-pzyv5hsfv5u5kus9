@@ -189,7 +189,7 @@ public class KDTreeTest {
     List<Integer> coor1 = new ArrayList<>();
     coor1.add(5);
     coor1.add(8);
-    assertEquals(testTree.getkNearestNeighbors().peek().getCoordinates(),coor1);
+    assertEquals(coor1, testTree.getkNearestNeighbors().peek().getCoordinates());
     assertEquals(4, testTree.getkNearestNeighbors().size());
   }
 }
