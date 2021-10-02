@@ -187,6 +187,9 @@ public class KDTreeTest {
     testcoords.add(-1);
     testTree.KNN(1,testcoords);
     assertEquals(testTree.getkNearestNeighbors().size(), 1);
-
+    List<Integer> coor1 = new ArrayList<>();
+    coor1.add(0);
+    coor1.add(0);
+    assertEquals(testTree.getkNearestNeighbors().peek().getCoordinates(),coor1);
   }
 }
