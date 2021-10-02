@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 /**
  * Class containing a Comparator for the Node class.
- * @param <T> - node coordinates contain data of type T
+ * @param <T> - node coordinates contain data of type T which extends Number
  */
 public class NodeComparator<T extends Number> implements Comparator<Node<T>> {
   private final int axisToCompare;

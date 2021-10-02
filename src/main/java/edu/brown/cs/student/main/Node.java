@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Class representing a node in a k-d tree.
- * @param <T> - node coordinates contain data of type T
+ * @param <T> - node coordinates contain data of type T which extends Number
  */
 public class Node<T extends Number> implements Comparable<Node<T>> {
   private final List<T> coordinates;
@@ -44,7 +44,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    */
   @Override
   public int compareTo(Node<T> o) {
-    return Double.compare(this.distanceToTarget, o.distanceToTarget);
+    return Double.compare(o.distanceToTarget, this.distanceToTarget);
   }
 
   /**
@@ -137,7 +137,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    * Calculates the Euclidean distance between a Node object and the given set of coordinates.
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
-  private double calculateDistance(List<T> targetCoordinates) {
+  public double calculateDistance(List<T> targetCoordinates) {
     double distanceSquared = 0;
     for (int i = 0; i < targetCoordinates.size(); i++) {
       distanceSquared += Math.pow(
@@ -146,6 +146,5 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
     }
     return Math.sqrt(distanceSquared);
   }
-
 
 }
