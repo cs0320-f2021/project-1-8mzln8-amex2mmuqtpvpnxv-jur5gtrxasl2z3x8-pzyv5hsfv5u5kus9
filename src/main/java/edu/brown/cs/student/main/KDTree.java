@@ -46,7 +46,7 @@ public class KDTree<T extends Number> {
    */
   private Node<T> createTree(List<Node<T>> nodeList, int depth,
                             int beginningIndex, int endIndex, Node<T> parent) {
-    if (beginningIndex == endIndex || nodeList.size() == 0) {
+    if (beginningIndex >= endIndex || nodeList.size() == 0) {
       return null;
     }
 
@@ -59,8 +59,10 @@ public class KDTree<T extends Number> {
     }
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
+
     List<Node<T>> leftNodes = nodeList.subList(beginningIndex, medianIndex-1);
     List<Node<T>> rightNodes = nodeList.subList(medianIndex+1, endIndex);
+
     medianNode.setLeftChild(createTree(leftNodes, depth + 1, beginningIndex,
         medianIndex - 1, medianNode));
     medianNode.setRightChild(createTree(rightNodes, depth + 1, medianIndex + 1,
