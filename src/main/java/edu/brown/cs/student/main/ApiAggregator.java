@@ -9,22 +9,12 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class ApiAggregator {
-    Object data;
     private final ApiClient client = new ApiClient();
 
     public List<Object> getData(String dataType) throws Exception {
         Gson gson = new Gson();
-        Type type;
+        Type type = setType(dataType);
         String filepath = "https://runwayapi.herokuapp.com/" + dataType + "-";
-        if(dataType.equals("rent")){
-             type = new TypeToken<List<Rent>>(){}.getType();
-        }else if(dataType.equals("reviews")){
-             type = new TypeToken<List<Review>>(){}.getType();
-        }else if (dataType.equals("users")){
-             type = new TypeToken<List<Rent>>(){}.getType();
-        }else {
-            throw new Exception("The aggregator does not contain a content type called: " + dataType);
-        }
         String response1 = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "one?auth="));
         String response2 = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filepath + "three?auth="));
         response1 = generateExtras("one",filepath,response1);
@@ -44,4 +34,17 @@ public class ApiAggregator {
         }catch (Exception e) {}
         return response;
     }
+    public Type setType(String dataType) throws Exception {
+        Type type;
+        if(dataType.equals("rent")){
+            return new TypeToken<List<Rent>>(){}.getType();
+        }else if(dataType.equals("reviews")){
+            return new TypeToken<List<Review>>(){}.getType();
+        }else if (dataType.equals("users")){
+            return new TypeToken<List<Rent>>(){}.getType();
+        }else {
+            throw new Exception("The aggregator does not contain a content type called: " + dataType);
+        }
+    }
+
 }

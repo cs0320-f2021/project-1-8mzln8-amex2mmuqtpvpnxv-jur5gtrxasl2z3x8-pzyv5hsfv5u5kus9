@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -9,9 +10,9 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import edu.brown.cs.student.client.ApiClient;
-import edu.brown.cs.student.client.ClientRequestGenerator;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -79,8 +80,10 @@ public final class Main {
             }
           }else if  (arguments[0].equals("json")){
               Gson gson = new Gson();
-              Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
-              List<Object> list = gson.fromJson(reader, Rent.class);
+              Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
+              ApiAggregator api = new ApiAggregator();
+              Type type = api.setType(arguments[1]);
+              List<Rent> list = gson.fromJson(reader, type);
               reader.close();
           } else if (arguments[0].equals("stars")) {
             try {
@@ -99,7 +102,6 @@ public final class Main {
               //TODO:Implement API Command
               else if (arguments[0].equals("users")) {
                 if (arguments[0].equals("basicGet")) { // Basic GET request
-
                 }
                 //TODO: API online implementation
                 if(arguments[1].equals("online")) {
