@@ -150,7 +150,7 @@ public class KDTree<T extends Number> {
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    * @return a list containing the k nearest neighbors to the given target coordinates
    */
-  public PriorityQueue<Node<T>> searchForKNearestNeighbors(int k, List<T> targetCoordinates) {
+  public PriorityQueue<Node<T>> KNN(int k, List<T> targetCoordinates) {
     if (this.root == null) {
       return null;
     }
@@ -161,7 +161,7 @@ public class KDTree<T extends Number> {
   }
 
   public PriorityQueue<Node<T>> getkNearestNeighbors() {
-    return kNearestNeighbors;
+    return this.kNearestNeighbors;
   }
 
   public void setkNearestNeighbors(
