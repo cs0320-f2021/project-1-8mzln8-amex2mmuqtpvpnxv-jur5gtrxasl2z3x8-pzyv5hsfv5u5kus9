@@ -155,7 +155,7 @@ public class KDTree<T extends Number> {
       return null;
     }
     Node<T> bottom = basicBSTSearch(this.root, targetCoordinates);
-    this.knnBacktracking(bottom, null, targetCoordinates);
+    this.knnBacktracking(bottom, this.root.getParent(), targetCoordinates);
     this.tidyHeap(k);
     return this.kNearestNeighbors;
   }
