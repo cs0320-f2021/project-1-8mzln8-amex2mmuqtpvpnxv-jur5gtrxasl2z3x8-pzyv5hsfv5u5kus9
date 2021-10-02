@@ -1,7 +1,6 @@
 package edu.brown.cs.student.main;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -99,10 +98,25 @@ public class KDTree<T extends Number> {
    * @param node - node to start backtracking from
    * @param targetCoordinates - target
    */
-  private void knnBacktracking(Node<T> node, Node<T> top, List<T> targetCoordinates) {
+  private void knnBacktracking(Node<T> node, Node<T> top, List<T> targetCoordinates, int k) {
     this.kNearestNeighbors.add(node);
     Node<T> parent = node.getParent();
-    if (parent == null || parent.equals(top)) { // checks to see if we hit top of tree or visited subtree
+    if (parent == null) {
+      return;
+    }
+    if (parent.equals(top)) { // checks to see if we hit top of tree or visited subtree
+      if (this.kNearestNeighbors.size() < k) {
+        if (parent.getRightChild().equals(node) && parent.getLeftChild() != null) {
+          // gets relevant leaf node and backtracks until it reaches parent
+          Node<T> leaf = basicBSTSearch(parent.getLeftChild(), targetCoordinates);
+          knnBacktracking(leaf, parent, targetCoordinates, k);
+        }
+        if (parent.getLeftChild().equals(node) && parent.getRightChild() != null) {
+          // gets relevant leaf node and backtracks until it reaches parent
+          Node<T> leaf = basicBSTSearch(parent.getRightChild(), targetCoordinates);
+          knnBacktracking(leaf, parent, targetCoordinates, k);
+        }
+      }
       return;
     }
     // checks to see if there's valid space on other side of parent node
@@ -110,16 +124,16 @@ public class KDTree<T extends Number> {
       if (parent.getRightChild().equals(node) && parent.getLeftChild() != null) {
         // gets relevant leaf node and backtracks until it reaches parent
         Node<T> leaf = basicBSTSearch(parent.getLeftChild(), targetCoordinates);
-        knnBacktracking(leaf, parent, targetCoordinates);
+        knnBacktracking(leaf, parent, targetCoordinates, k);
       }
       if (parent.getLeftChild().equals(node) && parent.getRightChild() != null) {
         // gets relevant leaf node and backtracks until it reaches parent
         Node<T> leaf = basicBSTSearch(parent.getRightChild(), targetCoordinates);
-        knnBacktracking(leaf, parent, targetCoordinates);
+        knnBacktracking(leaf, parent, targetCoordinates, k);
       }
     }
     // no valid space on other side of parent, so recurs.
-    knnBacktracking(parent, null, targetCoordinates);
+    knnBacktracking(parent, null, targetCoordinates, k);
   }
 
 
@@ -166,8 +180,7 @@ public class KDTree<T extends Number> {
       return null;
     }
     Node<T> bottom = basicBSTSearch(this.root, targetCoordinates);
-    this.knnBacktracking(bottom, this.root.getParent(), targetCoordinates);
-    this.tidyHeap(k);
+    this.knnBacktracking(bottom, this.root.getParent(), targetCoordinates, k);
     return this.kNearestNeighbors;
   }
 
