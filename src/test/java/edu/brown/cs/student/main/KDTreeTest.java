@@ -3,6 +3,7 @@ package edu.brown.cs.student.main;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -185,10 +186,12 @@ public class KDTreeTest {
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(-1);
     testcoords.add(-1);
-    testTree.KNN(4,testcoords);
+    Node<Integer> bottom = testTree.basicBSTSearch(testTree.getTree(), testcoords);
+    assertEquals(bottom.getCoordinates(), new ArrayList<>(Arrays.asList(0,0)));
+    testTree.KNN(2,testcoords);
     List<Integer> coor1 = new ArrayList<>();
-    coor1.add(5);
-    coor1.add(8);
+    coor1.add(1);
+    coor1.add(2);
     assertEquals(coor1, testTree.getkNearestNeighbors().peek().getCoordinates());
     assertEquals(4, testTree.getkNearestNeighbors().size());
   }
