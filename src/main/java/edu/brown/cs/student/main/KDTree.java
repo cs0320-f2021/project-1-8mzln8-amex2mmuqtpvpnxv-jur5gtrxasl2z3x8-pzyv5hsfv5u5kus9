@@ -69,6 +69,7 @@ public class KDTree<T extends Number> {
     while (this.kNearestNeighbors.size() > k) {
       this.kNearestNeighbors.poll();
     }
+    assert(k == this.kNearestNeighbors.size());
   }
 
 
