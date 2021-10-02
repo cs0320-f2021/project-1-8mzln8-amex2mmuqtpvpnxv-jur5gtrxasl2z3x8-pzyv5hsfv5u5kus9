@@ -54,11 +54,11 @@ public class KDTree<T extends Number> {
     nodeList.sort(new NodeComparator<T>(axis));
     int medianIndex = (beginningIndex + endIndex) / 2;
     Node<T> medianNode = nodeList.get(medianIndex);
+    medianNode.setAxis(axis);
+    medianNode.setParent(parent);
     if (medianIndex == beginningIndex || medianIndex == endIndex) {
       return medianNode;
     }
-    medianNode.setAxis(axis);
-    medianNode.setParent(parent);
 
     List<Node<T>> leftNodes = nodeList.subList(beginningIndex, medianIndex-1);
     List<Node<T>> rightNodes = nodeList.subList(medianIndex+1, endIndex);
