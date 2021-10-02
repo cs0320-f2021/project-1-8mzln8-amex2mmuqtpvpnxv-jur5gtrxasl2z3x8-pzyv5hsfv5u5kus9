@@ -67,10 +67,8 @@ public class KDTree<T extends Number> {
 
   private void tidyHeap(int k) {
     while (this.kNearestNeighbors.size() > k) {
-      System.out.println(this.kNearestNeighbors.size());
       this.kNearestNeighbors.poll();
     }
-    assert(k == this.kNearestNeighbors.size());
   }
 
 

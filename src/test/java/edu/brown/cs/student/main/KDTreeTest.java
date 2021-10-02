@@ -39,7 +39,7 @@ public class KDTreeTest {
 
   }
 
-  public Node testTree1() {
+  public Node<Integer> testTree1() {
     List<Integer> coor1 = new ArrayList<>();
     coor1.add(0);
     coor1.add(0);
@@ -186,10 +186,10 @@ public class KDTreeTest {
     testcoords.add(-1);
     testcoords.add(-1);
     testTree.KNN(3,testcoords);
-    assertEquals(3, testTree.getkNearestNeighbors().size());
     List<Integer> coor1 = new ArrayList<>();
     coor1.add(4);
     coor1.add(2);
     assertEquals(testTree.getkNearestNeighbors().peek().getCoordinates(),coor1);
+    assertEquals(3, testTree.getkNearestNeighbors().size());
   }
 }
