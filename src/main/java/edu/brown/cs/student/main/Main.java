@@ -1,17 +1,15 @@
 package edu.brown.cs.student.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.gson.Gson;
 import edu.brown.cs.student.client.ApiClient;
 import edu.brown.cs.student.client.ClientRequestGenerator;
 import freemarker.template.Configuration;
@@ -73,12 +71,17 @@ public final class Main {
           input = input.trim();
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
-          if(arguments[0].equals("test")){
+          if(arguments[0].equals("test")) {
             ApiAggregator api = new ApiAggregator();
             List<Object> list = api.getData(arguments[1]);
-            for(Object o : list){
+            for (Object o : list) {
               System.out.print(o.toString());
             }
+          }else if  (arguments[0].equals("json")){
+              Gson gson = new Gson();
+              Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
+              List<Object> list = gson.fromJson(reader, Rent.class);
+              reader.close();
           } else if (arguments[0].equals("stars")) {
             try {
               this.galaxy = new Galaxy(arguments[1]);
