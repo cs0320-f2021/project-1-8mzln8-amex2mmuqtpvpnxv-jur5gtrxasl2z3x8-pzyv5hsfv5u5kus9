@@ -8,10 +8,10 @@ import com.google.gson.Gson;
  */
 public class Rent {
         final private String fit ;
-        final private int userID;
-        final private int itemID;
+        final private int user_id;
+        final private int item_id;
         final private int rating;
-        final private String rentedFor;
+        final private String rented_for;
         final private String category;
         final private int size;
         final private int ID;
@@ -29,14 +29,14 @@ public class Rent {
      * @param size -- Size of type int
      * @param ID -- ID of type int
      */
-    public Rent(String fit, int userID, int itemID,
-                int rating, String rentedFor, String category,
+    public Rent(String fit, int user_id, int item_id,
+                int rating, String rented_for, String category,
                 int size, int ID) {
         this.fit = fit;
-        this.userID = userID;
-        this.itemID = itemID;
+        this.user_id = user_id;
+        this.item_id = item_id;
         this.rating = rating;
-        this.rentedFor = rentedFor;
+        this.rented_for = rented_for;
         this.category = category;
         this.size = size;
         this.ID = ID;
@@ -54,8 +54,8 @@ public class Rent {
      * getter method for userID
      * @return ft of type int
      */
-    public int getUserID() {
-        return userID;
+    public int user_id() {
+        return user_id;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Rent {
      * @return ft of type int
      */
     public int getItemID() {
-        return itemID;
+        return item_id;
     }
 
     /**
@@ -79,7 +79,7 @@ public class Rent {
      * @return rentedFor of type String
      */
     public String getRentedFor() {
-        return rentedFor;
+        return rented_for;
     }
 
     /**
