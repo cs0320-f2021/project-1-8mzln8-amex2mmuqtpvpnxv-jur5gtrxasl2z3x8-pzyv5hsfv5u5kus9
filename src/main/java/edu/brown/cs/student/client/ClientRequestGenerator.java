@@ -15,7 +15,6 @@ public class ClientRequestGenerator {
    *
    * @return an HttpRequest object for accessing the secured resource.
    */
-
   public static HttpRequest getSecuredRequest(String filepath) {
 
     // TODO get the secret API key by using the ClientAuth class.

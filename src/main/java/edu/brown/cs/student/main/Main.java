@@ -85,51 +85,30 @@ public final class Main {
               Type type = api.setType(arguments[1]);
               List<Rent> list = gson.fromJson(reader, type);
               reader.close();
-          } else if (arguments[0].equals("stars")) {
-            try {
-              this.galaxy = new Galaxy(arguments[1]);
-            } catch (Exception e) {
-              System.out.println("ERROR: No stars file was specified");
-            }
+          }
+
+          else if (arguments[0].equals("stars")) {
+            StarsCommands StarOperations = new StarsCommands();
+            StarOperations.createGalaxy(arguments[1]);
+
           } else if (arguments[0].equals("naive_neighbors")) {
+            NaiveNeighborsCommands NNOperator = new NaiveNeighborsCommands();
 
             try {
               ArrayList<Integer> nearestKNeighbors;
               if (arguments[1].equals("0")) {
-                System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                    + this.galaxy.getStarDataFile());
+                System.out.println("Read "
+                        + this.galaxy.getSize() +
+                        " stars from "
+                        + this.galaxy.getStarDataFile());
               }
-              //TODO:Implement API Command
-              else if (arguments[0].equals("users")) {
-                if (arguments[0].equals("basicGet")) { // Basic GET request
-                }
-                //TODO: API online implementation
-                if(arguments[1].equals("online")) {
-                } else {
-                  //TODO: URL Implementation
-                }
 
-
-              }
               else {
                 if (arguments.length > 3) {
-                  nearestKNeighbors = this.galaxy.getNearestKNeighbors(arguments[1], arguments[2],
-                      arguments[3], arguments[4]);
-                  System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                      + this.galaxy.getStarDataFile());
-                  for (Integer starId : nearestKNeighbors) {
-                    System.out.println(starId);
-                  }
+                  NNOperator.NN_Coord(arguments[1], arguments[2], arguments[3], arguments[4],this.galaxy );
                 } else {
-                  nearestKNeighbors =
-                      this.galaxy.getNearestKNeighborsWithName(arguments[1], arguments[2]);
-                  System.out.println(
-                      "Read " + this.galaxy.getSize() + " stars from "
-                          + this.galaxy.getStarDataFile());
-                  for (Integer starId : nearestKNeighbors) {
-                    System.out.println(starId);
+                  NNOperator.NN_Star(arguments[1],arguments[2],this.galaxy);
                   }
-                }
               }
             } catch (Exception e) {
               System.out.println("ERROR: Incorrect arguments");
@@ -140,18 +119,28 @@ public final class Main {
             System.out.println("ERROR: Command does not exist");
           }
 
-          MathBot mathbot = new MathBot();
+
           if (arguments[0].equals("add")) {
-            double sum = mathbot.add(Double.parseDouble(arguments[1]),
-                Double.parseDouble(arguments[2]));
-            System.out.println(sum);
+          MathBotCommands MathBotOperator = new MathBotCommands();
+          MathBotOperator.sum(arguments[1],arguments[2]);
+          }
+          if (arguments[0].equals("subtract")) {
+            MathBotCommands MathBotOperator = new MathBotCommands();
+            MathBotOperator.subtract(arguments[1],arguments[2]);
           }
 
-          if (arguments[0].equals("subtract")) {
-            double diff = mathbot.subtract(Double.parseDouble(arguments[1]),
-                Double.parseDouble(arguments[2]));
-            System.out.println(diff);
+          //TODO:Implement API Command
+          if (arguments[0].equals("users")) {
+            // TODO: Basic GET request
+            if (arguments[0].equals("basicGet")) {
+            }
+            //TODO: API online implementation
+            if (arguments[1].equals("online")) {
+            } else {
+              //TODO: URL Implementation
+            }
           }
+
         } catch (Exception e) {
           // e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
