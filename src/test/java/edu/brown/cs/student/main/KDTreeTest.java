@@ -13,35 +13,35 @@ public class KDTreeTest {
 
   @Test
   public void testCompareNodeToRadiusOnAxis() {
-    List<Integer> coor1 = new ArrayList<Integer>();
+    List<Integer> coor1 = new ArrayList<>();
     coor1.add(0);
     coor1.add(0);
 
-    Node<Integer> node1 = new Node<Integer>(coor1);
+    Node<Integer> node1 = new Node<>(coor1);
 
-    List<Integer> coor2 = new ArrayList<Integer>();
+    List<Integer> coor2 = new ArrayList<>();
     coor2.add(1);
     coor2.add(2);
 
-    Node<Integer> node2 = new Node<Integer>(coor2);
+    Node<Integer> node2 = new Node<>(coor2);
 
-    List<Integer> coor3 = new ArrayList<Integer>();
+    List<Integer> coor3 = new ArrayList<>();
     coor3.add(4);
     coor3.add(2);
 
-    Node<Integer> node3 = new Node<Integer>(coor3);
+    Node<Integer> node3 = new Node<>(coor3);
 
-    List<Integer> coor4 = new ArrayList<Integer>();
+    List<Integer> coor4 = new ArrayList<>();
     coor4.add(5);
     coor4.add(8);
 
-    Node<Integer> node4 = new Node<Integer>(coor4);
+    Node<Integer> node4 = new Node<>(coor4);
 
-    List<Integer> coor5 = new ArrayList<Integer>();
+    List<Integer> coor5 = new ArrayList<>();
     coor5.add(6);
     coor5.add(9);
 
-    Node<Integer> node5 = new Node<Integer>(coor5);
+    Node<Integer> node5 = new Node<>(coor5);
 
     List<List<Integer>> listOfCoors = new ArrayList<>();
     listOfCoors.add(coor1);
@@ -50,7 +50,7 @@ public class KDTreeTest {
     listOfCoors.add(coor4);
     listOfCoors.add(coor5);
 
-    KDTree<Integer> testTree = new KDTree<Integer>(listOfCoors);
+    KDTree<Integer> testTree = new KDTree<>(listOfCoors);
     PriorityQueue<Node<Integer>> queue = new PriorityQueue<>(Collections.reverseOrder());
     queue.add(node1);
     queue.add(node2);
@@ -92,7 +92,7 @@ public class KDTreeTest {
     System.out.println("Created root: " + testTree.getTree().getCoordinates());
     assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
 
-    List<Integer> testcoords = new ArrayList<Integer>();
+    List<Integer> testcoords = new ArrayList<>();
     testcoords.add(-1);
     testcoords.add(-1);
     Node result = testTree.basicBSTSearch(testTree.getTree(),testcoords);

@@ -25,7 +25,7 @@ public class NodeComparator<T extends Number> implements Comparator<Node<T>> {
    */
   @Override
   public int compare(Node<T> o1, Node<T> o2) {
-    return Double.compare(o2.getCoordinates().get(this.axisToCompare).doubleValue(),
-        o1.getCoordinates().get(this.axisToCompare).doubleValue());
+    return Double.compare(o1.getCoordinates().get(this.axisToCompare).doubleValue(),
+        o2.getCoordinates().get(this.axisToCompare).doubleValue());
   }
 }
