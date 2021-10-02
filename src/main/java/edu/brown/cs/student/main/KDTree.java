@@ -7,12 +7,12 @@ import java.util.PriorityQueue;
 
 /**
  * Class representing a k-d tree object.
- * @param <T> - nodes contain data of type T
+ * @param <T> - nodes contain data of type T which extends Number
  */
 public class KDTree<T extends Number> {
   private Node<T> root;
   private final int dimensions;
-  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>(Collections.reverseOrder());
+  private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
 
   public Node<T> getTree() {
     return root;
@@ -39,8 +39,6 @@ public class KDTree<T extends Number> {
    * Recursive method to create a k-d tree.
    * @param nodeList - list of nodes to put into the tree
    * @param depth - the number of levels from the root of the tree
-   * @param beginningIndex - the starting index of nodes to consider in the list
-   * @param endIndex - the ending index of nodes to consider in the list
    * @param parent - the parent node
    * @return the root node of the k-d tree
    */
@@ -51,45 +49,53 @@ public class KDTree<T extends Number> {
 
     int axis = depth % this.dimensions;
     nodeList.sort(new NodeComparator<T>(axis));
-    int medianIndex = (nodeList.size()-1)/ 2;
+    int medianIndex = (nodeList.size() - 1) / 2;
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
-    if (medianIndex == 0 || medianIndex == nodeList.size()-1) {
+    if (medianIndex == 0 || medianIndex == nodeList.size() - 1) {
       return medianNode;
     }
 
-    List<Node<T>> leftNodes = nodeList.subList(0, medianIndex-1);
-    List<Node<T>> rightNodes = nodeList.subList(medianIndex+1, nodeList.size()-1);
+    List<Node<T>> leftNodes = nodeList.subList(0, medianIndex - 1);
+    List<Node<T>> rightNodes = nodeList.subList(medianIndex + 1, nodeList.size() - 1);
 
     medianNode.setLeftChild(createTree(leftNodes, depth + 1,  medianNode));
     medianNode.setRightChild(createTree(rightNodes, depth + 1, medianNode));
     return medianNode;
   }
 
-
+  /**
+   * Removes elements from the kNearestNeighbors heap until there are k elements or less
+   * @param k - the desired number of elements to have in the heap
+   */
   private void tidyHeap(int k) {
     while (this.kNearestNeighbors.size() > k) {
       this.kNearestNeighbors.poll();
     }
   }
 
-
-  public int compareNodeToRadiusOnAxis(Node<T> root, List<T> targetCoordinates) {
-    Node<T> best = this.kNearestNeighbors.peek();
-    int comparisonAxis = root.getAxis();
-    long bestDistanceOnAxis = Math.subtractExact(best.getCoordinates().get(comparisonAxis).longValue(),
-        targetCoordinates.get(comparisonAxis).longValue());
-    long rootDistanceOnAxis = Math.subtractExact(root.getCoordinates().get(comparisonAxis).longValue(),
-        targetCoordinates.get(comparisonAxis).longValue());
-    if (rootDistanceOnAxis < bestDistanceOnAxis) {
-      return 1;
+  /**
+   * Compares the single-axis distance from the target to the root node and the highest priority node
+   * in the kNearestNeighbors heap
+   * @param root - the root node of a KDTree
+   * @param targetCoordinates - the target to measure the distance to
+   * @return 1 if the root is closer to the target, -1 if the root is farther from the target, and
+   * 0 if both are equidistant from the target
+   * @throws NullPointerException if the kNearestNeighbors heap is empty
+   */
+  public int compareNodeToRadius(Node<T> root, List<T> targetCoordinates) throws NullPointerException {
+    if (this.kNearestNeighbors.peek() == null) {
+      throw new NullPointerException("K nearest neighbors is empty");
     }
-    return 0;
+    Node<T> best = this.kNearestNeighbors.peek();
+    root.setDistanceToTarget(targetCoordinates);
+    best.setDistanceToTarget(targetCoordinates);
+    return root.compareTo(best);
   }
 
   /**
-   * Algorithm to backtrack
+   * Algorithm to backtrack up the KDTree
    * @param node - node to start backtracking from
    * @param targetCoordinates - target
    */
@@ -100,7 +106,7 @@ public class KDTree<T extends Number> {
       return;
     }
     // checks to see if there's valid space on other side of parent node
-    if (this.compareNodeToRadiusOnAxis(parent, targetCoordinates) == 1) {
+    if (this.compareNodeToRadius(parent, targetCoordinates) == 1) {
       if (parent.getRightChild().equals(node) && parent.getLeftChild() != null) {
         // gets relevant leaf node and backtracks until it reaches parent
         Node<T> leaf = basicBSTSearch(parent.getLeftChild(), targetCoordinates);
@@ -121,9 +127,11 @@ public class KDTree<T extends Number> {
    * Helper method to find the k closest neighbors to a set of target coordinates
    * @param root - the root of the k-d tree we are traversing through
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
-   * @throws ArithmeticException,NullPointerException - an error message if traversal failed or produced incorrect output
+   * @throws ArithmeticException,NullPointerException - an error message if traversal failed or
+   * produced incorrect output
    */
-  public Node<T> basicBSTSearch(Node<T> root, List<T> targetCoordinates) throws ArithmeticException, NullPointerException {
+  public Node<T> basicBSTSearch(Node<T> root, List<T> targetCoordinates)
+      throws ArithmeticException, NullPointerException {
     if (root == null) {
       throw new NullPointerException("Hit a null leaf without returning");
     }
@@ -153,7 +161,7 @@ public class KDTree<T extends Number> {
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    * @return a list containing the k nearest neighbors to the given target coordinates
    */
-  public PriorityQueue<Node<T>> KNN(int k, List<T> targetCoordinates) {
+  public PriorityQueue<Node<T>> KNNSearch(int k, List<T> targetCoordinates) {
     if (this.root == null) {
       return null;
     }
@@ -163,11 +171,19 @@ public class KDTree<T extends Number> {
     return this.kNearestNeighbors;
   }
 
-  public PriorityQueue<Node<T>> getkNearestNeighbors() {
+  /**
+   * Gets the kNearestNeighbors field
+   * @return the kNearestNeighbors field
+   */
+  public PriorityQueue<Node<T>> getKNearestNeighbors() {
     return this.kNearestNeighbors;
   }
 
-  public void setkNearestNeighbors(
+  /**
+   * Sets the kNearestNeighbors field
+   * @param kNearestNeighbors the Priority Queue to set the kNearestNeighbors field to
+   */
+  public void setKNearestNeighbors(
       PriorityQueue<Node<T>> kNearestNeighbors) {
     this.kNearestNeighbors = kNearestNeighbors;
   }

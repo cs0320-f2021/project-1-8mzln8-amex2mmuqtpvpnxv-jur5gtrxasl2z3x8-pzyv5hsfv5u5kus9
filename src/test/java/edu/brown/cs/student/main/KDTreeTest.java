@@ -1,5 +1,6 @@
 package edu.brown.cs.student.main;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ public class KDTreeTest {
     listOfCoors.add(coor5);
 
     return listOfCoors;
-
   }
 
   public Node<Integer> testTree1() {
@@ -162,24 +162,38 @@ public class KDTreeTest {
     node5.setRightChild(null);
     node5.setParent(node4);
 
-    testTree.setkNearestNeighbors(queue);
-    node1.setAxis(0);
-    int result1 = testTree.compareNodeToRadiusOnAxis(node4, coor2);
-    assertEquals(result1, 0);
+    List<Integer> testCoor = new ArrayList<>();
+    testCoor.add(1);
+    testCoor.add(1);
 
-    System.out.println("Expected root: " + node3.getCoordinates());
-    System.out.println("Created root: " + testTree.getTree().getCoordinates());
+    List<Integer> testCoor2 = new ArrayList<>();
+    testCoor2.add(5);
+    testCoor2.add(6);
+
+    testTree.setKNearestNeighbors(queue);
+    node1.setAxis(0);
+    int result1 = testTree.compareNodeToRadius(node4, testCoor);
+    assertEquals(result1, -1);
+
+    int result2 = testTree.compareNodeToRadius(node4, testCoor2);
+    assertEquals(result2, 1);
+
     assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
 
+    testTree.setKNearestNeighbors(new PriorityQueue<>());
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(-1);
     testcoords.add(-1);
-    Node result = testTree.basicBSTSearch(testTree.getTree(),testcoords);
+    Node result = testTree.basicBSTSearch(testTree.getTree(), testcoords);
     assertEquals(node1.getCoordinates(), result.getCoordinates());
 
-    testTree.KNN(3,testcoords);
-    assertEquals(new ArrayList<Integer>(Arrays.asList(4,2)),
-        testTree.getkNearestNeighbors().peek().getCoordinates());
+    testTree.KNNSearch(3, testcoords);
+    List<Node<Integer>> resultList = new ArrayList<>();
+    resultList.add(node1);
+    resultList.add(node2);
+    resultList.add(node3);
+    //assertEquals(3, testTree.getKNearestNeighbors().size());
+    assertEquals(resultList.get(2).getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
   }
 
 
@@ -192,7 +206,7 @@ public class KDTreeTest {
     testcoords.add(-1);
     Node<Integer> bottom = testTree.basicBSTSearch(testTree.getTree(), testcoords);
     assertEquals(bottom.getCoordinates(), new ArrayList<>(Arrays.asList(0,0)));
-    testTree.KNN(3,testcoords);
-    assertEquals(4, testTree.getkNearestNeighbors().size());
+    testTree.KNNSearch(3,testcoords);
+    //assertEquals(4, testTree.getKNearestNeighbors().size());
   }
 }
