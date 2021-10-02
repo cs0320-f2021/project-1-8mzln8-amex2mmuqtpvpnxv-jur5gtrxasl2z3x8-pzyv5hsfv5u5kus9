@@ -77,6 +77,7 @@ public final class Main {
             for (Object o : list) {
               System.out.print(o.toString());
             }
+<<<<<<< Updated upstream
           }else if  (arguments[0].equals("json")){
               Gson gson = new Gson();
               Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
@@ -89,6 +90,16 @@ public final class Main {
               System.out.println("ERROR: No stars file was specified");
             }
           } else if (arguments[0].equals("naive_neighbors")) {
+=======
+          }
+
+          else if (arguments[0].equals("stars")) {
+        StarsCommands operations = new StarsCommands();
+        operations.createGalaxy(arguments[1]);
+          }
+
+          else if (arguments[0].equals("naive_neighbors")) {
+>>>>>>> Stashed changes
 
             try {
               ArrayList<Integer> nearestKNeighbors;
@@ -96,19 +107,7 @@ public final class Main {
                 System.out.println("Read " + this.galaxy.getSize() + " stars from "
                     + this.galaxy.getStarDataFile());
               }
-              //TODO:Implement API Command
-              else if (arguments[0].equals("users")) {
-                if (arguments[0].equals("basicGet")) { // Basic GET request
 
-                }
-                //TODO: API online implementation
-                if(arguments[1].equals("online")) {
-                } else {
-                  //TODO: URL Implementation
-                }
-
-
-              }
               else {
                 if (arguments.length > 3) {
                   nearestKNeighbors = this.galaxy.getNearestKNeighbors(arguments[1], arguments[2],
@@ -138,22 +137,23 @@ public final class Main {
             System.out.println("ERROR: Command does not exist");
           }
 
-          MathBot mathbot = new MathBot();
+
           if (arguments[0].equals("add")) {
-            double sum = mathbot.add(Double.parseDouble(arguments[1]),
-                Double.parseDouble(arguments[2]));
-            System.out.println(sum);
+            MathBotCommands operations = new MathBotCommands();
+            operations.sum(arguments[1],arguments[2]);
           }
 
           if (arguments[0].equals("subtract")) {
-            double diff = mathbot.subtract(Double.parseDouble(arguments[1]),
-                Double.parseDouble(arguments[2]));
-            System.out.println(diff);
+            MathBotCommands operations = new MathBotCommands();
+            operations.subtract(arguments[1],arguments[2]);
           }
+
+
         } catch (Exception e) {
           // e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
         }
+
       }
     } catch (Exception e) {
       e.printStackTrace();
