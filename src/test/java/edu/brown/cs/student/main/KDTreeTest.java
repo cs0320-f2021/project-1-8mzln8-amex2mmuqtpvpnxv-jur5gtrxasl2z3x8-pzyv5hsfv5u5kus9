@@ -192,9 +192,7 @@ public class KDTreeTest {
     testcoords.add(-1);
     Node<Integer> bottom = testTree.basicBSTSearch(testTree.getTree(), testcoords);
     assertEquals(bottom.getCoordinates(), new ArrayList<>(Arrays.asList(0,0)));
-    testTree.KNN(2,testcoords);
-    List<Integer> coor1 = new ArrayList<>(Arrays.asList(1,2));
-    // assertEquals(coor1, testTree.getkNearestNeighbors().peek().getCoordinates());
-    // assertEquals(4, testTree.getkNearestNeighbors().size());
+    testTree.KNN(3,testcoords);
+    assertEquals(4, testTree.getkNearestNeighbors().size());
   }
 }
