@@ -72,51 +72,77 @@ public final class Main {
           input = input.trim();
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
-          if(arguments[0].equals("test")) {
-            ApiAggregator api = new ApiAggregator();
-            List<Object> list = api.getData(arguments[1]);
-            for (Object o : list) {
-              System.out.print(o.toString());
+          switch (arguments[0]) {
+            case "data": {
+              ApiAggregator api = new ApiAggregator();
+              List<Object> list = api.getData(arguments[1]);
+              Gson gson = new Gson();
+              System.out.println(gson.toJson(list));
+              break;
             }
-          }else if  (arguments[0].equals("json")){
-            Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
-            ApiAggregator api = new ApiAggregator();
-            Type type = api.setType(arguments[1]);
-            List<Rent> list = gson.fromJson(reader, type);
-            reader.close();
-          }
+            case "json": {
+              Gson gson = new Gson();
+              Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
+              ApiAggregator api = new ApiAggregator();
+              Type type = api.setType(arguments[1]);
+              List<Object> list = gson.fromJson(reader, type);
+              reader.close();
+              break;
+            }
+            case "users": {
+              Gson gson = new Gson();
+              // arguments[1] should be the filepath
+              Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
+              ApiAggregator api = new ApiAggregator();
+              Type type = api.setType("user");
+              List<User> list = gson.fromJson(reader, type);
+              //Here is a list of object User
+              // From here it needs to be loaded into the kd tree
+              reader.close();
+              // Need to add a global kd tree variable somewhere so that it can be used in the later commands
+              break;
+            }
+            case "similar": {
 
-          else if (arguments[0].equals("stars")) {
-            StarsCommands StarOperations = new StarsCommands();
-            StarOperations.createGalaxy(arguments[1]);
+              // print out the user_ids of the most similar k users [closest in Euclidean distance of weights, heights, and ages]
+              break;
+            }
+            case "classify": {
+              System.out.println("DELETE: Just to remove red lines");
+              // print out a horoscope comparison chart of the k most similar users [closest in Euclidean distance of weights, heights, and ages] by
+              break;
+            }
+            case "stars":
+              StarsCommands StarOperations = new StarsCommands();
+              StarOperations.createGalaxy(arguments[1]);
 
-          } else if (arguments[0].equals("naive_neighbors")) {
-            NaiveNeighborsCommands NNOperator = new NaiveNeighborsCommands();
+              break;
+            case "naive_neighbors":
+              NaiveNeighborsCommands NNOperator = new NaiveNeighborsCommands();
 
-            try {
-              ArrayList<Integer> nearestKNeighbors;
-              if (arguments[1].equals("0")) {
-                System.out.println("Read "
-                        + this.galaxy.getSize() +
-                        " stars from "
-                        + this.galaxy.getStarDataFile());
-              }
-
-              else {
-                if (arguments.length > 3) {
-                  NNOperator.NN_Coord(arguments[1], arguments[2], arguments[3], arguments[4],this.galaxy );
+              try {
+                ArrayList<Integer> nearestKNeighbors;
+                if (arguments[1].equals("0")) {
+                  System.out.println("Read "
+                          + this.galaxy.getSize() +
+                          " stars from "
+                          + this.galaxy.getStarDataFile());
                 } else {
-                  NNOperator.NN_Star(arguments[1],arguments[2],this.galaxy);
+                  if (arguments.length > 3) {
+                    NNOperator.NN_Coord(arguments[1], arguments[2], arguments[3], arguments[4], this.galaxy);
+                  } else {
+                    NNOperator.NN_Star(arguments[1], arguments[2], this.galaxy);
+                  }
                 }
+              } catch (Exception e) {
+                System.out.println("ERROR: Incorrect arguments");
               }
-            } catch (Exception e) {
-              System.out.println("ERROR: Incorrect arguments");
-            }
-          } else {
-            System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                    + this.galaxy.getStarDataFile());
-            System.out.println("ERROR: Command does not exist");
+              break;
+            default:
+              System.out.println("Read " + this.galaxy.getSize() + " stars from "
+                      + this.galaxy.getStarDataFile());
+              System.out.println("ERROR: Command does not exist");
+              break;
           }
 
 
@@ -127,18 +153,6 @@ public final class Main {
           if (arguments[0].equals("subtract")) {
             MathBotCommands MathBotOperator = new MathBotCommands();
             MathBotOperator.subtract(arguments[1],arguments[2]);
-          }
-
-          //TODO:Implement API Command
-          if (arguments[0].equals("users")) {
-            // TODO: Basic GET request
-            if (arguments[0].equals("basicGet")) {
-            }
-            //TODO: API online implementation
-            if (arguments[1].equals("online")) {
-            } else {
-              //TODO: URL Implementation
-            }
           }
 
         } catch (Exception e) {
