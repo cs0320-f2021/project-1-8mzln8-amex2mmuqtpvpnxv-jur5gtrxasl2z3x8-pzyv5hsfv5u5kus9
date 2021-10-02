@@ -58,7 +58,7 @@ public final class Main {
 
     // use "--port <n>" to specify what port on which the server runs
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
-        .defaultsTo(DEFAULT_PORT);
+            .defaultsTo(DEFAULT_PORT);
 
     OptionSet options = parser.parse(args);
     if (options.has("gui")) {
@@ -79,12 +79,12 @@ public final class Main {
               System.out.print(o.toString());
             }
           }else if  (arguments[0].equals("json")){
-              Gson gson = new Gson();
-              Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
-              ApiAggregator api = new ApiAggregator();
-              Type type = api.setType(arguments[1]);
-              List<Rent> list = gson.fromJson(reader, type);
-              reader.close();
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
+            ApiAggregator api = new ApiAggregator();
+            Type type = api.setType(arguments[1]);
+            List<Rent> list = gson.fromJson(reader, type);
+            reader.close();
           }
 
           else if (arguments[0].equals("stars")) {
@@ -108,21 +108,21 @@ public final class Main {
                   NNOperator.NN_Coord(arguments[1], arguments[2], arguments[3], arguments[4],this.galaxy );
                 } else {
                   NNOperator.NN_Star(arguments[1],arguments[2],this.galaxy);
-                  }
+                }
               }
             } catch (Exception e) {
               System.out.println("ERROR: Incorrect arguments");
             }
           } else {
             System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                + this.galaxy.getStarDataFile());
+                    + this.galaxy.getStarDataFile());
             System.out.println("ERROR: Command does not exist");
           }
 
 
           if (arguments[0].equals("add")) {
-          MathBotCommands MathBotOperator = new MathBotCommands();
-          MathBotOperator.sum(arguments[1],arguments[2]);
+            MathBotCommands MathBotOperator = new MathBotCommands();
+            MathBotOperator.sum(arguments[1],arguments[2]);
           }
           if (arguments[0].equals("subtract")) {
             MathBotCommands MathBotOperator = new MathBotCommands();
@@ -161,7 +161,7 @@ public final class Main {
       config.setDirectoryForTemplateLoading(templates);
     } catch (IOException ioe) {
       System.out.printf("ERROR: Unable use %s for template loading.%n",
-          templates);
+              templates);
       System.exit(1);
     }
     return new FreeMarkerEngine(config);
@@ -215,7 +215,7 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) {
       // this is a map of variables that are used in the FreeMarker template
       Map<String, Object> variables = ImmutableMap.of("title",
-          "Go go GUI");
+              "Go go GUI");
 
       return new ModelAndView(variables, "main.ftl");
     }

@@ -3,71 +3,56 @@ package edu.brown.cs.student.main;
 import com.google.gson.Gson;
 
 public class User {
-    private String fit;
     private int user_id;
-    private int item_id;
-    private int rating;
-    private String rented_for;
-    private String category;
-    private int size;
-    private int id;
+    private String weight;
+    private String bust_size;
+    private String height;
+    private int age;
+    private String body_type;
+    private String horoscope;
 
-    /**
-     *
-     * @return - the value of fit
-     */
-    public String getFit() {
-        return fit;
-    }
-    /**
-     *
-     * @return - the value of user_id
-     */
     public int getUser_id() {
         return user_id;
     }
-    /**
-     *
-     * @return - the value of item_id
-     */
-    public int getItem_id() {
-        return item_id;
+
+    public String getWeight() {
+        return weight;
     }
-    /**
-     *
-     * @return - the value of rating
-     */
-    public int getRating() {
-        return rating;
+
+    public String getBust_size() {
+        return bust_size;
     }
-    /**
-     *
-     * @return - the value of rented_for
-     */
-    public String getRented_for() {
-        return rented_for;
+
+    public String getHeight() {
+        return height;
     }
-    /**
-     *
-     * @return - the value of category
-     */
-    public String getCategory() {
-        return category;
+
+    public int getAge() {
+        return age;
     }
-    /**
-     *
-     * @return - the value of size
-     */
-    public int getSize() {
-        return size;
+
+    public String getBody_type() {
+        return body_type;
     }
-    /**
-     *
-     * @return - the id of the item
-     */
-    public int getId() {
-        return id;
+
+    public String getHoroscope() {
+        return horoscope;
     }
+
+    public int[] getCoords(){
+       int[] coords = new int[3];
+       int weight = Integer.parseInt(this.getWeight().replace("lbs",""));
+       // Reformat height
+       String[] temp_height = this.getHeight().split("\'");
+       temp_height[1] = temp_height[1].replace("\"","").trim();
+       // Translate height to inches
+       int height = Integer.parseInt(temp_height[0]) * 12 + Integer.parseInt(temp_height[1]);
+       coords[0] = weight;
+       coords[1] = height;
+       coords[2] = this.getAge();
+       return coords;
+    }
+
 
     public String toString() {
         Gson gson = new Gson();
