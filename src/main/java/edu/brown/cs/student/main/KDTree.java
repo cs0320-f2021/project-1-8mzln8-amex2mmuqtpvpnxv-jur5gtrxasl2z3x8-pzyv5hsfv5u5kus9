@@ -31,7 +31,7 @@ public class KDTree<T extends Number> {
     }
 
     this.dimensions = nodeList.get(0).getCoordinates().size();
-    this.root = createTree(nodeList, 0, 0, nodeList.size() - 1,
+    this.root = createTree(nodeList, 0,
         null);
   }
 
@@ -44,29 +44,26 @@ public class KDTree<T extends Number> {
    * @param parent - the parent node
    * @return the root node of the k-d tree
    */
-  private Node<T> createTree(List<Node<T>> nodeList, int depth,
-                            int beginningIndex, int endIndex, Node<T> parent) {
-    if (beginningIndex >= endIndex || nodeList.size() == 0) {
+  private Node<T> createTree(List<Node<T>> nodeList, int depth, Node<T> parent) {
+    if (nodeList.size() == 0) {
       return null;
     }
 
     int axis = depth % this.dimensions;
     nodeList.sort(new NodeComparator<T>(axis));
-    int medianIndex = (beginningIndex + endIndex) / 2;
+    int medianIndex = (nodeList.size()-1)/ 2;
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
-    if (medianIndex == beginningIndex || medianIndex == endIndex) {
+    if (medianIndex == 0 || medianIndex == nodeList.size()-1) {
       return medianNode;
     }
 
-    List<Node<T>> leftNodes = nodeList.subList(beginningIndex, medianIndex-1);
-    List<Node<T>> rightNodes = nodeList.subList(medianIndex+1, endIndex);
+    List<Node<T>> leftNodes = nodeList.subList(0, medianIndex-1);
+    List<Node<T>> rightNodes = nodeList.subList(medianIndex+1, nodeList.size()-1);
 
-    medianNode.setLeftChild(createTree(leftNodes, depth + 1, beginningIndex,
-        medianIndex - 1, medianNode));
-    medianNode.setRightChild(createTree(rightNodes, depth + 1, medianIndex + 1,
-        endIndex, medianNode));
+    medianNode.setLeftChild(createTree(leftNodes, depth + 1,  medianNode));
+    medianNode.setRightChild(createTree(rightNodes, depth + 1, medianNode));
     return medianNode;
   }
 
