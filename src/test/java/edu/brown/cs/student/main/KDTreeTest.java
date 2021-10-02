@@ -185,11 +185,11 @@ public class KDTreeTest {
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(-1);
     testcoords.add(-1);
-    testTree.KNN(1,testcoords);
-    assertEquals(testTree.getkNearestNeighbors().size(), 1);
+    testTree.KNN(3,testcoords);
+    assertEquals(testTree.getkNearestNeighbors().size(), 3);
     List<Integer> coor1 = new ArrayList<>();
-    coor1.add(0);
-    coor1.add(0);
+    coor1.add(4);
+    coor1.add(2);
     assertEquals(testTree.getkNearestNeighbors().peek().getCoordinates(),coor1);
   }
 }
