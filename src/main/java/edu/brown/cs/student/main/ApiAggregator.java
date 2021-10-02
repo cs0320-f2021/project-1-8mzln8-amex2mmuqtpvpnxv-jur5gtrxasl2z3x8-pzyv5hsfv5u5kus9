@@ -61,7 +61,7 @@ public class ApiAggregator {
         }else if(dataType.equals("reviews")){
             return new TypeToken<List<Review>>(){}.getType();
         }else if (dataType.equals("users")){
-            return new TypeToken<List<Rent>>(){}.getType();
+            return new TypeToken<List<User>>(){}.getType();
         }else {
             throw new Exception("The aggregator does not contain a content type called: " + dataType);
         }

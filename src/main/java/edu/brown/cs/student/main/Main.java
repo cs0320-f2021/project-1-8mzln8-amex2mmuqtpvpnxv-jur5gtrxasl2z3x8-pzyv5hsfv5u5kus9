@@ -72,72 +72,91 @@ public final class Main {
           input = input.trim();
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
-          if(arguments[0].equals("test")) {
-            ApiAggregator api = new ApiAggregator();
-            List<Object> list = api.getData(arguments[1]);
-            for (Object o : list) {
-              System.out.print(o.toString());
+          switch (arguments[0]) {
+            case "test": {
+              ApiAggregator api = new ApiAggregator();
+              List<Object> list = api.getData(arguments[1]);
+              User user = (User) list.get(0);
+              int[] coords = user.getCoords();
+              System.out.println(coords);
+              break;
             }
-          }else if  (arguments[0].equals("json")){
+            case "json": {
               Gson gson = new Gson();
               Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
               ApiAggregator api = new ApiAggregator();
               Type type = api.setType(arguments[1]);
-              List<Rent> list = gson.fromJson(reader, type);
+              List<Object> list = gson.fromJson(reader, type);
               reader.close();
-          } else if (arguments[0].equals("stars")) {
-            try {
-              this.galaxy = new Galaxy(arguments[1]);
-            } catch (Exception e) {
-              System.out.println("ERROR: No stars file was specified");
+              break;
             }
-          } else if (arguments[0].equals("naive_neighbors")) {
+            case "users": {
+              Gson gson = new Gson();
+              // arguments[1] should be the filepath
+              Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
+              ApiAggregator api = new ApiAggregator();
+              Type type = api.setType("user");
+              List<User> list = gson.fromJson(reader, type);
+              //Here is a list of object User
+              // From here it needs to be loaded into the kd tree
+              reader.close();
+              // Need to add a global kd tree variable somewhere so that it can be used in the later commands
+              break;
+            }
+            case "similar": {
 
-            try {
-              ArrayList<Integer> nearestKNeighbors;
-              if (arguments[1].equals("0")) {
-                System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                    + this.galaxy.getStarDataFile());
+              // print out the user_ids of the most similar k users [closest in Euclidean distance of weights, heights, and ages]
+              break;
+            }
+            case "classify": {
+              System.out.println("DELETE: Just to remove red lines");
+              // print out a horoscope comparison chart of the k most similar users [closest in Euclidean distance of weights, heights, and ages] by
+              break;
+            }
+            case "stars":
+              try {
+                this.galaxy = new Galaxy(arguments[1]);
+              } catch (Exception e) {
+                System.out.println("ERROR: No stars file was specified");
               }
-              //TODO:Implement API Command
-              else if (arguments[0].equals("users")) {
-                if (arguments[0].equals("basicGet")) { // Basic GET request
-                }
-                //TODO: API online implementation
-                if(arguments[1].equals("online")) {
-                } else {
-                  //TODO: URL Implementation
-                }
+              break;
+            case "naive_neighbors":
 
-
-              }
-              else {
-                if (arguments.length > 3) {
-                  nearestKNeighbors = this.galaxy.getNearestKNeighbors(arguments[1], arguments[2],
-                      arguments[3], arguments[4]);
+              try {
+                ArrayList<Integer> nearestKNeighbors;
+                if (arguments[1].equals("0")) {
                   System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                      + this.galaxy.getStarDataFile());
-                  for (Integer starId : nearestKNeighbors) {
-                    System.out.println(starId);
-                  }
-                } else {
-                  nearestKNeighbors =
-                      this.galaxy.getNearestKNeighborsWithName(arguments[1], arguments[2]);
-                  System.out.println(
-                      "Read " + this.galaxy.getSize() + " stars from "
                           + this.galaxy.getStarDataFile());
-                  for (Integer starId : nearestKNeighbors) {
-                    System.out.println(starId);
+                }
+                else {
+                  if (arguments.length > 3) {
+                    nearestKNeighbors = this.galaxy.getNearestKNeighbors(arguments[1], arguments[2],
+                            arguments[3], arguments[4]);
+                    System.out.println("Read " + this.galaxy.getSize() + " stars from "
+                            + this.galaxy.getStarDataFile());
+                    for (Integer starId : nearestKNeighbors) {
+                      System.out.println(starId);
+                    }
+                  } else {
+                    nearestKNeighbors =
+                            this.galaxy.getNearestKNeighborsWithName(arguments[1], arguments[2]);
+                    System.out.println(
+                            "Read " + this.galaxy.getSize() + " stars from "
+                                    + this.galaxy.getStarDataFile());
+                    for (Integer starId : nearestKNeighbors) {
+                      System.out.println(starId);
+                    }
                   }
                 }
+              } catch (Exception e) {
+                System.out.println("ERROR: Incorrect arguments");
               }
-            } catch (Exception e) {
-              System.out.println("ERROR: Incorrect arguments");
-            }
-          } else {
-            System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                + this.galaxy.getStarDataFile());
-            System.out.println("ERROR: Command does not exist");
+              break;
+            default:
+              System.out.println("Read " + this.galaxy.getSize() + " stars from "
+                      + this.galaxy.getStarDataFile());
+              System.out.println("ERROR: Command does not exist");
+              break;
           }
 
           MathBot mathbot = new MathBot();

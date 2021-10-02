@@ -20,7 +20,6 @@ public class Rent {
     /**
      * Constructors for given rent data
      * @param fit -- the fit of user of type String
-    * @param fit1
      * @param userID -- UserID of user of type int
      * @param itemID -- ItemID of user of type int
      * @param rating -- rating of user of type int
