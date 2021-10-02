@@ -93,7 +93,7 @@ public class KDTree<T extends Number> {
   private void knnBacktracking(Node<T> node, Node<T> top, List<T> targetCoordinates) {
     this.kNearestNeighbors.add(node);
     Node<T> parent = node.getParent();
-    if (parent.equals(top) || parent == null) { // checks to see if we hit top of tree or visited subtree
+    if (parent == null || parent.equals(top)) { // checks to see if we hit top of tree or visited subtree
       return;
     }
     // checks to see if there's valid space on other side of parent node
