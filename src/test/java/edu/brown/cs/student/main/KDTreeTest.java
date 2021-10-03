@@ -99,25 +99,25 @@ public class KDTreeTest {
 
     List<Integer> coor2 = new ArrayList<>();
     coor2.add(1);
-    coor2.add(2);
+    coor2.add(1);
 
     Node<Integer> node2 = new Node<>(coor2);
 
     List<Integer> coor3 = new ArrayList<>();
-    coor3.add(4);
+    coor3.add(2);
     coor3.add(2);
 
     Node<Integer> node3 = new Node<>(coor3);
 
     List<Integer> coor4 = new ArrayList<>();
-    coor4.add(5);
-    coor4.add(8);
+    coor4.add(3);
+    coor4.add(3);
 
     Node<Integer> node4 = new Node<>(coor4);
 
     List<Integer> coor5 = new ArrayList<>();
-    coor5.add(6);
-    coor5.add(9);
+    coor5.add(4);
+    coor5.add(4);
 
     Node<Integer> node5 = new Node<>(coor5);
 
