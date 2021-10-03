@@ -25,7 +25,7 @@ public class KDTree<T extends Number> {
     List<Node<T>> nodeList = new ArrayList<>();
 
     for (List<T> dataPoint : dataList) {
-      Node<T> newNode = new Node<T>(dataPoint);
+      Node<T> newNode = new Node<>(dataPoint);
       nodeList.add(newNode);
     }
 
@@ -47,7 +47,7 @@ public class KDTree<T extends Number> {
     }
 
     int axis = depth % this.dimensions;
-    nodeList.sort(new NodeComparator<T>(axis));
+    nodeList.sort(new NodeComparator<>(axis));
     int medianIndex = (nodeList.size() - 1) / 2;
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
@@ -93,49 +93,6 @@ public class KDTree<T extends Number> {
     return root.compareTo(best);
   }
 
-  /**
-   * Algorithm to backtrack up the KDTree
-   * @param node - node to start backtracking from
-   * @param targetCoordinates - target
-   */
-  private void knnBacktracking(Node<T> node, Node<T> top, List<T> targetCoordinates, int k) {
-    this.kNearestNeighbors.add(node);
-    Node<T> parent = node.getParent();
-    if (parent == null) {
-      return;
-    }
-    if (parent.equals(top)) { // checks to see if we hit top of tree or visited subtree
-      if (this.kNearestNeighbors.size() < k) {
-        if (parent.getRightChild().equals(node) && parent.getLeftChild() != null) {
-          // gets relevant leaf node and backtracks until it reaches parent
-          Node<T> leaf = basicBSTSearch(parent.getLeftChild(), targetCoordinates);
-          knnBacktracking(leaf, parent, targetCoordinates, k);
-        }
-        if (parent.getLeftChild().equals(node) && parent.getRightChild() != null) {
-          // gets relevant leaf node and backtracks until it reaches parent
-          Node<T> leaf = basicBSTSearch(parent.getRightChild(), targetCoordinates);
-          knnBacktracking(leaf, parent, targetCoordinates, k);
-        }
-      }
-      return;
-    }
-    // checks to see if there's valid space on other side of parent node
-    if (this.compareNodeToRadius(parent, targetCoordinates) == 1) {
-      if (parent.getRightChild().equals(node) && parent.getLeftChild() != null) {
-        // gets relevant leaf node and backtracks until it reaches parent
-        Node<T> leaf = basicBSTSearch(parent.getLeftChild(), targetCoordinates);
-        knnBacktracking(leaf, parent, targetCoordinates, k);
-      }
-      if (parent.getLeftChild().equals(node) && parent.getRightChild() != null) {
-        // gets relevant leaf node and backtracks until it reaches parent
-        Node<T> leaf = basicBSTSearch(parent.getRightChild(), targetCoordinates);
-        knnBacktracking(leaf, parent, targetCoordinates, k);
-      }
-    }
-    // no valid space on other side of parent, so recurs.
-    knnBacktracking(parent, null, targetCoordinates, k);
-  }
-
 
   /**
    * Helper method to find the k closest neighbors to a set of target coordinates
@@ -144,10 +101,13 @@ public class KDTree<T extends Number> {
    * @throws ArithmeticException,NullPointerException - an error message if traversal failed or
    * produced incorrect output
    */
-  public Node<T> basicBSTSearch(Node<T> root, List<T> targetCoordinates)
-      throws ArithmeticException, NullPointerException {
-    if (root == null) {
-      throw new NullPointerException("Hit a null leaf without returning");
+  public void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
+    this.kNearestNeighbors.add(root);
+    this.tidyHeap(k);
+    int comparison = this.compareNodeToRadius(root, targetCoordinates);
+    if (comparison > -1) {
+      basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
+      basicBSTSearch(root.getRightChild(), targetCoordinates, k);
     }
 
     int currAxis = root.getAxis();
@@ -156,17 +116,10 @@ public class KDTree<T extends Number> {
     root.setDistanceToTarget(targetCoordinates);
 
     if (targetCoordinate.doubleValue() < rootCoordinate.doubleValue()) {
-      if (root.getLeftChild() == null) {
-        return root;
-      }
-      return basicBSTSearch(root.getLeftChild(), targetCoordinates);
+      basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
     } else if (targetCoordinate.doubleValue() >= rootCoordinate.doubleValue()) {
-      if (root.getRightChild() == null) {
-        return root;
-      }
-      return basicBSTSearch(root.getRightChild(), targetCoordinates);
+      basicBSTSearch(root.getRightChild(), targetCoordinates, k);
     }
-    throw new ArithmeticException("At a valid node but did not pass comparator conditions");
   }
 
   /**
@@ -179,8 +132,7 @@ public class KDTree<T extends Number> {
     if (this.root == null) {
       return null;
     }
-    Node<T> bottom = basicBSTSearch(this.root, targetCoordinates);
-    this.knnBacktracking(bottom, this.root.getParent(), targetCoordinates, k);
+    basicBSTSearch(this.root, targetCoordinates, k);
     return this.kNearestNeighbors;
   }
 
