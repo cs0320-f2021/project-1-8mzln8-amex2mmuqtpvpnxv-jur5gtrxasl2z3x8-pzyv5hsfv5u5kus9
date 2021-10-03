@@ -48,7 +48,7 @@ public class KDTree<T extends Number> {
 
     int axis = depth % this.dimensions;
     nodeList.sort(new NodeComparator<>(axis));
-    int medianIndex = (nodeList.size()+1) / 2;
+    int medianIndex = nodeList.size() / 2;
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
