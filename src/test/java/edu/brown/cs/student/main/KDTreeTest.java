@@ -198,7 +198,6 @@ public class KDTreeTest {
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(-1);
     testcoords.add(-1);
-    testTree.KNNSearch(3,testcoords);
     //assertEquals(4, testTree.getKNearestNeighbors().size());
   }
 }
