@@ -14,10 +14,6 @@ public class KDTree<T extends Number> {
   private final int dimensions;
   private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
 
-  public Node<T> getTree() {
-    return this.root;
-  }
-
   /**
    * Constructor for a KDTree object.
    * @param dataList - a list containing coordinate data
@@ -76,22 +72,24 @@ public class KDTree<T extends Number> {
   }
 
   /**
-   * Compares the single-axis distance from the target to the root node and the highest priority node
-   * in the kNearestNeighbors heap
+   * Compares the single-axis distance from the target to the root node and the highest priority
+   * node in the kNearestNeighbors heap
    * @param node - the root node of a KDTree
    * @param targetCoordinates - the target to measure the distance to
    * @return 1 if the root is closer to the target, -1 if the root is farther from the target, and
    * 0 if both are equidistant from the target
    * @throws NullPointerException if the kNearestNeighbors heap is empty
    */
-  private int compareNodeToRadius(Node<T> node, List<T> targetCoordinates) throws NullPointerException {
+  private int compareNodeToRadius(Node<T> node, List<T> targetCoordinates)
+      throws NullPointerException {
     if (this.kNearestNeighbors.peek() == null) {
       throw new NullPointerException("K nearest neighbors is empty");
     }
     Node<T> best = this.kNearestNeighbors.peek();
     Number bestCoordinate = best.getCoordinates().get(best.getAxis());
     Number nodeCoordinate = node.getCoordinates().get(node.getAxis());
-    if (best.getDistanceToTarget() > (Math.abs(bestCoordinate.doubleValue() - nodeCoordinate.doubleValue()))) {
+    if (best.getDistanceToTarget() >
+        (Math.abs(bestCoordinate.doubleValue() - nodeCoordinate.doubleValue()))) {
       return 1;
     } else {
       return 0;
@@ -154,6 +152,14 @@ public class KDTree<T extends Number> {
     }
     Collections.reverse(listOfKNN);
     return listOfKNN;
+  }
+
+  /**
+   * Gets the root node of the KDTree
+   * @return the root node
+   */
+  public Node<T> getTree() {
+    return this.root;
   }
 
   /**
