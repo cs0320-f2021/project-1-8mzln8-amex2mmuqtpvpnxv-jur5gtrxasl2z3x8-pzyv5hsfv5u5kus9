@@ -170,11 +170,6 @@ public class KDTreeTest {
 
     testTree.setKNearestNeighbors(queue);
     node1.setAxis(0);
-    int result1 = testTree.compareNodeToRadius(node4, testCoor);
-    assertEquals(result1, -1);
-
-    int result2 = testTree.compareNodeToRadius(node4, testCoor2);
-    assertEquals(result2, 1);
 
     assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
 
