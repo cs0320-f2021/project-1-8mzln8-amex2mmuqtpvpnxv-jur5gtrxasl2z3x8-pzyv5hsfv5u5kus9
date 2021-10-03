@@ -1,10 +1,8 @@
 package edu.brown.cs.student.main;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -206,8 +204,6 @@ public class KDTreeTest {
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(-1);
     testcoords.add(-1);
-    Node<Integer> bottom = testTree.basicBSTSearch(testTree.getTree(), testcoords);
-    assertEquals(bottom.getCoordinates(), new ArrayList<>(Arrays.asList(0,0)));
     testTree.KNNSearch(3,testcoords);
     //assertEquals(4, testTree.getKNearestNeighbors().size());
   }
