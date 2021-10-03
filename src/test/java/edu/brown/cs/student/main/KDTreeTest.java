@@ -3,16 +3,14 @@ package edu.brown.cs.student.main;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.PriorityQueue;
+
 
 import static org.junit.Assert.assertEquals;
 
 public class KDTreeTest {
 
-  public List<List<Integer>> testset1() {
+  public List<List<Integer>> testDataset1() {
     List<Integer> coor1 = new ArrayList<>();
     coor1.add(0);
     coor1.add(0);
@@ -28,6 +26,33 @@ public class KDTreeTest {
     List<Integer> coor5 = new ArrayList<>();
     coor5.add(6);
     coor5.add(9);
+
+    List<List<Integer>> listOfCoors = new ArrayList<>();
+    listOfCoors.add(coor1);
+    listOfCoors.add(coor2);
+    listOfCoors.add(coor3);
+    listOfCoors.add(coor4);
+    listOfCoors.add(coor5);
+
+    return listOfCoors;
+  }
+
+  public List<List<Integer>> testDataset2() {
+    List<Integer> coor1 = new ArrayList<>();
+    coor1.add(1);
+    coor1.add(1);
+    List<Integer> coor2 = new ArrayList<>();
+    coor2.add(2);
+    coor2.add(2);
+    List<Integer> coor3 = new ArrayList<>();
+    coor3.add(3);
+    coor3.add(3);
+    List<Integer> coor4 = new ArrayList<>();
+    coor4.add(4);
+    coor4.add(4);
+    List<Integer> coor5 = new ArrayList<>();
+    coor5.add(5);
+    coor5.add(5);
 
     List<List<Integer>> listOfCoors = new ArrayList<>();
     listOfCoors.add(coor1);
@@ -90,72 +115,61 @@ public class KDTreeTest {
   }
 
   @Test
-  public void testCompareNodeToRadiusOnAxis() {
-    List<Integer> coor1 = new ArrayList<>();
-    coor1.add(1);
-    coor1.add(1);
-
-    Node<Integer> node1 = new Node<>(coor1);
-
+  public void testKDTreeStructure() {
+    KDTree<Integer> testTree = new KDTree<>(this.testDataset2());
     List<Integer> coor2 = new ArrayList<>();
     coor2.add(2);
     coor2.add(2);
-
-    Node<Integer> node2 = new Node<>(coor2);
-
     List<Integer> coor3 = new ArrayList<>();
     coor3.add(3);
     coor3.add(3);
-
     Node<Integer> node3 = new Node<>(coor3);
 
+    assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
+    assertEquals(coor3, testTree.getTree().getCoordinates());
+    assertEquals(coor2, testTree.getTree().getLeftChild().getCoordinates());
+  }
+
+  @Test
+  public void testKNNSearchDataset1() {
+    KDTree<Integer> testTree = new KDTree<>(this.testDataset2());
+    List<Integer> testCoors = new ArrayList<>();
+    testCoors.add(0);
+    testCoors.add(0);
+    List<Integer> coor1 = new ArrayList<>();
+    coor1.add(1);
+    coor1.add(1);
     List<Integer> coor4 = new ArrayList<>();
     coor4.add(4);
     coor4.add(4);
-
     Node<Integer> node4 = new Node<>(coor4);
 
-    List<Integer> coor5 = new ArrayList<>();
-    coor5.add(5);
-    coor5.add(5);
+    List<Node<Integer>> result1 = testTree.KNNSearch(4, testCoors);
+    assertEquals(coor1, result1.get(0).getCoordinates());
+    assertEquals(node4.getCoordinates(), result1.get(3).getCoordinates());
 
-    Node<Integer> node5 = new Node<>(coor5);
-
-    List<List<Integer>> listOfCoors = new ArrayList<>();
-    listOfCoors.add(coor1);
-    listOfCoors.add(coor2);
-    listOfCoors.add(coor3);
-    listOfCoors.add(coor4);
-    listOfCoors.add(coor5);
-
-    KDTree<Integer> testTree = new KDTree<>(listOfCoors);
-
-    node1.setAxis(0);
-
-    assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
-    List<Integer> testcoords = new ArrayList<>();
-    testcoords.add(0);
-    testcoords.add(0);
-    testTree.KNNSearch(4, testcoords);
-    Node<Integer>[] a = new Node[0];
-    a = testTree.getKNearestNeighbors().toArray(a);
-    for (Node<Integer> arg:a) {
-      System.out.println("Node: " + Arrays.asList(arg.getCoordinates()));
-    }
-    assertEquals(coor3, testTree.getTree().getCoordinates());
-    assertEquals(coor2, testTree.getTree().getLeftChild().getCoordinates());
-    assertEquals(node4.getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
-    assertEquals(4, testTree.getKNearestNeighbors().size());
+    List<Node<Integer>> result2 = testTree.KNNSearch(0, testCoors);
+    assertEquals(0, result2.size());
   }
-
 
   @Test
-  public void testBackTracking() {
-    List<List<Integer>> dataset = this.testset1();
-    KDTree<Integer> testTree = new KDTree<>(dataset);
-    List<Integer> testcoords = new ArrayList<>();
-    testcoords.add(-1);
-    testcoords.add(-1);
-    //assertEquals(4, testTree.getKNearestNeighbors().size());
+  public void testKNNSearchDataset2() {
+    KDTree<Integer> testTree = new KDTree<>(this.testDataset1());
+    List<Integer> testCoors = new ArrayList<>();
+    testCoors.add(-1);
+    testCoors.add(-1);
+    List<Integer> coor1 = new ArrayList<>();
+    coor1.add(0);
+    coor1.add(0);
+    List<Integer> coor5 = new ArrayList<>();
+    coor5.add(6);
+    coor5.add(9);
+    Node<Integer> node5 = new Node<>(coor5);
+
+    List<Node<Integer>> result1 = testTree.KNNSearch(6, testCoors);
+    assertEquals(coor1, result1.get(0).getCoordinates());
+    assertEquals(node5.getCoordinates(), result1.get(4).getCoordinates());
+    assertEquals(0, testTree.getKNearestNeighbors().size());
   }
+
 }
