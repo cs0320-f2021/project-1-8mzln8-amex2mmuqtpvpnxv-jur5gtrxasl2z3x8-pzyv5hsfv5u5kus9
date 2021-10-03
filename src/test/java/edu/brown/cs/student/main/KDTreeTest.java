@@ -136,7 +136,7 @@ public class KDTreeTest {
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(0);
     testcoords.add(0);
-    testTree.KNNSearch(3, testcoords);
+    testTree.KNNSearch(4, testcoords);
     Node<Integer>[] a = new Node[0];
     a = testTree.getKNearestNeighbors().toArray(a);
     for (Node<Integer> arg:a) {
@@ -144,8 +144,8 @@ public class KDTreeTest {
     }
     assertEquals(coor3, testTree.getTree().getCoordinates());
     assertEquals(coor2, testTree.getTree().getLeftChild().getCoordinates());
-    assertEquals(node3.getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
-    assertEquals(3, testTree.getKNearestNeighbors().size());
+    assertEquals(node4.getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
+    assertEquals(4, testTree.getKNearestNeighbors().size());
   }
 
 
