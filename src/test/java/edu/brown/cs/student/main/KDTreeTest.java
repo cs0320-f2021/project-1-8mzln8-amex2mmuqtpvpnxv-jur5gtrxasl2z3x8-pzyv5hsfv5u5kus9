@@ -3,6 +3,7 @@ package edu.brown.cs.student.main;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -178,11 +179,12 @@ public class KDTreeTest {
     testcoords.add(0);
     testcoords.add(0);
     // assertEquals(node1.getCoordinates(), result.getCoordinates());
-    PriorityQueue<Node<Integer>> resultList = new PriorityQueue<>();
-    resultList.add(node1);
-    resultList.add(node2);
-    resultList.add(node3);
     testTree.KNNSearch(3, testcoords);
+    Node<Integer>[] a = new Node[0];
+    a = testTree.getKNearestNeighbors().toArray(a);
+    for (Node<Integer> arg:a) {
+      System.out.print("Node: " + Arrays.asList(arg.getCoordinates()));
+    }
     assertEquals(node3.getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
     assertEquals(3, testTree.getKNearestNeighbors().size());
   }
