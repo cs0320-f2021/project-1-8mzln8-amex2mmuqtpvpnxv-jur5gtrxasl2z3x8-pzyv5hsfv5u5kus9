@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -83,7 +84,7 @@ public class KDTree<T extends Number> {
    * 0 if both are equidistant from the target
    * @throws NullPointerException if the kNearestNeighbors heap is empty
    */
-  public int compareNodeToRadius(Node<T> node, List<T> targetCoordinates) throws NullPointerException {
+  private int compareNodeToRadius(Node<T> node, List<T> targetCoordinates) throws NullPointerException {
     if (this.kNearestNeighbors.peek() == null) {
       throw new NullPointerException("K nearest neighbors is empty");
     }
@@ -109,7 +110,7 @@ public class KDTree<T extends Number> {
    * @throws ArithmeticException,NullPointerException - an error message if traversal failed or
    * produced incorrect output
    */
-  public void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
+  private void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
     if (root == null) {
       return;
     }
@@ -139,12 +140,20 @@ public class KDTree<T extends Number> {
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    * @return a list containing the k nearest neighbors to the given target coordinates
    */
-  public PriorityQueue<Node<T>> KNNSearch(int k, List<T> targetCoordinates) {
+  public List<Node<T>> KNNSearch(int k, List<T> targetCoordinates) {
     if (this.root == null) {
       return null;
     }
+    if (k == 0) {
+      return new ArrayList<>();
+    }
     basicBSTSearch(this.root, targetCoordinates, k);
-    return this.kNearestNeighbors;
+    List<Node<T>> listOfKNN = new ArrayList<>();
+    while (this.kNearestNeighbors.peek() != null) {
+      listOfKNN.add(this.kNearestNeighbors.poll());
+    }
+    Collections.reverse(listOfKNN);
+    return listOfKNN;
   }
 
   /**
