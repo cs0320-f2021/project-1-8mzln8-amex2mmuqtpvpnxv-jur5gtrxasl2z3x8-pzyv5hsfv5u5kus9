@@ -1,8 +1,8 @@
 INPUT
-users data/runwaySMALL.sqlite3
+users data/project-1/justusersSMALL.json
 classify 5 190 70 21
 OUTPUT
-Loaded 15 users from data/runwaySMALL.sqlite3
+Loaded 15 users from data/project-1/justusersSMALL.json
 Aries: 1
 Taurus: 1
 Gemini: 0

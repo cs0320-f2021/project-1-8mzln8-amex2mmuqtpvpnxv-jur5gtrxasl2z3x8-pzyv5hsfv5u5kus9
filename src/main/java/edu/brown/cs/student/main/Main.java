@@ -99,15 +99,12 @@ public final class Main {
               ApiAggregator api = new ApiAggregator();
               Type type = api.setType("user");
               this.userList = gson.fromJson(reader, type);
-              // Here is a list of object User
-              // From here it needs to be loaded into the kd tree
               List<List<Number>> dataList = new ArrayList<>();
               for (User user : this.userList) {
                 dataList.add(user.getCoords());
               }
               this.kdTree = new KDTree<>(dataList);
               reader.close();
-              // Need to add a global kd tree variable somewhere so that it can be used in the later commands
               break;
             }
             case "similar": {
@@ -123,11 +120,9 @@ public final class Main {
                 }
                 System.out.println("Cannot find User ID!");
               }
-              // print out the user_ids of the most similar k users [closest in Euclidean distance of weights, heights, and ages]
               break;
             }
             case "classify": {
-              System.out.println("DELETE: Just to remove red lines");
               RunwayCommands runwayCommands = new RunwayCommands();
               if (arguments.length > 3) {
                 runwayCommands.ClassifyKNNCoords(arguments[1], arguments[2], arguments[3],
@@ -141,7 +136,6 @@ public final class Main {
                 }
                 System.out.println("Cannot find User ID!");
               }
-              // print out a horoscope comparison chart of the k most similar users [closest in Euclidean distance of weights, heights, and ages] by
               break;
             }
             case "stars":
@@ -188,7 +182,7 @@ public final class Main {
           }
 
         } catch (Exception e) {
-          // e.printStackTrace();
+          e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
         }
       }

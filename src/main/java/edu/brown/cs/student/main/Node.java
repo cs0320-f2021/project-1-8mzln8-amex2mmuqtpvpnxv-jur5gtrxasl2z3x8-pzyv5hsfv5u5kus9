@@ -1,5 +1,6 @@
 package edu.brown.cs.student.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    */
   public Node(List<T> coordinates) {
     this.userID = coordinates.get(0).intValue();
-    this.coordinates = coordinates.subList(1, coordinates.size() - 1);
+    this.coordinates = coordinates.subList(1, coordinates.size());
   }
 
   /**

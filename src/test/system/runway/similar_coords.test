@@ -1,8 +1,8 @@
 INPUT
-users data/runwaySMALL.sqlite3
+users data/project-1/justusersSMALL.json
 similar 5 190 70 21
 OUTPUT
-Loaded 15 users from data/runwaySMALL.sqlite3
+Loaded 15 users from data/project-1/justusersSMALL.json
 499943
 151944
 391778
