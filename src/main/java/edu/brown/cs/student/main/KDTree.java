@@ -14,7 +14,7 @@ public class KDTree<T extends Number> {
   private PriorityQueue<Node<T>> kNearestNeighbors = new PriorityQueue<>();
 
   public Node<T> getTree() {
-    return root;
+    return this.root;
   }
 
   /**
