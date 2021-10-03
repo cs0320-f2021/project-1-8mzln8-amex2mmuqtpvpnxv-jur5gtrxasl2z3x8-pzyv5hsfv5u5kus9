@@ -90,7 +90,7 @@ public class KDTree<T extends Number> {
     Node<T> best = this.kNearestNeighbors.peek();
     Number bestCoordinate = best.getCoordinates().get(best.getAxis());
     Number nodeCoordinate = node.getCoordinates().get(node.getAxis());
-    if (best.getDistanceToTarget() > (bestCoordinate.doubleValue() - nodeCoordinate.doubleValue())) {
+    if (best.getDistanceToTarget() > (Math.abs(bestCoordinate.doubleValue() - nodeCoordinate.doubleValue()))) {
       return 1;
     } else {
       return 0;
@@ -116,7 +116,7 @@ public class KDTree<T extends Number> {
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root, targetCoordinates);
-    if (comparison == 1 || this.kNearestNeighbors.size() < k) {
+    if (comparison == 1 || (this.kNearestNeighbors.size() < k)) {
       basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
       basicBSTSearch(root.getRightChild(), targetCoordinates, k);
     } else {
