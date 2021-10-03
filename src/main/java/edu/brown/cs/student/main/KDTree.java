@@ -88,16 +88,19 @@ public class KDTree<T extends Number> {
       throw new NullPointerException("K nearest neighbors is empty");
     }
     Node<T> best = this.kNearestNeighbors.peek();
-    node.setDistanceToTarget(targetCoordinates);
-    best.setDistanceToTarget(targetCoordinates);
+    Number bestCoordinate = best.getCoordinates().get(best.getAxis());
     Number nodeCoordinate = node.getCoordinates().get(node.getAxis());
-    if (best.getDistanceToTarget() > nodeCoordinate.doubleValue()) {
+    if (best.getDistanceToTarget() > (bestCoordinate.doubleValue() - nodeCoordinate.doubleValue())) {
       return 1;
     } else {
       return 0;
     }
   }
 
+  private void addNodeToQueue(Node<T> node, List<T> targetCoordinates) {
+    node.setDistanceToTarget(targetCoordinates);
+    this.kNearestNeighbors.add(node);
+  }
 
   /**
    * Helper method to find the k closest neighbors to a set of target coordinates
@@ -107,7 +110,7 @@ public class KDTree<T extends Number> {
    * produced incorrect output
    */
   public void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
-    this.kNearestNeighbors.add(root);
+    this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root, targetCoordinates);
     if (comparison == 1) {
