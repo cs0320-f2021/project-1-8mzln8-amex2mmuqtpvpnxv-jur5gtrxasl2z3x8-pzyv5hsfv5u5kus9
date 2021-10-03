@@ -180,14 +180,15 @@ public class KDTreeTest {
 
     testTree.setKNearestNeighbors(new PriorityQueue<>());
     List<Integer> testcoords = new ArrayList<>();
-    testcoords.add(10);
-    testcoords.add(10);
+    testcoords.add(-1);
+    testcoords.add(-1);
     // assertEquals(node1.getCoordinates(), result.getCoordinates());
     PriorityQueue<Node<Integer>> resultList = new PriorityQueue<>();
     resultList.add(node1);
     resultList.add(node2);
     resultList.add(node3);
-    Node<Integer>[] a = new Node[0];
+    testTree.KNNSearch(3, testcoords);
+    assertEquals(resultList, testTree.getKNearestNeighbors());
   }
 
 
