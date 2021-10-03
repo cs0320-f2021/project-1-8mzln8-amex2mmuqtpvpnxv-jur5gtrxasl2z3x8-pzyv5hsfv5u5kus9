@@ -110,6 +110,9 @@ public class KDTree<T extends Number> {
    * produced incorrect output
    */
   public void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
+    if (root == null) {
+      return;
+    }
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root, targetCoordinates);
