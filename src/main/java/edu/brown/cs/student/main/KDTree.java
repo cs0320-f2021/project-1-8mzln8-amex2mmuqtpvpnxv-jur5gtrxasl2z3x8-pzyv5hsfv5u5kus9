@@ -144,7 +144,6 @@ public class KDTree<T extends Number> {
       return null;
     }
     basicBSTSearch(this.root, targetCoordinates, k);
-    this.tidyHeap(k);
     return this.kNearestNeighbors;
   }
 
