@@ -77,20 +77,25 @@ public class KDTree<T extends Number> {
   /**
    * Compares the single-axis distance from the target to the root node and the highest priority node
    * in the kNearestNeighbors heap
-   * @param root - the root node of a KDTree
+   * @param node - the root node of a KDTree
    * @param targetCoordinates - the target to measure the distance to
    * @return 1 if the root is closer to the target, -1 if the root is farther from the target, and
    * 0 if both are equidistant from the target
    * @throws NullPointerException if the kNearestNeighbors heap is empty
    */
-  public int compareNodeToRadius(Node<T> root, List<T> targetCoordinates) throws NullPointerException {
+  public int compareNodeToRadius(Node<T> node, List<T> targetCoordinates) throws NullPointerException {
     if (this.kNearestNeighbors.peek() == null) {
       throw new NullPointerException("K nearest neighbors is empty");
     }
     Node<T> best = this.kNearestNeighbors.peek();
-    root.setDistanceToTarget(targetCoordinates);
+    node.setDistanceToTarget(targetCoordinates);
     best.setDistanceToTarget(targetCoordinates);
-    return root.compareTo(best);
+    Number nodeCoordinate = node.getCoordinates().get(node.getAxis());
+    if (best.getDistanceToTarget() > nodeCoordinate.doubleValue()) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
 
@@ -105,20 +110,20 @@ public class KDTree<T extends Number> {
     this.kNearestNeighbors.add(root);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root, targetCoordinates);
-    if (comparison > -1) {
+    if (comparison == 1) {
       basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
       basicBSTSearch(root.getRightChild(), targetCoordinates, k);
-    }
+    } else {
+      int currAxis = root.getAxis();
+      Number rootCoordinate = root.getCoordinates().get(currAxis);
+      Number targetCoordinate = targetCoordinates.get(currAxis);
+      root.setDistanceToTarget(targetCoordinates);
 
-    int currAxis = root.getAxis();
-    Number rootCoordinate = root.getCoordinates().get(currAxis);
-    Number targetCoordinate = targetCoordinates.get(currAxis);
-    root.setDistanceToTarget(targetCoordinates);
-
-    if (targetCoordinate.doubleValue() < rootCoordinate.doubleValue()) {
-      basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
-    } else if (targetCoordinate.doubleValue() >= rootCoordinate.doubleValue()) {
-      basicBSTSearch(root.getRightChild(), targetCoordinates, k);
+      if (targetCoordinate.doubleValue() < rootCoordinate.doubleValue()) {
+        basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
+      } else if (targetCoordinate.doubleValue() >= rootCoordinate.doubleValue()) {
+        basicBSTSearch(root.getRightChild(), targetCoordinates, k);
+      }
     }
   }
 
