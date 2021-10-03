@@ -1,3 +1,11 @@
+
+# Known Bugs
+- There is an indexing issue with the KDTree construction. Notably, the basic KDTree was working properly, but when we started implementing the REPL commands and interacting with the User class, the coordinates and indices were likely mixed up. This would be a relatively okay fix, but we just did not have enough time to debug.
+- The users command returns an ERROR. We are not sure why this is, and we did not have time to debug this.
+- Since users did not load in the data to our tree, none of our system tests have passed. However, we are confident that our KNN algorithm for our tree works properly, as the JUnit tests for those pass. It's only a matter of the interaction with the API and the REPL class. 
+- If we had more time for this assignment, we would likely have been able to resolve most of the bugs, as we have the different components working. The meshing of the components is still a work in progress.
+
+
 #Client Classes
 **ApiClient** -- class the encapsulates given requests by building an HTTPClient
 **ClientAuth** -- class that reads through given API Keys
