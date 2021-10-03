@@ -169,12 +169,9 @@ public class KDTreeTest {
     testCoor2.add(5);
     testCoor2.add(6);
 
-    testTree.setKNearestNeighbors(queue);
     node1.setAxis(0);
 
     assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
-
-    testTree.setKNearestNeighbors(new PriorityQueue<>());
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(0);
     testcoords.add(0);
@@ -185,7 +182,8 @@ public class KDTreeTest {
     for (Node<Integer> arg:a) {
       System.out.println("Node: " + Arrays.asList(arg.getCoordinates()));
     }
-    assertEquals(coor3, testTree.getTree().getLeftChild().getCoordinates());
+    assertEquals(coor3, testTree.getTree().getCoordinates());
+    assertEquals(coor2, testTree.getTree().getLeftChild().getCoordinates());
     assertEquals(node3.getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
     assertEquals(3, testTree.getKNearestNeighbors().size());
   }
