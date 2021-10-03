@@ -183,8 +183,9 @@ public class KDTreeTest {
     Node<Integer>[] a = new Node[0];
     a = testTree.getKNearestNeighbors().toArray(a);
     for (Node<Integer> arg:a) {
-      System.out.print("Node: " + Arrays.asList(arg.getCoordinates()));
+      System.out.println("Node: " + Arrays.asList(arg.getCoordinates()));
     }
+    assertEquals(testTree.getTree().getLeftChild().getCoordinates(), coor3);
     assertEquals(node3.getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
     assertEquals(3, testTree.getKNearestNeighbors().size());
   }
