@@ -92,32 +92,32 @@ public class KDTreeTest {
   @Test
   public void testCompareNodeToRadiusOnAxis() {
     List<Integer> coor1 = new ArrayList<>();
-    coor1.add(0);
-    coor1.add(0);
+    coor1.add(1);
+    coor1.add(1);
 
     Node<Integer> node1 = new Node<>(coor1);
 
     List<Integer> coor2 = new ArrayList<>();
-    coor2.add(1);
-    coor2.add(1);
+    coor2.add(2);
+    coor2.add(2);
 
     Node<Integer> node2 = new Node<>(coor2);
 
     List<Integer> coor3 = new ArrayList<>();
-    coor3.add(2);
-    coor3.add(2);
+    coor3.add(3);
+    coor3.add(3);
 
     Node<Integer> node3 = new Node<>(coor3);
 
     List<Integer> coor4 = new ArrayList<>();
-    coor4.add(3);
-    coor4.add(3);
+    coor4.add(4);
+    coor4.add(4);
 
     Node<Integer> node4 = new Node<>(coor4);
 
     List<Integer> coor5 = new ArrayList<>();
-    coor5.add(4);
-    coor5.add(4);
+    coor5.add(5);
+    coor5.add(5);
 
     Node<Integer> node5 = new Node<>(coor5);
 
@@ -129,45 +129,6 @@ public class KDTreeTest {
     listOfCoors.add(coor5);
 
     KDTree<Integer> testTree = new KDTree<>(listOfCoors);
-    PriorityQueue<Node<Integer>> queue = new PriorityQueue<>(Collections.reverseOrder());
-    queue.add(node1);
-    queue.add(node2);
-    queue.add(node3);
-    queue.add(node4);
-    queue.add(node5);
-
-    node3.setAxis(0);
-    node3.setLeftChild(node2);
-    node3.setRightChild(node4);
-    node3.setParent(null);
-
-    node2.setAxis(1);
-    node2.setLeftChild(node1);
-    node2.setRightChild(null);
-    node2.setParent(node3);
-
-    node1.setAxis(0);
-    node1.setLeftChild(null);
-    node1.setRightChild(null);
-    node1.setParent(node2);
-
-    node4.setAxis(1);
-    node4.setLeftChild(null);
-    node4.setRightChild(node5);
-    node4.setParent(node3);
-
-    node5.setAxis(0);
-    node5.setLeftChild(null);
-    node5.setRightChild(null);
-    node5.setParent(node4);
-
-    List<Integer> testCoor = new ArrayList<>();
-    testCoor.add(1);
-    testCoor.add(1);
-
-    List<Integer> testCoor2 = new ArrayList<>();
-    testCoor2.add(5);
-    testCoor2.add(6);
 
     node1.setAxis(0);
 
@@ -175,7 +136,6 @@ public class KDTreeTest {
     List<Integer> testcoords = new ArrayList<>();
     testcoords.add(0);
     testcoords.add(0);
-    // assertEquals(node1.getCoordinates(), result.getCoordinates());
     testTree.KNNSearch(3, testcoords);
     Node<Integer>[] a = new Node[0];
     a = testTree.getKNearestNeighbors().toArray(a);
