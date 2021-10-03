@@ -56,8 +56,8 @@ public class KDTree<T extends Number> {
       return medianNode;
     }
 
-    List<Node<T>> leftNodes = nodeList.subList(0, medianIndex);
-    List<Node<T>> rightNodes = nodeList.subList(medianIndex + 1, nodeList.size());
+    List<Node<T>> leftNodes = new ArrayList<>(nodeList.subList(0, medianIndex));
+    List<Node<T>> rightNodes = new ArrayList<>(nodeList.subList(medianIndex + 1, nodeList.size()));
 
     medianNode.setLeftChild(createTree(leftNodes, depth + 1,  medianNode));
     medianNode.setRightChild(createTree(rightNodes, depth + 1, medianNode));
