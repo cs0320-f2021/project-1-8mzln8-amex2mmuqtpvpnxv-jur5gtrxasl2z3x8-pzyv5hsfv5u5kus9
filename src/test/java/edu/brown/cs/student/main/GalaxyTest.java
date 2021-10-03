@@ -1,7 +1,6 @@
 package edu.brown.cs.student.main;
 
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 
 import java.util.ArrayList;
 

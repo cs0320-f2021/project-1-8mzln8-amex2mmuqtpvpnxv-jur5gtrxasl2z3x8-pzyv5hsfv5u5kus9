@@ -3,7 +3,7 @@ package edu.brown.cs.student.main;
 /**
  * Class containing all the operations
  */
-public class MathBotCommands implements commandAction {
+public class MathBotCommands implements CommandAction {
 
     /**
      * Method that sums two inputs

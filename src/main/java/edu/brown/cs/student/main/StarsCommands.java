@@ -4,11 +4,11 @@ package edu.brown.cs.student.main;
 /**
  * Class containing all the commands for "stars" command
  */
-public class StarsCommands implements commandAction {
+public class StarsCommands implements CommandAction {
 
     /**
-     * Create Galaxy based of of argument
-      * @param arguments1 -- String we want to make galaxy out of
+     * Create Galaxy based of argument
+     * @param arguments1 -- String we want to make galaxy out of
      * @return galaxy
      */
     public Galaxy createGalaxy(String arguments1) {

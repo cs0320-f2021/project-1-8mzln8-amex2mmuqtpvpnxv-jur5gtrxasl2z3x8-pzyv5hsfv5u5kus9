@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Class containing all the commands for NaiveNeighbours
  */
-public class NaiveNeighborsCommands {
+public class NaiveNeighborsCommands implements CommandAction {
     ArrayList<Integer> nearestKNeighbors;
     //
 
