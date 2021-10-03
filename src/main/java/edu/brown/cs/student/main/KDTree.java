@@ -52,7 +52,7 @@ public class KDTree<T extends Number> {
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
-    if (medianIndex == 0 || medianIndex == nodeList.size() - 1) {
+    if (nodeList.size() == 1) {
       return medianNode;
     }
 
