@@ -182,9 +182,9 @@ public class KDTreeTest {
     resultList.add(node1);
     resultList.add(node2);
     resultList.add(node3);
-    testTree.KNNSearch(3, testcoords);
+    testTree.KNNSearch(2, testcoords);
     assertEquals(resultList.peek().getCoordinates(), testTree.getKNearestNeighbors().peek().getCoordinates());
-    assertEquals(resultList.size(), testTree.getKNearestNeighbors().size());
+    assertEquals(2, testTree.getKNearestNeighbors().size());
   }
 
 
