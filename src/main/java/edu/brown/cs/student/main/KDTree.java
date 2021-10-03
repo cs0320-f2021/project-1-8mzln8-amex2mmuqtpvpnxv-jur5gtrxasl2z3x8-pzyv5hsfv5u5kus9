@@ -116,7 +116,7 @@ public class KDTree<T extends Number> {
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root, targetCoordinates);
-    if (comparison == 1) {
+    if (comparison == 1 || this.kNearestNeighbors.size() < k) {
       basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
       basicBSTSearch(root.getRightChild(), targetCoordinates, k);
     } else {
