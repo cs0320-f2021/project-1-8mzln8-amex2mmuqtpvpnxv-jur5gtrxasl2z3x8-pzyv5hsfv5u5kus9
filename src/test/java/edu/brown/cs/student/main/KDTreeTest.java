@@ -175,8 +175,8 @@ public class KDTreeTest {
 
     testTree.setKNearestNeighbors(new PriorityQueue<>());
     List<Integer> testcoords = new ArrayList<>();
-    testcoords.add(-1);
-    testcoords.add(-1);
+    testcoords.add(0);
+    testcoords.add(0);
     // assertEquals(node1.getCoordinates(), result.getCoordinates());
     PriorityQueue<Node<Integer>> resultList = new PriorityQueue<>();
     resultList.add(node1);
