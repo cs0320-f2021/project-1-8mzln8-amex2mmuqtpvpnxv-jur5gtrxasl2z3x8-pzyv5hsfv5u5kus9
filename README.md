@@ -37,9 +37,9 @@ in REPL
 
 
 # API
-Our API Implementation functions are as follows
-
-
+Our API Implementation functions are as follows, oncea command to parse the API is called in REPL, an API aggregator 
+is instanitated in order to get data from the API output, there are cases in the API aggregator to ensure that there
+isnt any error and that the data is correct, a json is then instanitated to convert the data to a list.
 
 # KD Tree
 
