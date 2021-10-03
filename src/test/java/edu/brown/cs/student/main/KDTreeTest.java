@@ -14,16 +14,21 @@ public class KDTreeTest {
     List<Integer> coor1 = new ArrayList<>();
     coor1.add(0);
     coor1.add(0);
+    coor1.add(0);
     List<Integer> coor2 = new ArrayList<>();
+    coor1.add(1);
     coor2.add(1);
     coor2.add(2);
     List<Integer> coor3 = new ArrayList<>();
+    coor1.add(2);
     coor3.add(4);
     coor3.add(2);
     List<Integer> coor4 = new ArrayList<>();
+    coor1.add(3);
     coor4.add(5);
     coor4.add(8);
     List<Integer> coor5 = new ArrayList<>();
+    coor1.add(4);
     coor5.add(6);
     coor5.add(9);
 
@@ -39,18 +44,23 @@ public class KDTreeTest {
 
   public List<List<Integer>> testDataset2() {
     List<Integer> coor1 = new ArrayList<>();
+    coor1.add(0);
     coor1.add(1);
     coor1.add(1);
     List<Integer> coor2 = new ArrayList<>();
+    coor1.add(1);
     coor2.add(2);
     coor2.add(2);
     List<Integer> coor3 = new ArrayList<>();
+    coor1.add(2);
     coor3.add(3);
     coor3.add(3);
     List<Integer> coor4 = new ArrayList<>();
+    coor1.add(3);
     coor4.add(4);
     coor4.add(4);
     List<Integer> coor5 = new ArrayList<>();
+    coor1.add(4);
     coor5.add(5);
     coor5.add(5);
 

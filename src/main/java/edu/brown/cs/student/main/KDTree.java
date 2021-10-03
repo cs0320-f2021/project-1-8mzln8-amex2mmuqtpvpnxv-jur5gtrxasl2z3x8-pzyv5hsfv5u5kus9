@@ -75,12 +75,11 @@ public class KDTree<T extends Number> {
    * Compares the single-axis distance from the target to the root node and the highest priority
    * node in the kNearestNeighbors heap
    * @param node - the root node of a KDTree
-   * @param targetCoordinates - the target to measure the distance to
    * @return 1 if the root is closer to the target, -1 if the root is farther from the target, and
    * 0 if both are equidistant from the target
    * @throws NullPointerException if the kNearestNeighbors heap is empty
    */
-  private int compareNodeToRadius(Node<T> node, List<T> targetCoordinates)
+  private int compareNodeToRadius(Node<T> node)
       throws NullPointerException {
     if (this.kNearestNeighbors.peek() == null) {
       throw new NullPointerException("K nearest neighbors is empty");
@@ -114,7 +113,7 @@ public class KDTree<T extends Number> {
     }
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
-    int comparison = this.compareNodeToRadius(root, targetCoordinates);
+    int comparison = this.compareNodeToRadius(root);
     if (comparison == 1 || (this.kNearestNeighbors.size() < k)) {
       basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
       basicBSTSearch(root.getRightChild(), targetCoordinates, k);

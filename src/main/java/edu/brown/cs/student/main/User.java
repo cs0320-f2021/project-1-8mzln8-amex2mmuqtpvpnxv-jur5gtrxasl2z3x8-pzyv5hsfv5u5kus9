@@ -2,6 +2,9 @@ package edu.brown.cs.student.main;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private int user_id;
     private String weight;
@@ -39,20 +42,20 @@ public class User {
         return horoscope;
     }
 
-    public int[] getCoords(){
-       int[] coords = new int[3];
-       int weight = Integer.parseInt(this.getWeight().replace("lbs",""));
+    public List<Number> getCoords() {
+      List<Number> coords = new ArrayList<>();
+      int weight = Integer.parseInt(this.getWeight().replace("lbs",""));
        // Reformat height
        String[] temp_height = this.getHeight().split("\'");
        temp_height[1] = temp_height[1].replace("\"","").trim();
        // Translate height to inches
        int height = Integer.parseInt(temp_height[0]) * 12 + Integer.parseInt(temp_height[1]);
-       coords[0] = weight;
-       coords[1] = height;
-       coords[2] = this.getAge();
+       coords.add(user_id);
+       coords.add(weight);
+       coords.add(height);
+       coords.add(age);
        return coords;
     }
-
 
     public String toString() {
         Gson gson = new Gson();

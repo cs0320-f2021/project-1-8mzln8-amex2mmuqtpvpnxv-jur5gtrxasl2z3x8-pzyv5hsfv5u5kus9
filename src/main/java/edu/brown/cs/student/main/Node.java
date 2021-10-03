@@ -13,13 +13,15 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   private Node<T> rightChild = null;
   private Node<T> parent = null;
   private double distanceToTarget;
+  private int userID;
 
   /**
    * Constructor for Node object with a list of coordinates.
    * @param coordinates - list of coordinates to instantiate
    */
   public Node(List<T> coordinates) {
-    this.coordinates = coordinates;
+    this.userID = coordinates.get(0).intValue();
+    this.coordinates = coordinates.subList(1, coordinates.size() - 1);
   }
 
   /**
@@ -93,6 +95,14 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    */
   public int getAxis() {
     return axis;
+  }
+
+  /**
+   * Gets the user ID of the Node object.
+   * @return the user ID
+   */
+  public int getUserID() {
+    return userID;
   }
 
   /**
