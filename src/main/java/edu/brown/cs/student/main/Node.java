@@ -98,6 +98,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   }
 
   /**
+<<<<<<< HEAD
    * Gets the user ID of the Node object.
    * @return the user ID
    */
@@ -106,6 +107,8 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   }
 
   /**
+=======
+>>>>>>> 9eb14dcd1258110ce6fb6cbe4ed647eacd8a10c5
    * Sets the left child field with the given Node object.
    * @param leftChild - Node object to set
    */

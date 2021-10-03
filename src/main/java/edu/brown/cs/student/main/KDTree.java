@@ -79,8 +79,7 @@ public class KDTree<T extends Number> {
    * 0 if both are equidistant from the target
    * @throws NullPointerException if the kNearestNeighbors heap is empty
    */
-  private int compareNodeToRadius(Node<T> node)
-      throws NullPointerException {
+  private int compareNodeToRadius(Node<T> node) throws NullPointerException {
     if (this.kNearestNeighbors.peek() == null) {
       throw new NullPointerException("K nearest neighbors is empty");
     }
