@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import edu.brown.cs.student.kdtree.KDTree;
+import edu.brown.cs.student.kdtree.Node;
 import org.junit.Test;
 
 import java.util.ArrayList;

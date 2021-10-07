@@ -1,9 +1,12 @@
-package edu.brown.cs.student.main;
+package edu.brown.cs.student.api;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import edu.brown.cs.student.client.ApiClient;
-import edu.brown.cs.student.client.ClientRequestGenerator;
+import edu.brown.cs.student.api.client.ApiClient;
+import edu.brown.cs.student.api.client.ClientRequestGenerator;
+import edu.brown.cs.student.runway.Rent;
+import edu.brown.cs.student.runway.Review;
+import edu.brown.cs.student.runway.User;
 
 import java.lang.reflect.Type;
 import java.util.List;

@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import edu.brown.cs.student.stars.Galaxy;
+import edu.brown.cs.student.stars.Star;
 import org.junit.Test;
 
 import java.util.ArrayList;

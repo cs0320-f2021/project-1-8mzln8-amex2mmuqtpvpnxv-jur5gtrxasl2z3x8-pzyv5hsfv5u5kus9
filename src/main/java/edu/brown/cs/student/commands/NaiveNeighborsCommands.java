@@ -1,4 +1,7 @@
-package edu.brown.cs.student.main;
+package edu.brown.cs.student.commands;
+
+import edu.brown.cs.student.commands.CommandAction;
+import edu.brown.cs.student.stars.Galaxy;
 
 import java.util.ArrayList;
 
