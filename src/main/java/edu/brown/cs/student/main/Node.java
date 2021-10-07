@@ -8,7 +8,7 @@ import java.util.List;
  * @param <T> - node coordinates contain data of type T which extends Number
  */
 public class Node<T extends Number> implements Comparable<Node<T>> {
-  private final List<T> coordinates;
+  private List<T> coordinates = new ArrayList<>();
   private int axis;
   private Node<T> leftChild = null;
   private Node<T> rightChild = null;
@@ -21,8 +21,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    * @param coordinates - list of coordinates to instantiate
    */
   public Node(List<T> coordinates) {
-    this.userID = coordinates.get(0).intValue();
-    this.coordinates = coordinates.subList(1, coordinates.size());
+    this.coordinates = coordinates;
   }
 
   /**
@@ -99,7 +98,6 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   }
 
   /**
-<<<<<<< HEAD
    * Gets the user ID of the Node object.
    * @return the user ID
    */
@@ -108,8 +106,6 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   }
 
   /**
-=======
->>>>>>> 9eb14dcd1258110ce6fb6cbe4ed647eacd8a10c5
    * Sets the left child field with the given Node object.
    * @param leftChild - Node object to set
    */
