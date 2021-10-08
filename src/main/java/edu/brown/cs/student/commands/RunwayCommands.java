@@ -127,42 +127,46 @@ public class RunwayCommands implements REPLCommand {
   @Override
   public void handle(String[] args) {
     try {
-      if (args[0].equals("similar")) {
-        if (args.length > 3) {
-          this.SimilarKNNCoords(args[1], args[2], args[3], args[4], this.kdTree);
-        } else {
-          int userIDToSearch = Integer.parseInt(args[2]);
-          for (User user : this.userList) {
-            if (userIDToSearch == user.getUser_id()) {
-              this.SimilarKNNUniqueID(args[1], user, this.kdTree);
+      switch (args[0]) {
+        case "similar":
+          if (args.length > 3) {
+            this.SimilarKNNCoords(args[1], args[2], args[3], args[4], this.kdTree);
+          } else {
+            int userIDToSearch = Integer.parseInt(args[2]);
+            for (User user : this.userList) {
+              if (userIDToSearch == user.getUser_id()) {
+                this.SimilarKNNUniqueID(args[1], user, this.kdTree);
+              }
             }
           }
-        }
-      } else if (args[0].equals("classify")) {
-        if (args.length > 3) {
-          this.ClassifyKNNCoords(args[1], args[2], args[3],
-              args[4], this.kdTree, this.userList);
-        } else {
-          int userIDToSearch = Integer.parseInt(args[2]);
-          for (User user : this.userList) {
-            if (userIDToSearch == user.getUser_id()) {
-              this.ClassifyKNNUniqueID(args[1], user, this.kdTree, this.userList);
+          break;
+        case "classify":
+          if (args.length > 3) {
+            this.ClassifyKNNCoords(args[1], args[2], args[3],
+                args[4], this.kdTree, this.userList);
+          } else {
+            int userIDToSearch = Integer.parseInt(args[2]);
+            for (User user : this.userList) {
+              if (userIDToSearch == user.getUser_id()) {
+                this.ClassifyKNNUniqueID(args[1], user, this.kdTree, this.userList);
+              }
             }
           }
-        }
-      } else if (args[0].equals("users")) {
-        Gson gson = new Gson();
-        // arguments[1] should be the filepath
-        Reader reader = Files.newBufferedReader(Paths.get(args[1]));
-        ApiAggregator api = new ApiAggregator();
-        Type type = api.setType("users");
-        this.userList = gson.fromJson(reader, type);
-        List<List<Number>> dataList = new ArrayList<>();
-        for (User user : this.userList) {
-          dataList.add(user.getCoords());
-        }
-        this.kdTree = new KDTree<>(dataList);
-        reader.close();
+          break;
+        case "users":
+          Gson gson = new Gson();
+          // arguments[1] should be the filepath
+          Reader reader = Files.newBufferedReader(Paths.get(args[1]));
+          ApiAggregator api = new ApiAggregator();
+          Type type = api.setType("users");
+          this.userList = gson.fromJson(reader, type);
+          List<List<Number>> dataList = new ArrayList<>();
+          for (User user : this.userList) {
+            dataList.add(user.getCoords());
+          }
+          this.kdTree = new KDTree<>(dataList);
+          reader.close();
+          break;
       }
     } catch (Exception e) {
       System.out.println("Incorrect arguments for " + args[0] + " command");
