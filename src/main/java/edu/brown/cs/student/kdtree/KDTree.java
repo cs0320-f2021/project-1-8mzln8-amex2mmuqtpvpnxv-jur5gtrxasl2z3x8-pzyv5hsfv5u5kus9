@@ -27,8 +27,7 @@ public class KDTree<T extends Number> {
     }
 
     this.dimensions = nodeList.get(0).getCoordinates().size();
-    this.root = createTree(nodeList, 0,
-        null);
+    this.root = createTree(nodeList, 0, null);
   }
 
   /**
@@ -36,7 +35,7 @@ public class KDTree<T extends Number> {
    * @param nodeList - list of nodes to put into the tree
    * @param depth - the number of levels from the root of the tree
    * @param parent - the parent node
-   * @return the root node of the k-d tree
+   * @return the root node of the kd tree
    */
   private Node<T> createTree(List<Node<T>> nodeList, int depth, Node<T> parent) {
     if (nodeList.size() == 0) {
@@ -49,9 +48,6 @@ public class KDTree<T extends Number> {
     Node<T> medianNode = nodeList.get(medianIndex);
     medianNode.setAxis(axis);
     medianNode.setParent(parent);
-    if (nodeList.size() == 1) {
-      return medianNode;
-    }
 
     List<Node<T>> leftNodes = new ArrayList<>(nodeList.subList(0, medianIndex));
     List<Node<T>> rightNodes = new ArrayList<>(nodeList.subList(medianIndex + 1, nodeList.size()));
@@ -84,10 +80,10 @@ public class KDTree<T extends Number> {
       throw new NullPointerException("K nearest neighbors is empty");
     }
     Node<T> best = this.kNearestNeighbors.peek();
-    Number bestCoordinate = best.getCoordinates().get(best.getAxis());
-    Number nodeCoordinate = node.getCoordinates().get(node.getAxis());
+    Number bestValueOnAxis = best.getCoordinates().get(best.getAxis());
+    Number nodeValueOnAxis = node.getCoordinates().get(node.getAxis());
     if (best.getDistanceToTarget() >
-        (Math.abs(bestCoordinate.doubleValue() - nodeCoordinate.doubleValue()))) {
+        (Math.abs(bestValueOnAxis.doubleValue() - nodeValueOnAxis.doubleValue()))) {
       return 1;
     } else {
       return 0;
@@ -103,13 +99,12 @@ public class KDTree<T extends Number> {
    * Helper method to find the k closest neighbors to a set of target coordinates
    * @param root - the root of the k-d tree we are traversing through
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
-   * @throws ArithmeticException,NullPointerException - an error message if traversal failed or
-   * produced incorrect output
    */
   private void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
     if (root == null) {
       return;
     }
+    root.setDistanceToTarget(targetCoordinates);
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root);
@@ -118,13 +113,12 @@ public class KDTree<T extends Number> {
       basicBSTSearch(root.getRightChild(), targetCoordinates, k);
     } else {
       int currAxis = root.getAxis();
-      Number rootCoordinate = root.getCoordinates().get(currAxis);
-      Number targetCoordinate = targetCoordinates.get(currAxis);
-      root.setDistanceToTarget(targetCoordinates);
+      Number rootValueOnAxis = root.getCoordinates().get(currAxis);
+      Number targetValueOnAxis = targetCoordinates.get(currAxis);
 
-      if (targetCoordinate.doubleValue() < rootCoordinate.doubleValue()) {
+      if (targetValueOnAxis.doubleValue() < rootValueOnAxis.doubleValue()) {
         basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
-      } else if (targetCoordinate.doubleValue() >= rootCoordinate.doubleValue()) {
+      } else if (targetValueOnAxis.doubleValue() >= rootValueOnAxis.doubleValue()) {
         basicBSTSearch(root.getRightChild(), targetCoordinates, k);
       }
     }

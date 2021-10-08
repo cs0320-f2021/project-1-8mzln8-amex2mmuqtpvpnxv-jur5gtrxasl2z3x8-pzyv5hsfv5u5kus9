@@ -1,6 +1,5 @@
 package edu.brown.cs.student.kdtree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,20 +7,23 @@ import java.util.List;
  * @param <T> - node coordinates contain data of type T which extends Number
  */
 public class Node<T extends Number> implements Comparable<Node<T>> {
-  private List<T> coordinates = new ArrayList<>();
+  private List<T> coordinates;
   private int axis;
   private Node<T> leftChild = null;
   private Node<T> rightChild = null;
   private Node<T> parent = null;
   private double distanceToTarget;
-  private int userID;
+  private final int uniqueID;
 
   /**
    * Constructor for Node object with a list of coordinates.
    * @param coordinates - list of coordinates to instantiate
    */
   public Node(List<T> coordinates) {
-    this.coordinates = coordinates;
+    this.uniqueID = coordinates.get(0).intValue();
+    if (coordinates.size() > 1) {
+      this.coordinates = coordinates.subList(1, coordinates.size());
+    }
   }
 
   /**
@@ -33,7 +35,10 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    * @param parent - parent node to instantiate
    */
   public Node(List<T> coordinates, Node<T> leftChild, Node<T> rightChild, Node<T> parent) {
-    this.coordinates = coordinates;
+    this.uniqueID = coordinates.get(0).intValue();
+    if (coordinates.size() > 1) {
+      this.coordinates = coordinates.subList(1, coordinates.size());
+    }
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.parent = parent;
@@ -101,8 +106,8 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    * Gets the user ID of the Node object.
    * @return the user ID
    */
-  public int getUserID() {
-    return userID;
+  public int getUniqueID() {
+    return uniqueID;
   }
 
   /**

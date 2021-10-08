@@ -7,7 +7,7 @@ import com.google.gson.Gson;
  * Rent class displaying rent data for a given user
  */
 public class Rent {
-        final private String fit ;
+        final private String fit;
         final private int user_id;
         final private int item_id;
         final private int rating;
@@ -15,7 +15,6 @@ public class Rent {
         final private String category;
         final private int size;
         final private int id;
-
 
     /**
      * Constructors for given rent data
@@ -109,8 +108,6 @@ public class Rent {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
-
-    }
+}
 
 
