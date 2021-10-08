@@ -3,7 +3,6 @@ package edu.brown.cs.student.commands;
 import com.google.gson.Gson;
 import edu.brown.cs.student.api.ApiAggregator;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;

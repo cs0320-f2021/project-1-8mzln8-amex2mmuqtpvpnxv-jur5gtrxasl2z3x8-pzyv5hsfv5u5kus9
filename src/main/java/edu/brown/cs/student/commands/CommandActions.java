@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandActions {
-  Map<String, REPLCommand> commandMap = new HashMap<String, REPLCommand>();
+  Map<String, REPLCommand> commandMap = new HashMap<>();
 
   public CommandActions() {
     MathBotCommands mathBotCommand = new MathBotCommands();
