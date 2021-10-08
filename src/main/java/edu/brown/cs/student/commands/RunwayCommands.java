@@ -1,6 +1,5 @@
 package edu.brown.cs.student.commands;
 
-import edu.brown.cs.student.commands.CommandAction;
 import edu.brown.cs.student.kdtree.KDTree;
 import edu.brown.cs.student.kdtree.Node;
 import edu.brown.cs.student.runway.User;
@@ -48,7 +47,7 @@ public class RunwayCommands implements CommandAction {
     coordinates.add(Double.parseDouble(args4));
     List<Node<Double>> nearestKNeighbors = kdtree.KNNSearch(Integer.parseInt(args1), coordinates);
     for (Node<Double> node : nearestKNeighbors) {
-      System.out.println(node.getUserID());
+      System.out.println(node.getUniqueID());
     }
   }
 
@@ -60,9 +59,9 @@ public class RunwayCommands implements CommandAction {
    */
   public void SimilarKNNUniqueID(String args1, User user, KDTree kdtree) {
     List<Node<Double>> nearestKNeighbors = kdtree.KNNSearch(Integer.parseInt(args1),
-        user.getCoords().subList(1, 3));
+        user.getCoords().subList(1, user.getCoords().size()));
     for (Node<Double> node : nearestKNeighbors) {
-      System.out.println(node.getUserID());
+      System.out.println(node.getUniqueID());
     }
   }
 
@@ -81,18 +80,7 @@ public class RunwayCommands implements CommandAction {
     coordinates.add(Double.parseDouble(args3));
     coordinates.add(Double.parseDouble(args4));
     List<Node<Double>> nearestKNeighbors = kdtree.KNNSearch(Integer.parseInt(args1), coordinates);
-    for (Node<Double> node : nearestKNeighbors) {
-      for (User u : userList) {
-        if (node.getUserID() == u.getUser_id()) {
-          this.horoscope.put(u.getHoroscope(), this.horoscope.get(u.getHoroscope()) + 1);
-        }
-      }
-    }
-    for (Map.Entry<String, Integer> entry : horoscope.entrySet()) {
-      String key = entry.getKey();
-      Object value = entry.getValue();
-      System.out.println(key + ": " + value);
-    }
+    fillHoroscopes(userList, nearestKNeighbors);
   }
 
   /**
@@ -103,10 +91,20 @@ public class RunwayCommands implements CommandAction {
    */
   public void ClassifyKNNUniqueID(String args1, User user, KDTree kdtree, List<User> userList) {
     List<Node<Double>> nearestKNeighbors = kdtree.KNNSearch(Integer.parseInt(args1),
-        user.getCoords().subList(1, 3));
+        user.getCoords().subList(1, user.getCoords().size()));
+    fillHoroscopes(userList, nearestKNeighbors);
+  }
+
+
+  /**
+   * Fills in the Horoscopes hashmap
+   * @param userList - the list of users
+   * @param nearestKNeighbors - the k nearest neighbors to the target coordinates
+   */
+  private void fillHoroscopes(List<User> userList, List<Node<Double>> nearestKNeighbors) {
     for (Node<Double> node : nearestKNeighbors) {
       for (User u : userList) {
-        if (node.getUserID() == u.getUser_id()) {
+        if (node.getUniqueID() == u.getUser_id()) {
           this.horoscope.put(u.getHoroscope(), this.horoscope.get(u.getHoroscope()) + 1);
         }
       }

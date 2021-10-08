@@ -81,6 +81,7 @@ public final class Main {
           input = input.trim();
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
+          // splits arguments on spaces, except within quotation marks "..."
           switch (arguments[0]) {
             case "data": {
               ApiAggregator api = new ApiAggregator();
@@ -103,7 +104,7 @@ public final class Main {
               // arguments[1] should be the filepath
               Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
               ApiAggregator api = new ApiAggregator();
-              Type type = api.setType("user");
+              Type type = api.setType("users");
               this.userList = gson.fromJson(reader, type);
               List<List<Number>> dataList = new ArrayList<>();
               for (User user : this.userList) {
@@ -124,7 +125,6 @@ public final class Main {
                     runwayCommands.SimilarKNNUniqueID(arguments[1], user, this.kdTree);
                   }
                 }
-                System.out.println("Cannot find User ID!");
               }
               break;
             }
@@ -140,7 +140,6 @@ public final class Main {
                     runwayCommands.ClassifyKNNUniqueID(arguments[1], user, this.kdTree, this.userList);
                   }
                 }
-                System.out.println("Cannot find User ID!");
               }
               break;
             }

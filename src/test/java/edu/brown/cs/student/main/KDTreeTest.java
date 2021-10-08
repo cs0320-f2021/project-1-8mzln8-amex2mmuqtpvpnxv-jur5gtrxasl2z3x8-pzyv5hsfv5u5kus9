@@ -18,19 +18,19 @@ public class KDTreeTest {
     coor1.add(0);
     coor1.add(0);
     List<Integer> coor2 = new ArrayList<>();
-    coor1.add(1);
+    coor2.add(1);
     coor2.add(1);
     coor2.add(2);
     List<Integer> coor3 = new ArrayList<>();
-    coor1.add(2);
+    coor3.add(2);
     coor3.add(4);
     coor3.add(2);
     List<Integer> coor4 = new ArrayList<>();
-    coor1.add(3);
+    coor4.add(3);
     coor4.add(5);
     coor4.add(8);
     List<Integer> coor5 = new ArrayList<>();
-    coor1.add(4);
+    coor5.add(4);
     coor5.add(6);
     coor5.add(9);
 
@@ -50,21 +50,21 @@ public class KDTreeTest {
     coor1.add(1);
     coor1.add(1);
     List<Integer> coor2 = new ArrayList<>();
-    coor1.add(1);
+    coor2.add(1);
     coor2.add(2);
     coor2.add(2);
     List<Integer> coor3 = new ArrayList<>();
-    coor1.add(2);
+    coor3.add(2);
     coor3.add(3);
     coor3.add(3);
     List<Integer> coor4 = new ArrayList<>();
-    coor1.add(3);
+    coor4.add(3);
     coor4.add(4);
     coor4.add(4);
     List<Integer> coor5 = new ArrayList<>();
-    coor1.add(4);
-    coor1.add(1);
-    coor1.add(1);
+    coor5.add(4);
+    coor5.add(1);
+    coor5.add(1);
 
     List<List<Integer>> listOfCoors = new ArrayList<>();
     listOfCoors.add(coor1);
@@ -127,19 +127,31 @@ public class KDTreeTest {
   }
 
   @Test
+  public void testNodeConstruction() {
+    List<Integer> coor1 = new ArrayList<>();
+    coor1.add(0);
+    coor1.add(1);
+    coor1.add(1);
+    Node<Integer> node1 = new Node<Integer>(coor1);
+    List<Integer> nodeCoords = new ArrayList<>();
+    nodeCoords.add(1);
+    nodeCoords.add(1);
+
+    assertEquals(nodeCoords, node1.getCoordinates());
+  }
+
+  @Test
   public void testKDTreeStructure() {
     KDTree<Integer> testTree = new KDTree<>(this.testDataset2());
     List<Integer> coor2 = new ArrayList<>();
     coor2.add(2);
     coor2.add(2);
-    List<Integer> coor3 = new ArrayList<>();
-    coor3.add(3);
-    coor3.add(3);
-    Node<Integer> node3 = new Node<>(coor3);
+    List<Integer> coor1 = new ArrayList<>();
+    coor1.add(1);
+    coor1.add(1);
 
-    assertEquals(node3.getCoordinates(), testTree.getTree().getCoordinates());
-    assertEquals(coor3, testTree.getTree().getCoordinates());
-    assertEquals(coor2, testTree.getTree().getLeftChild().getCoordinates());
+    assertEquals(coor2, testTree.getTree().getCoordinates());
+    assertEquals(coor1, testTree.getTree().getLeftChild().getCoordinates());
   }
 
   @Test
@@ -151,14 +163,13 @@ public class KDTreeTest {
     List<Integer> coor1 = new ArrayList<>();
     coor1.add(1);
     coor1.add(1);
-    List<Integer> coor4 = new ArrayList<>();
-    coor4.add(4);
-    coor4.add(4);
-    Node<Integer> node4 = new Node<>(coor4);
+    List<Integer> coor3 = new ArrayList<>();
+    coor3.add(3);
+    coor3.add(3);
 
     List<Node<Integer>> result1 = testTree.KNNSearch(4, testCoors);
     assertEquals(coor1, result1.get(0).getCoordinates());
-    assertEquals(node4.getCoordinates(), result1.get(3).getCoordinates());
+    assertEquals(coor3, result1.get(3).getCoordinates());
 
     List<Node<Integer>> result2 = testTree.KNNSearch(0, testCoors);
     assertEquals(0, result2.size());
@@ -176,11 +187,10 @@ public class KDTreeTest {
     List<Integer> coor5 = new ArrayList<>();
     coor5.add(6);
     coor5.add(9);
-    Node<Integer> node5 = new Node<>(coor5);
 
     List<Node<Integer>> result1 = testTree.KNNSearch(6, testCoors);
     assertEquals(coor1, result1.get(0).getCoordinates());
-    assertEquals(node5.getCoordinates(), result1.get(4).getCoordinates());
+    assertEquals(coor5, result1.get(4).getCoordinates());
     assertEquals(0, testTree.getKNearestNeighbors().size());
   }
 
