@@ -13,10 +13,11 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import edu.brown.cs.student.api.ApiAggregator;
 import edu.brown.cs.student.api.client.ApiClient;
+import edu.brown.cs.student.commands.CommandActions;
 import edu.brown.cs.student.commands.MathBotCommands;
 import edu.brown.cs.student.commands.NaiveNeighborsCommands;
+import edu.brown.cs.student.commands.REPLCommand;
 import edu.brown.cs.student.commands.RunwayCommands;
-import edu.brown.cs.student.commands.StarsCommands;
 import edu.brown.cs.student.kdtree.KDTree;
 import edu.brown.cs.student.runway.User;
 import edu.brown.cs.student.stars.Galaxy;
@@ -35,9 +36,7 @@ import spark.template.freemarker.FreeMarkerEngine;
  * The Main class of our project. This is where execution begins.
  */
 public final class Main {
-  private Galaxy galaxy;
-  private KDTree kdTree;
-  private List<User> userList;
+  private CommandActions commandHash = new CommandActions();
 
   // use port 4567 by default when running server
   private static final int DEFAULT_PORT = 4567;
@@ -57,7 +56,9 @@ public final class Main {
     this.args = args;
   }
 
-  @SuppressWarnings("checkstyle:TodoComment")
+  /**
+   * Run method.
+   */
   private void run() {
     // set up parsing of command line flags
     OptionParser parser = new OptionParser();
@@ -82,110 +83,14 @@ public final class Main {
           String[] arguments = input.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
           // https://stackabuse.com/regex-splitting-by-character-unless-in-quotes/
           // splits arguments on spaces, except within quotation marks "..."
-          switch (arguments[0]) {
-            case "data": {
-              ApiAggregator api = new ApiAggregator();
-              List<Object> list = api.getData(arguments[1]);
-              Gson gson = new Gson();
-              System.out.println(gson.toJson(list));
-              break;
-            }
-            case "json": {
-              Gson gson = new Gson();
-              Reader reader = Files.newBufferedReader(Paths.get(arguments[2]));
-              ApiAggregator api = new ApiAggregator();
-              Type type = api.setType(arguments[1]);
-              List<Object> list = gson.fromJson(reader, type);
-              reader.close();
-              break;
-            }
-            case "users": {
-              Gson gson = new Gson();
-              // arguments[1] should be the filepath
-              Reader reader = Files.newBufferedReader(Paths.get(arguments[1]));
-              ApiAggregator api = new ApiAggregator();
-              Type type = api.setType("users");
-              this.userList = gson.fromJson(reader, type);
-              List<List<Number>> dataList = new ArrayList<>();
-              for (User user : this.userList) {
-                dataList.add(user.getCoords());
-              }
-              this.kdTree = new KDTree<>(dataList);
-              reader.close();
-              break;
-            }
-            case "similar": {
-              RunwayCommands runwayCommands = new RunwayCommands();
-              if (arguments.length > 3) {
-                runwayCommands.SimilarKNNCoords(arguments[1], arguments[2], arguments[3], arguments[4], this.kdTree);
-              } else {
-                int userIDToSearch = Integer.parseInt(arguments[2]);
-                for (User user : this.userList) {
-                  if (userIDToSearch == user.getUser_id()) {
-                    runwayCommands.SimilarKNNUniqueID(arguments[1], user, this.kdTree);
-                  }
-                }
-              }
-              break;
-            }
-            case "classify": {
-              RunwayCommands runwayCommands = new RunwayCommands();
-              if (arguments.length > 3) {
-                runwayCommands.ClassifyKNNCoords(arguments[1], arguments[2], arguments[3],
-                    arguments[4], this.kdTree, this.userList);
-              } else {
-                int userIDToSearch = Integer.parseInt(arguments[2]);
-                for (User user : this.userList) {
-                  if (userIDToSearch == user.getUser_id()) {
-                    runwayCommands.ClassifyKNNUniqueID(arguments[1], user, this.kdTree, this.userList);
-                  }
-                }
-              }
-              break;
-            }
-            case "stars":
-              StarsCommands StarOperations = new StarsCommands();
-              StarOperations.createGalaxy(arguments[1]);
 
-              break;
-            case "naive_neighbors":
-              NaiveNeighborsCommands NNOperator = new NaiveNeighborsCommands();
-
-              try {
-                ArrayList<Integer> nearestKNeighbors;
-                if (arguments[1].equals("0")) {
-                  System.out.println("Read "
-                          + this.galaxy.getSize() +
-                          " stars from "
-                          + this.galaxy.getStarDataFile());
-                } else {
-                  if (arguments.length > 3) {
-                    NNOperator.NN_Coord(arguments[1], arguments[2], arguments[3], arguments[4], this.galaxy);
-                  } else {
-                    NNOperator.NN_Star(arguments[1], arguments[2], this.galaxy);
-                  }
-                }
-              } catch (Exception e) {
-                System.out.println("ERROR: Incorrect arguments");
-              }
-              break;
-            default:
-              System.out.println("Read " + this.galaxy.getSize() + " stars from "
-                      + this.galaxy.getStarDataFile());
-              System.out.println("ERROR: Command does not exist");
-              break;
+          // new command hash structure
+          if (commandHash.getCommandMap().containsKey(arguments[0])) {
+            REPLCommand command = commandHash.getCommandMap().get(arguments[0]);
+            command.handle(arguments);
+          } else {
+            System.out.println("ERROR: Command not found");
           }
-
-
-          if (arguments[0].equals("add")) {
-            MathBotCommands MathBotOperator = new MathBotCommands();
-            MathBotOperator.sum(arguments[1],arguments[2]);
-          }
-          if (arguments[0].equals("subtract")) {
-            MathBotCommands MathBotOperator = new MathBotCommands();
-            MathBotOperator.subtract(arguments[1],arguments[2]);
-          }
-
         } catch (Exception e) {
           e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
