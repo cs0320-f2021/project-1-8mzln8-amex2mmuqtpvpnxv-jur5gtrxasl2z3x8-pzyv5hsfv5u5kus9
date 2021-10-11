@@ -213,11 +213,9 @@ public class Database {
         wheres += (key + "=?");
       }
     }
-
+    String sql = "SELECT * FROM " + tableName + " WHERE " + wheres + ";";
     if (queryParams.isEmpty()) {
-      String sql = "SELECT * FROM " + tableName + ";";
-    } else {
-      String sql = "SELECT * FROM " + tableName + " WHERE " + wheres + ";";
+      sql = "SELECT * FROM " + tableName + ";";
     }
     System.out.println(sql);
     return sqlListQuery(c, sql, params);
