@@ -26,7 +26,6 @@ public class ApiClient {
 
     try {
       HttpResponse<String> apiResponse = client.send(req, HttpResponse.BodyHandlers.ofString());
-      ApiAggregator api = new ApiAggregator();
       return apiResponse.body();
 
     } catch (IOException ioe) {
