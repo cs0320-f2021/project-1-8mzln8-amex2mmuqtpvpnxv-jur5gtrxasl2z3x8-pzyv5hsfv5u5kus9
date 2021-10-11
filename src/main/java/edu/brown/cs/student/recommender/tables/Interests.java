@@ -4,6 +4,11 @@ public class Interests {
   private int id;
   private String interest;
 
+  public Interests(int id, String interest) {
+    this.id = id;
+    this.interest = interest;
+  }
+
   public int getId() {
     return id;
   }

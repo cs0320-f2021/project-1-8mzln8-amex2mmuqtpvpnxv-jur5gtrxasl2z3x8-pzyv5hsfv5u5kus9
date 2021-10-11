@@ -4,6 +4,11 @@ public class Negative {
   private int id;
   private String trait;
 
+  public Negative(int id, String trait) {
+    this.id = id;
+    this.trait = trait;
+  }
+
   public int getId() {
     return id;
   }

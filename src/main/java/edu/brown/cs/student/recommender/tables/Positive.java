@@ -4,6 +4,11 @@ public class Positive {
   private int id;
   private String trait;
 
+  public Positive(int id, String trait) {
+    this.id = id;
+    this.trait = trait;
+  }
+
   public int getId() {
     return id;
   }
