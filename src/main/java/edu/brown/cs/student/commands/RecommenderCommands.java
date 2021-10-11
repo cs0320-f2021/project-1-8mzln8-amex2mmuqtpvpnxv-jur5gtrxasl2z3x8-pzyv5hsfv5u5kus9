@@ -28,7 +28,8 @@ public class RecommenderCommands implements REPLCommand {
         System.out.println(gson.toJson(apilist));
       }
     } catch (Exception e) {
-      System.out.println("ERROR: Incorrect arguments for naive neighbors command");
+      e.printStackTrace();
+      System.out.println("ERROR: Something wrong happened when getting data from API");
     }
   }
 }

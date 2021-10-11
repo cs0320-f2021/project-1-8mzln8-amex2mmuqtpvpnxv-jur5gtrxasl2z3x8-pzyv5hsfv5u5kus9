@@ -26,6 +26,7 @@ public class ApiClient {
 
     try {
       HttpResponse<String> apiResponse = client.send(req, HttpResponse.BodyHandlers.ofString());
+      System.out.println("Status " + apiResponse.statusCode());
       return apiResponse.body();
 
     } catch (IOException ioe) {
