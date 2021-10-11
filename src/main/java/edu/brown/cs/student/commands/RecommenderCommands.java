@@ -119,7 +119,7 @@ public class RecommenderCommands implements REPLCommand {
       }
     } catch (Exception e) {
       e.printStackTrace();
-      System.out.println("ERROR: Something wrong happened when getting data from API");
+      System.out.println("ERROR: Something wrong happened when ingesting data");
     }
   }
 }

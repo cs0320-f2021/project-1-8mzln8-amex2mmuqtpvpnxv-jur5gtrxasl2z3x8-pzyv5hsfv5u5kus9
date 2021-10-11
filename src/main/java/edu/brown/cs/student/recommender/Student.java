@@ -35,27 +35,31 @@ public class Student implements Item {
   public List<String> getVectorRepresentation() {
     List<String> v = new ArrayList<>();
     v.add(this.getId());
-    if (this.interests.isEmpty() == false) {
+
+    if (!this.interests.isEmpty()) {
       v.addAll(this.interests);
     }
-    if (this.negatives.isEmpty() == false) {
+    if (!this.negatives.isEmpty()) {
       v.addAll(this.negatives);
     }
-    if (this.positives.isEmpty() == false) {
+    if (!this.positives.isEmpty()) {
       v.addAll(this.positives);
     }
 
 
-
-    v.add(this.meeting);
-    v.add(this.grade);
-    v.add(this.horoscope);
+    if (!this.meeting.isBlank()) {
+      v.add(this.meeting);
+    }
+    if (!this.grade.isBlank()) {
+      v.add(this.grade);
+    }
+    if(!this.horoscope.isBlank()) {
+      v.add(this.horoscope);
+    }
     if (this.availability.isEmpty() == false) {
       v.addAll(this.availability);
     }
-
     v.add(this.language);
-
     if (this.marginalized.isEmpty() == false) {
       v.addAll(this.marginalized);
     }
