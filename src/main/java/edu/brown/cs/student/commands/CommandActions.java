@@ -20,6 +20,8 @@ public class CommandActions {
     ApiCommands apiCommand = new ApiCommands();
     commandMap.put("data", apiCommand);
     commandMap.put("json", apiCommand);
+    RecommenderCommands recommenderCommand = new RecommenderCommands();
+    commandMap.put("recsys_load", recommenderCommand);
   }
 
   public void addNewCommand(String command, REPLCommand commandAction) {
