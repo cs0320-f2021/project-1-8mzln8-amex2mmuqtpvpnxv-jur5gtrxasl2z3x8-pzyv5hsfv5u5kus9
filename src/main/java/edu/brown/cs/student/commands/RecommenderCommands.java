@@ -7,8 +7,13 @@ import edu.brown.cs.student.orm.*;
 import edu.brown.cs.student.core.*;
 import edu.brown.cs.student.recommender.*;
 import edu.brown.cs.student.api.ApiAggregator;
+import edu.brown.cs.student.recommender.tables.Interests;
+import edu.brown.cs.student.recommender.tables.Negative;
+import edu.brown.cs.student.recommender.tables.Positive;
+import edu.brown.cs.student.recommender.tables.Skills;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RecommenderCommands implements REPLCommand {
@@ -23,9 +28,20 @@ public class RecommenderCommands implements REPLCommand {
     try {
       if (args[0].equals("recsys_load")) {
         ApiAggregator api = new ApiAggregator();
-        List<Object> apilist = api.getIntegrationData();
+        List<APIData> apilist = api.getIntegrationData();
         Gson gson = new Gson();
-        System.out.println(gson.toJson(apilist));
+        // System.out.println(gson.toJson(apilist));
+
+        HashMap<String, String> empty = new HashMap<>();
+        Database database = new Database("data/integration/integration.sqlite3");
+        List<Interests> interests = database.select(Interests.class,empty);
+        List<Negative> negatives = database.select(Negative.class,empty);
+        List<Positive> positives = database.select(Positive.class, empty);
+        List<Skills> skills = database.select(Skills.class, empty);
+        System.out.println(interests.size());
+        System.out.println(positives.size());
+        System.out.println(negatives.size());
+        System.out.println(skills.size());
       }
     } catch (Exception e) {
       e.printStackTrace();

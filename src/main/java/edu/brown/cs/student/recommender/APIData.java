@@ -4,7 +4,7 @@ package edu.brown.cs.student.recommender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student implements Item {
+public class APIData {
   private int id;
   private String name;
   private String meeting;
@@ -16,7 +16,7 @@ public class Student implements Item {
   private List<String> marginalized = new ArrayList<>();
   private String preference;
 
-  public Student(String id, String name, String meeting, String grade, String exp,
+  public APIData(String id, String name, String meeting, String grade, String exp,
                  String horoscope, List<String> availability, String language,
                  List<String> marginalized, String preference) {
     this.id = Integer.parseInt(id);
@@ -31,13 +31,6 @@ public class Student implements Item {
     this.preference = preference;
   }
 
-
-  @Override
-  public List<String> getVectorRepresentation() {
-    return null;
-  }
-
-  @Override
   public String getId() {
     return String.valueOf(this.id);
   }
