@@ -34,6 +34,8 @@ public class ClientRequestGenerator {
     String[] apiKeyArray = apiKey.split(" ");
     String user = apiKeyArray[0];
     String key = apiKeyArray[1];
+    System.out.println(user);
+    System.out.println(key);
     return HttpRequest.newBuilder()
         .uri(URI.create(uri))
         .POST(HttpRequest.BodyPublishers.ofString("{\"auth\": \"" + user + "\"}"))

@@ -84,7 +84,7 @@ public class RecommenderCommands implements REPLCommand {
         ApiAggregator api = new ApiAggregator();
         List<APIData> apilist = api.getIntegrationData();
         Gson gson = new Gson();
-        // System.out.println(gson.toJson(apilist));
+        System.out.println(gson.toJson(apilist));
 
         HashMap<String, String> empty = new HashMap<>();
         Database database = new Database("data/integration/integration.sqlite3");
