@@ -59,11 +59,14 @@ public class Student implements Item {
     if (!this.availability.isEmpty()) {
       v.addAll(this.availability);
     }
-    v.add(this.language);
+    if (!this.language.isBlank()) {
+      v.add(this.language);
+    }
     if (!this.marginalized.isEmpty()) {
       v.addAll(this.marginalized);
     }
     v.add(this.preference);
+    System.out.println(v);
     return v;
   }
 
