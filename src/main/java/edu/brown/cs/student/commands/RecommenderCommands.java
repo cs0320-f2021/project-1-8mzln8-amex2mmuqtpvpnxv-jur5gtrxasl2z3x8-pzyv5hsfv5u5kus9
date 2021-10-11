@@ -96,7 +96,8 @@ public class RecommenderCommands implements REPLCommand {
 //        System.out.println(skills.size());
 
         List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
-        System.out.println(studentList.size());
+        System.out.println("Loaded Recommender with " + studentList.size() + " students");
+
       }
     } catch (Exception e) {
       e.printStackTrace();
