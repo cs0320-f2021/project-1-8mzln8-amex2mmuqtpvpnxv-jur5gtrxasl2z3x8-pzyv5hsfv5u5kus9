@@ -56,11 +56,11 @@ public class Student implements Item {
     if(!this.horoscope.isBlank()) {
       v.add(this.horoscope);
     }
-    if (this.availability.isEmpty() == false) {
+    if (!this.availability.isEmpty()) {
       v.addAll(this.availability);
     }
     v.add(this.language);
-    if (this.marginalized.isEmpty() == false) {
+    if (!this.marginalized.isEmpty()) {
       v.addAll(this.marginalized);
     }
     v.add(this.preference);
