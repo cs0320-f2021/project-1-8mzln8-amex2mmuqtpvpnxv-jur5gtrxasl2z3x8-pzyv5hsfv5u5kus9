@@ -1,5 +1,7 @@
 package edu.brown.cs.student.recommender.tables;
 
+import java.util.Map;
+
 public class Skills {
   private int id;
   private String name;
@@ -20,6 +22,17 @@ public class Skills {
     this.algorithms = algorithms;
     this.teamwork = teamwork;
     this.frontend = frontend;
+  }
+
+  public Skills(Map<String,String> mapper) {
+    this.id = Integer.parseInt(mapper.get("id"));
+    this.name = mapper.get("name");
+    this.commenting = Integer.parseInt(mapper.get("commenting"));
+    this.testing = Integer.parseInt(mapper.get("testing"));
+    this.OOP = Integer.parseInt(mapper.get("OOP"));
+    this.algorithms = Integer.parseInt(mapper.get("algorithms"));
+    this.teamwork = Integer.parseInt(mapper.get("teamwork"));
+    this.frontend = Integer.parseInt(mapper.get("frontend"));
   }
 
   public int getId() {
