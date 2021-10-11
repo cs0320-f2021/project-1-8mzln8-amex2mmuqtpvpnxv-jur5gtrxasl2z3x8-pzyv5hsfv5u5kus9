@@ -115,6 +115,7 @@ public class RecommenderCommands implements REPLCommand {
 
         System.out.println("Loaded Recommender with " + studentList.size() + " students");
 
+      }else if(args[0].equals("recsys_recs")){
 
       }
     } catch (Exception e) {
