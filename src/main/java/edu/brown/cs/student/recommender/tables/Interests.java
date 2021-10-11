@@ -1,5 +1,7 @@
 package edu.brown.cs.student.recommender.tables;
 
+import java.util.Map;
+
 public class Interests {
   private int id;
   private String interest;
@@ -7,6 +9,11 @@ public class Interests {
   public Interests(int id, String interest) {
     this.id = id;
     this.interest = interest;
+  }
+
+  public Interests(Map<String, String> mapper) {
+    this.id = Integer.parseInt(mapper.get("id"));
+    this.interest = mapper.get("interest");
   }
 
   public int getId() {
