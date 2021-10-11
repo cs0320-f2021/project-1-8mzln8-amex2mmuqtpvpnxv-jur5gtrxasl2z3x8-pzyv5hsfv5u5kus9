@@ -271,6 +271,7 @@ public class Student implements Item {
       this.exp = a.getExp();
       this.horoscope = a.getHoroscope();
       this.availability = a.getAvailability();
+      System.out.println(this.availability);
       this.language = a.getLanguage();
       this.marginalized = a.getMarginalized();
       this.preference = a.getPreference();
