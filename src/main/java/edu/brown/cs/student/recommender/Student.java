@@ -35,15 +35,30 @@ public class Student implements Item {
   public List<String> getVectorRepresentation() {
     List<String> v = new ArrayList<>();
     v.add(this.getId());
-    v.addAll(this.interests);
-    v.addAll(this.negatives);
-    v.addAll(this.positives);
+    if (this.interests.isEmpty() == false) {
+      v.addAll(this.interests);
+    }
+    if (this.negatives.isEmpty() == false) {
+      v.addAll(this.negatives);
+    }
+    if (this.positives.isEmpty() == false) {
+      v.addAll(this.positives);
+    }
+
+
+
     v.add(this.meeting);
     v.add(this.grade);
     v.add(this.horoscope);
-    v.addAll(this.availability);
+    if (this.availability.isEmpty() == false) {
+      v.addAll(this.availability);
+    }
+
     v.add(this.language);
-    v.addAll(this.marginalized);
+
+    if (this.marginalized.isEmpty() == false) {
+      v.addAll(this.marginalized);
+    }
     v.add(this.preference);
     return v;
   }
