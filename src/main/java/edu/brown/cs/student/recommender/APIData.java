@@ -31,8 +31,8 @@ public class APIData {
     this.preference = preference;
   }
 
-  public String getId() {
-    return String.valueOf(this.id);
+  public int getId() {
+    return this.id;
   }
 
   public void setId(int id) {

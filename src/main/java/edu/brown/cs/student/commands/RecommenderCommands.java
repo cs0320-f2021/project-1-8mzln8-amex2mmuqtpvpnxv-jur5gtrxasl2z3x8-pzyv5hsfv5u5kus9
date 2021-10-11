@@ -23,6 +23,58 @@ public class RecommenderCommands implements REPLCommand {
   private BloomFilter bloom;
 
 
+  private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
+                                      List<Negative> negativeList, List<Positive> positiveList,
+                                      List<Skills> skillsList) {
+    HashMap<Integer, Student> map = new HashMap<>();
+    for (APIData a:apiDataList) {
+      int id = a.getId();
+      if (map.get(id) == null) {
+        Student s = new Student(id);
+        map.put(id, s);
+      }
+      map.get(id).updateFromAPIData(a);
+    }
+
+    for (Interests i:interestsList) {
+      int id = i.getId();
+      if (map.get(id) == null) {
+        Student s = new Student(id);
+        map.put(id, s);
+      }
+      map.get(id).updateFromInterests(i);
+    }
+
+    for (Negative n:negativeList) {
+      int id = n.getId();
+      if (map.get(id) == null) {
+        Student s = new Student(id);
+        map.put(id, s);
+      }
+      map.get(id).updateFromNegatives(n);
+    }
+
+    for (Positive p:positiveList) {
+      int id = p.getId();
+      if (map.get(id) == null) {
+        Student s = new Student(id);
+        map.put(id,  s);
+      }
+      map.get(id).updateFromPositive(p);
+    }
+
+    for (Skills s:skillsList) {
+      int id = s.getId();
+      if (map.get(id) == null) {
+        Student student = new Student(id);
+        map.put(id, student);
+      }
+      map.get(id).updateFromSkills(s);
+    }
+
+    return new ArrayList<>(map.values());
+  }
+
   @Override
   public void handle(String[] args) {
     try {
@@ -38,10 +90,13 @@ public class RecommenderCommands implements REPLCommand {
         List<Negative> negatives = database.select(Negative.class,empty);
         List<Positive> positives = database.select(Positive.class, empty);
         List<Skills> skills = database.select(Skills.class, empty);
-        System.out.println(interests.size());
-        System.out.println(positives.size());
-        System.out.println(negatives.size());
-        System.out.println(skills.size());
+//        System.out.println(interests.size());
+//        System.out.println(positives.size());
+//        System.out.println(negatives.size());
+//        System.out.println(skills.size());
+
+        List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
+        System.out.println(studentList.size());
       }
     } catch (Exception e) {
       e.printStackTrace();

@@ -217,7 +217,6 @@ public class Database {
     if (queryParams.isEmpty()) {
       sql = "SELECT * FROM " + tableName + ";";
     }
-    System.out.println(sql);
     return sqlListQuery(c, sql, params);
   }
 
@@ -241,7 +240,6 @@ public class Database {
       T node = (T) (c.getDeclaredConstructor(Map.class).newInstance(mapper));
       output.add(node);
     }
-    System.out.println(output.size());
     return output;
   }
 
