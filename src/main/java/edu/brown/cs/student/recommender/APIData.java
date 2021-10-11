@@ -11,24 +11,15 @@ public class APIData {
   private String grade;
   private int exp;
   private String horoscope;
-  private List<String> availability = new ArrayList<>();
-  private String language;
-  private List<String> marginalized = new ArrayList<>();
-  private String preference;
 
   public APIData(String id, String name, String meeting, String grade, String exp,
-                 String horoscope, List<String> availability, String language,
-                 List<String> marginalized, String preference) {
+                 String horoscope) {
     this.id = Integer.parseInt(id);
     this.name = name;
     this.meeting = meeting;
     this.grade = grade;
     this.exp = Integer.parseInt(exp);
     this.horoscope = horoscope;
-    this.availability = availability;
-    this.language = language;
-    this.marginalized = marginalized;
-    this.preference = preference;
   }
 
   public int getId() {
@@ -79,35 +70,4 @@ public class APIData {
     this.horoscope = horoscope;
   }
 
-  public List<String> getAvailability() {
-    return availability;
-  }
-
-  public void setAvailability(List<String> availability) {
-    this.availability = availability;
-  }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
-  public List<String> getMarginalized() {
-    return marginalized;
-  }
-
-  public void setMarginalized(List<String> marginalized) {
-    this.marginalized = marginalized;
-  }
-
-  public String getPreference() {
-    return preference;
-  }
-
-  public void setPreference(String preference) {
-    this.preference = preference;
-  }
 }

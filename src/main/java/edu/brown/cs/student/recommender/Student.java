@@ -22,10 +22,6 @@ public class Student implements Item {
   private String grade;
   private int exp;
   private String horoscope;
-  private List<String> availability = new ArrayList<>();
-  private String language;
-  private List<String> marginalized = new ArrayList<>();
-  private String preference;
 
   public Student(int id) {
     this.id = id;
@@ -46,7 +42,6 @@ public class Student implements Item {
       v.addAll(this.positives);
     }
 
-
     if (!this.meeting.isBlank()) {
       v.add(this.meeting);
     }
@@ -56,17 +51,7 @@ public class Student implements Item {
     if(!this.horoscope.isBlank()) {
       v.add(this.horoscope);
     }
-    if (!this.availability.isEmpty()) {
-      v.addAll(this.availability);
-    }
-    if (!this.language.isBlank()) {
-      v.add(this.language);
-    }
-    if (!this.marginalized.isEmpty()) {
-      v.addAll(this.marginalized);
-    }
-    v.add(this.preference);
-    System.out.println(v);
+    System.out.println("Vector : " + v);
     return v;
   }
 
@@ -179,21 +164,6 @@ public class Student implements Item {
     this.horoscope = horoscope;
   }
 
-  public String getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
-  public String getPreference() {
-    return preference;
-  }
-
-  public void setPreference(String preference) {
-    this.preference = preference;
-  }
 
   public List<String> getInterests() {
     return interests;
@@ -217,22 +187,6 @@ public class Student implements Item {
 
   public void insertPositives(String positive) {
     this.positives.add(positive);
-  }
-
-  public List<String> getAvailability() {
-    return availability;
-  }
-
-  public void setAvailability(List<String> availability) {
-    this.availability = availability;
-  }
-
-  public List<String> getMarginalized() {
-    return marginalized;
-  }
-
-  public void setMarginalized(List<String> marginalized) {
-    this.marginalized = marginalized;
   }
 
   public void updateFromInterests(Interests i) {
@@ -270,11 +224,6 @@ public class Student implements Item {
       this.grade = a.getGrade();
       this.exp = a.getExp();
       this.horoscope = a.getHoroscope();
-      this.availability = a.getAvailability();
-      System.out.println(this.availability);
-      this.language = a.getLanguage();
-      this.marginalized = a.getMarginalized();
-      this.preference = a.getPreference();
     }
   }
 
