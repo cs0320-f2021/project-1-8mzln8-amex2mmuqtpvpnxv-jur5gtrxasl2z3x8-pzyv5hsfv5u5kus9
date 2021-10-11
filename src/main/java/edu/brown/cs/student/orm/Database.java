@@ -213,9 +213,10 @@ public class Database {
         wheres += (key + "=?");
       }
     }
-
     String sql = "SELECT * FROM " + tableName + " WHERE " + wheres + ";";
-    System.out.println(sql);
+    if (queryParams.isEmpty()) {
+      sql = "SELECT * FROM " + tableName + ";";
+    }
     return sqlListQuery(c, sql, params);
   }
 
@@ -239,7 +240,6 @@ public class Database {
       T node = (T) (c.getDeclaredConstructor(Map.class).newInstance(mapper));
       output.add(node);
     }
-    System.out.println(output.size());
     return output;
   }
 

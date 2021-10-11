@@ -27,4 +27,20 @@ public class ClientRequestGenerator {
               .build();
     return request;
   }
+
+  public static HttpRequest getSecuredPostRequest(String uri) {
+    ClientAuth clientAuth = new ClientAuth();
+    String apiKey = clientAuth.getApiKey();
+    String[] apiKeyArray = apiKey.split(" ");
+    String user = apiKeyArray[0];
+    String key = apiKeyArray[1];
+    System.out.println(user);
+    System.out.println(key);
+    return HttpRequest.newBuilder()
+        .uri(URI.create(uri))
+        .POST(HttpRequest.BodyPublishers.ofString("{\"auth\": \"" + user + "\"}"))
+        .header("x-api-key",key)
+        .build();
+  }
+
 }

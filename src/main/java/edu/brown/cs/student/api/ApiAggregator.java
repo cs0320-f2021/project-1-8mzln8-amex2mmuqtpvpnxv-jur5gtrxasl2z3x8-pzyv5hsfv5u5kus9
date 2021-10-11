@@ -3,10 +3,13 @@ package edu.brown.cs.student.api;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import edu.brown.cs.student.api.client.ApiClient;
+import edu.brown.cs.student.api.client.ClientAuth;
 import edu.brown.cs.student.api.client.ClientRequestGenerator;
+import edu.brown.cs.student.recommender.APIData;
 import edu.brown.cs.student.runway.Rent;
 import edu.brown.cs.student.runway.Review;
 import edu.brown.cs.student.runway.User;
+import edu.brown.cs.student.recommender.Item;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -70,4 +73,10 @@ public class ApiAggregator {
         }
     }
 
+    public List<APIData> getIntegrationData() throws Exception {
+        Gson gson = new Gson();
+        String uri = "https://runwayapi.herokuapp.com/integration";
+        String response = client.makeRequest(ClientRequestGenerator.getSecuredPostRequest(uri));
+        return gson.fromJson(response, new TypeToken<List<APIData>>(){}.getType());
+    }
 }
