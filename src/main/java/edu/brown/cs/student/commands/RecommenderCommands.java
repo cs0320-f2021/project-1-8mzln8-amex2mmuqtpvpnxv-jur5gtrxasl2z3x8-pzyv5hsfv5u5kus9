@@ -12,15 +12,16 @@ import edu.brown.cs.student.recommender.tables.Negative;
 import edu.brown.cs.student.recommender.tables.Positive;
 import edu.brown.cs.student.recommender.tables.Skills;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class RecommenderCommands implements REPLCommand {
-  private Database orm;
-  private ApiAggregator api;
-  private KDTree kdtree;
-  private BloomFilter bloom;
+  private List<Student> studentList;
+  private KDTree kdTree;
+  private BloomFilter bloomFilter;
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -79,6 +80,7 @@ public class RecommenderCommands implements REPLCommand {
   public void handle(String[] args) {
     try {
       if (args[0].equals("recsys_load")) {
+        Random r = new Random();
         ApiAggregator api = new ApiAggregator();
         List<APIData> apilist = api.getIntegrationData();
         Gson gson = new Gson();
@@ -96,7 +98,23 @@ public class RecommenderCommands implements REPLCommand {
 //        System.out.println(skills.size());
 
         List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
+        this.studentList = studentList;
+        List<List<Number>> kdData = new ArrayList<>();
+        List<List<String>> bloomData = new ArrayList<>();
+        for (Student s:studentList) {
+          kdData.add(s.getCoordinates());
+          bloomData.add(s.getVectorRepresentation());
+        }
+
+        double c = r.nextInt(200) + 1;
+        int n = r.nextInt(61) + 1;
+        int k = r.nextInt(20) + 1;
+        this.kdTree = new KDTree(kdData);
+        this.bloomFilter = new BloomFilter(c,n,k);
+        this.bloomFilter.addAll(bloomData);
+
         System.out.println("Loaded Recommender with " + studentList.size() + " students");
+
 
       }
     } catch (Exception e) {

@@ -2,6 +2,7 @@ package edu.brown.cs.student.recommender;
 
 import edu.brown.cs.student.recommender.tables.*;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,31 @@ public class Student implements Item {
 
   @Override
   public List<String> getVectorRepresentation() {
-    return null;
+    List<String> v = new ArrayList<>();
+    v.add(this.getId());
+    v.addAll(this.interests);
+    v.addAll(this.negatives);
+    v.addAll(this.positives);
+    v.add(this.meeting);
+    v.add(this.grade);
+    v.add(this.horoscope);
+    v.addAll(this.availability);
+    v.add(this.language);
+    v.addAll(this.marginalized);
+    v.add(this.preference);
+    return v;
+  }
+
+  public List<Number> getCoordinates() {
+    List<Number> c = new ArrayList<>();
+    c.add(this.commenting);
+    c.add(this.testing);
+    c.add(this.OOP);
+    c.add(this.algorithms);
+    c.add(this.teamwork);
+    c.add(this.frontend);
+    c.add(this.exp);
+    return c;
   }
 
   @Override
