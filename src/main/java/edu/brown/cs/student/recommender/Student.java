@@ -2,7 +2,6 @@ package edu.brown.cs.student.recommender;
 
 import edu.brown.cs.student.recommender.tables.*;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class Student implements Item {
 
   @Override
   public String getId() {
-    return null;
+    return String.valueOf(this.id);
   }
 
   public void setId(int id) {
