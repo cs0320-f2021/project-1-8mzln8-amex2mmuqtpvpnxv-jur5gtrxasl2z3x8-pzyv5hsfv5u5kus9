@@ -122,29 +122,49 @@ public class RecommenderCommands implements REPLCommand {
       } else if (args[0].equals("recsys_gen_groups")) {
         if((this.kdTree  == null) || (this.bloomFilter == null) ){
           System.out.println("ERROR: Please run recys_load to load your data");
+          return;
         }
         if((this.studentList  == null) ){
           System.out.println("ERROR: StudentList is empty! Please select different dataset");
+          return;
         }
 
-        int team = Integer.parseInt(args[1]);
-        ArrayList<Student[]> groupMembers = new ArrayList<Student[]>();
+        int numGroups = Integer.parseInt(args[1]);
+        if((numGroups <= 0 ) || (numGroups > this.studentList.size()  ) ){
+          System.out.println("ERROR: Invalid number of students");
+          return;
+        }
+
+        ArrayList<ArrayList<Student>> groups = new ArrayList<ArrayList<Student>>();
         List studentListCopy = new ArrayList<>();
-        studentListCopy.addAll(this.studentList;);
+        studentListCopy.addAll(this.studentList);
 
 
-        //TODO: iterate for every student, add to a groupmember iff its empty or if the preference is above a certain val
-        for(Student s : studentListCopy) {
 
-          for(int i = 0; i < groupMembers  )
-
-
+        int iterator = 0;
+          for(int i = 0; i < numGroups; i++ ) { //added first n number of students to a different team
+            groups.get(iterator).add((Student) studentListCopy.get(i)); //add students
+            studentListCopy.remove(studentListCopy.get(i)); //remove student from copy
+            iterator++; //iterate through to next Group
         }
 
+          //TODO:we add each student to the group they like the most
+          /*
+          maybe have like a maxuimum size of team % n? and then people join next preference if not possible?
+           */
+          for(Object s : studentListCopy ) {
+
+          }
+
+        //TODO: we then can reassign if groups are to big or too small (or we can keep?)
 
 
 
-        System.out.println(groupMembers);
+
+        for(ArrayList<Student> Group : groups) {
+          System.out.println(Group);
+        }
+
       }
     } catch (Exception e) {
       e.printStackTrace();

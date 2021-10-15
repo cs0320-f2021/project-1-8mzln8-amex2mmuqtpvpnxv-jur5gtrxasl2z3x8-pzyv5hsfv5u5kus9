@@ -74,7 +74,19 @@ this method in the REPL, as the KNNSearch method is called when the commands of 
 
 # Extensions
 TA mentioned that we can shorten Main even further by using some sort of hashmap containing list of all possible
-commands mapping to their respective command class 
+commands mapping to their respective command class
+
+Another extension is essentially maybe sorting on skill so  students with highest skill have the greatest say
+on where they want to go
+
+# User Story 4- Rationale 
+Team Format:
+- Add first x Students where x is the number of teams
+
+- Adding the remaining (studentList - x) students based on maximum preference, only 
+constraint is that each group has a max of like studentList % n (to ensure uniform distribution). 
+- Students can rank each group based off of preference and then get highest preference provided it hasnt 
+exceeded capacity.
 
 
 # README
