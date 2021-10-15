@@ -77,16 +77,19 @@ TA mentioned that we can shorten Main even further by using some sort of hashmap
 commands mapping to their respective command class
 
 Another extension is essentially maybe sorting on skill so  students with highest skill have the greatest say
-on where they want to go
+on where they want to go.
+
+We could have also assigned students on their top 5 preferences and then assigned randomly otherwise.
+Another Approach is creating a new group out of the remaining students 
 
 # User Story 4- Rationale 
 Team Format:
-- Add first x Students where x is the number of teams
-
-- Adding the remaining (studentList - x) students based on maximum preference, only 
-constraint is that each group has a max of like studentList % n (to ensure uniform distribution). 
-- Students can rank each group based off of preference and then get highest preference provided it hasnt 
-exceeded capacity.
+- Add first x Students to x groups where x is the number of teams. 
+- Adding the remaining (studentList - x) students based on preference, only 
+constraint is that each group has a max of like studentList / n (to ensure uniform distribution). if a students 
+most preferred destination is full, move them to the next preference.
+- The preference itself will be calculated by the bloom filter and KDtree ranking scored together
+- the remaining students will be assigned to random groups to fill them (or if they're all full just any group)
 
 
 # README

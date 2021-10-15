@@ -14,6 +14,7 @@ import edu.brown.cs.student.recommender.tables.Skills;
 
 import java.sql.Array;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
@@ -75,6 +76,7 @@ public class RecommenderCommands implements REPLCommand {
 
 
 
+
   @Override
   public void handle(String[] args) {
 
@@ -120,43 +122,59 @@ public class RecommenderCommands implements REPLCommand {
       }else if(args[0].equals("recsys_recs")){
 
       } else if (args[0].equals("recsys_gen_groups")) {
-        if((this.kdTree  == null) || (this.bloomFilter == null) ){
+        if ((this.kdTree == null) || (this.bloomFilter == null)) {
           System.out.println("ERROR: Please run recys_load to load your data");
           return;
         }
-        if((this.studentList  == null) ){
+        if ((this.studentList == null)) {
           System.out.println("ERROR: StudentList is empty! Please select different dataset");
           return;
         }
 
         int numGroups = Integer.parseInt(args[1]);
-        if((numGroups <= 0 ) || (numGroups > this.studentList.size()  ) ){
+        int GroupSize = this.studentList.size()/numGroups;
+
+        if ((numGroups <= 0) || (numGroups > this.studentList.size())) {
           System.out.println("ERROR: Invalid number of students");
           return;
         }
 
         ArrayList<ArrayList<Student>> groups = new ArrayList<ArrayList<Student>>();
-        List studentListCopy = new ArrayList<>();
+        List<Student> studentListCopy = new ArrayList<Student>();
         studentListCopy.addAll(this.studentList);
 
 
-
         int iterator = 0;
-          for(int i = 0; i < numGroups; i++ ) { //added first n number of students to a different team
-            groups.get(iterator).add((Student) studentListCopy.get(i)); //add students
-            studentListCopy.remove(studentListCopy.get(i)); //remove student from copy
-            iterator++; //iterate through to next Group
+        for (int i = 0; i < numGroups; i++) { //added first n number of students to a different team
+          groups.get(iterator).add((Student) studentListCopy.get(i)); //add students
+          studentListCopy.remove(studentListCopy.get(i)); //remove student from copy
+          iterator++; //iterate through to next Group
         }
 
-          //TODO:we add each student to the group they like the most
-          /*
-          maybe have like a maxuimum size of team % n? and then people join next preference if not possible?
-           */
-          for(Object s : studentListCopy ) {
+        Map<Student, ArrayList<Student>> studentPreferences = new HashMap<Student, ArrayList<Student>>();
 
-          }
+        for (Student s : studentListCopy) {
+          ArrayList<Student> preferenceOrder = new ArrayList<Student>();
 
-        //TODO: we then can reassign if groups are to big or too small (or we can keep?)
+          //TODO:calculate preference order for each student by scoring KD tree and Bloom filter totals for each student
+          //TA said you can find KD Tree ranking and Bloom Filter ranking and then make one that's combination of both
+          //I was also thinking using one of the kd and bloom filter randomly just because of time constraints
+
+          studentPreferences.put(s, preferenceOrder);
+          addStudent(s,preferenceOrder, numGroups, groups,studentListCopy, GroupSize);
+
+        }
+
+        for(Student s : studentListCopy) { //remaining students added randomly since groups are full
+          int groupRand = ThreadLocalRandom.current().nextInt(0, numGroups - 1);
+          groups.get(groupRand).add(s); //add student to group
+          studentListCopy.remove(s); //remove student from copy
+        }
+
+
+
+
+
 
 
 
@@ -171,4 +189,39 @@ public class RecommenderCommands implements REPLCommand {
       System.out.println("ERROR: Something wrong happened when ingesting data");
     }
   }
+
+  /**
+   * Helper Method that adds a Student to a group based on their most preferred destination
+   * @param s -- The student that we want to add
+   * @param preferenceOrder -- List containing student s's preferences in descending order
+   * @param numGroups -- Total number of Groups
+   * @param groups -- List containing list of student groups
+   * @param studentListCopy -- a copy of the list of students
+   * @param GroupSize -- the maximum size a group can be
+   */
+  private  void addStudent(Student s, ArrayList<Student> preferenceOrder,
+                           int numGroups, ArrayList<ArrayList<Student>> groups,
+                           List<Student> studentListCopy, int GroupSize){
+    for(int n = 0; n < numGroups; n++) { //loop through groups for each student
+      int preferenceRank = 0;
+      List<Student> g = groups.get(n);
+      Student mostPreferredStudent = preferenceOrder.get(preferenceRank);
+
+      if(g.contains(mostPreferredStudent)) { //check if it matches choice
+        if(groups.get(n).size() < GroupSize) { //check if there's space
+          groups.get(n).add(s); //add student to group
+          studentListCopy.remove(s); //remove student from copy
+          return;
+        } else {
+          preferenceRank++; //move on to the next choice
+        }
+      }
+    }
+  }
+
+
+
+
+
+
 }
