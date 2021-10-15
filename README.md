@@ -81,6 +81,9 @@ on where they want to go.
 
 We could have also assigned students on their top 5 preferences and then assigned randomly otherwise.
 Another Approach is creating a new group out of the remaining students 
+We could have assigned a value that changed based on students getting added to find the most prefered
+Group destination, at the moment our code is only just adding if a student is joining a group with his prefered
+person. 
 
 # User Story 4- Rationale 
 Team Format:
@@ -89,6 +92,8 @@ Team Format:
 constraint is that each group has a max of like studentList / n (to ensure uniform distribution). if a students 
 most preferred destination is full, move them to the next preference.
 - The preference itself will be calculated by the bloom filter and KDtree ranking scored together
+- At the moment the preference is pretty limited because we're just ensuring the students get their best friend,
+rather than the best group entirely for their skillset (see Extensions)
 - the remaining students will be assigned to random groups to fill them (or if they're all full just any group)
 
 

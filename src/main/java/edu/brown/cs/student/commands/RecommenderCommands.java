@@ -158,10 +158,11 @@ public class RecommenderCommands implements REPLCommand {
 
           //TODO:calculate preference order for each student by scoring KD tree and Bloom filter totals for each student
           //TA said you can find KD Tree ranking and Bloom Filter ranking and then make one that's combination of both
-          //I was also thinking using one of the kd and bloom filter randomly just because of time constraints
+          //I was also thinking using one of the kd and bloom filter randomly just because of time constraint if this is
+         // really difficult
 
           studentPreferences.put(s, preferenceOrder);
-          addStudent(s,preferenceOrder, numGroups, groups,studentListCopy, GroupSize);
+          addStudent(s,preferenceOrder, numGroups, groups,studentListCopy, GroupSize); //see bottom of class for method
 
         }
 
