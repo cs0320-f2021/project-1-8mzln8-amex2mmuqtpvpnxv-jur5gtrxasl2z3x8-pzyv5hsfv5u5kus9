@@ -13,10 +13,7 @@ import edu.brown.cs.student.recommender.tables.Positive;
 import edu.brown.cs.student.recommender.tables.Skills;
 
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
@@ -73,11 +70,14 @@ public class RecommenderCommands implements REPLCommand {
       map.get(id).updateFromSkills(s);
     }
 
-    return new ArrayList<>(map.values());
+    return new ArrayList<> (map.values());
   }
+
+
 
   @Override
   public void handle(String[] args) {
+
     try {
       if (args[0].equals("recsys_load")) {
         Random r = new Random();
@@ -99,8 +99,10 @@ public class RecommenderCommands implements REPLCommand {
 
         List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
         this.studentList = studentList;
+
         List<List<Number>> kdData = new ArrayList<>();
         List<List<String>> bloomData = new ArrayList<>();
+
         for (Student s:studentList) {
           kdData.add(s.getCoordinates());
           bloomData.add(s.getVectorRepresentation());
@@ -117,6 +119,32 @@ public class RecommenderCommands implements REPLCommand {
 
       }else if(args[0].equals("recsys_recs")){
 
+      } else if (args[0].equals("recsys_gen_groups")) {
+        if((this.kdTree  == null) || (this.bloomFilter == null) ){
+          System.out.println("ERROR: Please run recys_load to load your data");
+        }
+        if((this.studentList  == null) ){
+          System.out.println("ERROR: StudentList is empty! Please select different dataset");
+        }
+
+        int team = Integer.parseInt(args[1]);
+        ArrayList<Student[]> groupMembers = new ArrayList<Student[]>();
+        List studentListCopy = new ArrayList<>();
+        studentListCopy.addAll(this.studentList;);
+
+
+        //TODO: iterate for every student, add to a groupmember iff its empty or if the preference is above a certain val
+        for(Student s : studentListCopy) {
+
+          for(int i = 0; i < groupMembers  )
+
+
+        }
+
+
+
+
+        System.out.println(groupMembers);
       }
     } catch (Exception e) {
       e.printStackTrace();
