@@ -151,15 +151,13 @@ public class RecommenderCommands implements REPLCommand {
           iterator++; //iterate through to next Group
         }
 
-        Map<Student, ArrayList<Student>> studentPreferences = new HashMap<Student, ArrayList<Student>>();
+        Map<Student, List<Student>> studentPreferences = new HashMap<Student, List<Student>>();
 
         for (Student s : studentListCopy) {
-          ArrayList<Student> preferenceOrder = new ArrayList<Student>();
+          //TODO: implement getpreferenceOrder
+          List<Student> preferenceOrder = getPreferenceOrder(s);
 
-          //TODO:calculate preference order for each student by scoring KD tree and Bloom filter totals for each student
-          //TA said you can find KD Tree ranking and Bloom Filter ranking and then make one that's combination of both
-          //I was also thinking using one of the kd and bloom filter randomly just because of time constraint if this is
-         // really difficult
+
 
           studentPreferences.put(s, preferenceOrder);
           addStudent(s,preferenceOrder, numGroups, groups,studentListCopy, GroupSize); //see bottom of class for method
@@ -200,7 +198,7 @@ public class RecommenderCommands implements REPLCommand {
    * @param studentListCopy -- a copy of the list of students
    * @param GroupSize -- the maximum size a group can be
    */
-  private  void addStudent(Student s, ArrayList<Student> preferenceOrder,
+  private  void addStudent(Student s, List<Student> preferenceOrder,
                            int numGroups, ArrayList<ArrayList<Student>> groups,
                            List<Student> studentListCopy, int GroupSize){
     for(int n = 0; n < numGroups; n++) { //loop through groups for each student
@@ -218,6 +216,18 @@ public class RecommenderCommands implements REPLCommand {
         }
       }
     }
+  }
+
+  private List<Student> getPreferenceOrder(Student s){
+    List<Student> preferenceOrder = new ArrayList<Student>();
+    //TODO:calculate preference order for each student by scoring KD tree and Bloom filter totals for each student
+    //TA said you can find KD Tree ranking and Bloom Filter ranking and then make one that's combination of both
+    //I was also thinking using one of the kd and bloom filter randomly just because of time constraint if this is
+    // really difficult
+
+
+
+    return preferenceOrder;
   }
 
 
