@@ -73,9 +73,19 @@ this method in the REPL, as the KNNSearch method is called when the commands of 
 **KDTreeTest** -- testing for the KDTree class
 
 # Extensions
-TA mentioned that we can shorten Main even further by using some sort of hashmap containing list of all possible
-commands mapping to their respective command class 
+-TA mentioned that we can shorten Main even further by using some sort of hashmap containing list of all possible
+commands mapping to their respective command class (Addressed in User Story 1)
 
+-Assign students based on the order that they are assigned. In the case where a student has no optimal partners or two out of the three isn't optimal, i think that we can continue with that so long as their connection with student A isn't as high.
+
+-If the number of students is larger than the desired team size, IF and only IF there are no other oversized/undersized groups, we will keep that way. If there are any,  remove the least compatible member of the oversized group and add to an undersized one/join with an oversized member provided they are optimal to certain threshold (so if like the numerical value of Member D in ABCD is 10,  and he has the lowest group compatibility, if joining the undersized group HJ is a better fit from his preference, we can add to that group.
+
+
+
+#User Story 4 Discussions
+Due to time constraints, I settled on prioritizing the students randomly by the order that they are assigned. 
+In terms of presenting the data, print lines from command would work, but we could also find a way to display the data 
+externally as well. 
 
 # README
 To build use:
