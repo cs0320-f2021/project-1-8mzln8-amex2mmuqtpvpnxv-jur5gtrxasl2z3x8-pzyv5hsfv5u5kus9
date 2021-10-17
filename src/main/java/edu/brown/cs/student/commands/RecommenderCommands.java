@@ -97,6 +97,7 @@ public class RecommenderCommands implements REPLCommand {
           this.studentList = studentList;
           List<List<Number>> kdData = new ArrayList<>();
           HashMap<String, BloomFilter> bloomFilterHashMap = new HashMap<>();
+          HashMap<String, Student> StudentMap = new HashMap<>();
           for (Student s:studentList) {
             kdData.add(s.getCoordinates());
             String userID = s.getId();
@@ -106,11 +107,11 @@ public class RecommenderCommands implements REPLCommand {
             BloomFilter b = new BloomFilter(c,n,k);
             b.add(s.getVectorRepresentation());
             bloomFilterHashMap.put(userID, b);
-            idToStudentMap.put(userID, s);
+            StudentMap.put(userID, s);
           }
 
           this.kdTree = new KDTree<>(kdData);
-          this.idToStudentMap = idToStudentMap;
+          this.idToStudentMap = StudentMap;
           this.bloomFilterHashMap = bloomFilterHashMap;
 
 
