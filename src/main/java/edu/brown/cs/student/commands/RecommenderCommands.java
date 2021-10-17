@@ -22,6 +22,7 @@ public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
   private KDTree kdTree;
   private HashMap<String,BloomFilter> bloomFilterHashMap;
+  private HashMap<String,Student> idToStudent;
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -95,6 +96,7 @@ public class RecommenderCommands implements REPLCommand {
         this.studentList = studentList;
         List<List<Number>> kdData = new ArrayList<>();
         HashMap<String, BloomFilter> bloomFilterHashMap = new HashMap<>();
+        HashMap<String, Student> idToStudentMap = new HashMap<>();
         for (Student s:studentList) {
           kdData.add(s.getCoordinates());
           String userID = s.getId();
@@ -104,15 +106,21 @@ public class RecommenderCommands implements REPLCommand {
           BloomFilter b = new BloomFilter(c,n,k);
           b.add(s.getVectorRepresentation());
           bloomFilterHashMap.put(userID, b);
+          idToStudentMap.put(userID, s);
+
         }
 
         this.bloomFilterHashMap = bloomFilterHashMap;
+        this.idToStudent = idToStudentMap;
+        this.kdTree = new KDTree(kdData);
 
 
         System.out.println("Loaded Recommender with " + studentList.size() + " students");
 
       }else if(args[0].equals("recsys_recs")){
 
+          RecommendationGenerator gen = new RecommendationGenerator(args,studentList,kdTree,idToStudent,bloomFilterHashMap);
+          gen.recsys_recs();
       }
     } catch (Exception e) {
       e.printStackTrace();
