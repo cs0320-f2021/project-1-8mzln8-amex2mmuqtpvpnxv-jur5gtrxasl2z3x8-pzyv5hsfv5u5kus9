@@ -4,7 +4,6 @@ INPUT
 recsys_load responses
 recsys_recs 64 5
 OUTPUT
-Status 200
 Loaded Recommender with 61 students
 1
 2

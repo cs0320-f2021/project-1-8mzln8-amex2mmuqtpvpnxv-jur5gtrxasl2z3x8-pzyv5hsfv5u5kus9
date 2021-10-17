@@ -5,8 +5,5 @@ recsys_load responses
 recsys_recs 4 4
 OUTPUT
 Loaded Recommender with 61 students
-6
-49
-7
-52
+Please enter an integer for the number of recommendations
 END

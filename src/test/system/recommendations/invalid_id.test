@@ -2,11 +2,7 @@ ARGS
 
 INPUT
 recsys_load responses
-recsys_recs 4 4
+recsys_recs 3 apple
 OUTPUT
 Loaded Recommender with 61 students
-6
-49
-7
-52
-END
+Please input a valid integer for argument 2

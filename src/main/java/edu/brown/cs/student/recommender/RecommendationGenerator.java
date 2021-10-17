@@ -18,7 +18,10 @@ public class RecommendationGenerator <T extends Number> {
         this.args = args;
         this.studentList = studentList;
         this.KDTree = KDTree;
-        int id = Integer.parseInt(args[2]);
+        int id = 0;
+        try{
+            id = Integer.parseInt(args[2]);
+        }catch(Exception ignored){}
         BloomFilterRecommender bloomFilterRecommender = new BloomFilterRecommender(idToStudent,.02);
         BloomFilter filterOfInterest = idToBloom.get(args[2]);
         AndSimilarityComparator comparator = new AndSimilarityComparator(filterOfInterest);
@@ -37,7 +40,17 @@ public class RecommendationGenerator <T extends Number> {
      * Runs the command recsys_recs
      */
     public void recsys_recs(){
-        int numberOfRecs = Integer.parseInt(args[1]);
+        int numberOfRecs = 0;
+        try {
+            numberOfRecs = Integer.parseInt(args[1]);
+        }catch(Exception e){
+            System.out.println("Please enter an integer for the number of recommendations");
+            return;
+        }
+        if(this.studentOfInterest == null){
+            System.out.println("Please input a valid integer for argument 2");
+            return;
+        }
         List<Integer> recs = this.generateRecommendations(this.studentOfInterest,numberOfRecs);
         for (Integer rec : recs) {
             System.out.println(rec);
@@ -50,8 +63,11 @@ public class RecommendationGenerator <T extends Number> {
      * @param k - the total number of recommendations
      * @return - a list of recommendations
      */
-    private List<Integer> generateRecommendations(Student student , int k){
-        if(student == null) System.out.println("Student not found");
+    private List<Integer> generateRecommendations(Student student , int k) {
+        if(student == null) {
+            System.out.println("No student with the given id exists in the system. Please try a different id");
+            return new ArrayList<>();
+        }
         List<Number> targetCoordinates = student.getCoordinates(); //This will become whatever input was used to load the kdtree in the previous part
         List<Student> tempBloomRecs = this.bloom.getTopKRecommendations(student,k);
         List<Node<Number>>  tempKDTreeRecs = this.KDTree.KNNSearch(k,targetCoordinates.subList(1, targetCoordinates.size()));
@@ -153,3 +169,4 @@ public class RecommendationGenerator <T extends Number> {
         return result;
     }
 }
+
