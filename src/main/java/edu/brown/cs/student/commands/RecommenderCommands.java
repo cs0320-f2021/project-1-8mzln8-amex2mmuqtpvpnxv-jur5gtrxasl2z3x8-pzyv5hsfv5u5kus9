@@ -160,14 +160,14 @@ public class RecommenderCommands implements REPLCommand {
             List<Node<Double>> partners;
             List<Integer> partnerIDs = new ArrayList<>();
             while (numLargerGroups > 0) {
-              partners = this.kdTree.KNNSearch(groupSize + 1, s.getCoordinates());
+              partners = this.kdTree.KNNSearch(groupSize + 1, s.getInvertedCoordinates());
               for (Node<Double> node : partners) {
                 partnerIDs.add(node.getUniqueID());
               }
               groups.add(partnerIDs);
 
             }
-            partners = this.kdTree.KNNSearch(groupSize, s.getCoordinates());
+            partners = this.kdTree.KNNSearch(groupSize, s.getInvertedCoordinates());
             for (Node<Double> node : partners) {
               partnerIDs.add(node.getUniqueID());
             }

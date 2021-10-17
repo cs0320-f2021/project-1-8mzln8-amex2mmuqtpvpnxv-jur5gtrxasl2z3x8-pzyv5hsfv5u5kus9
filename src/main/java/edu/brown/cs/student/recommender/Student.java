@@ -3,6 +3,7 @@ package edu.brown.cs.student.recommender;
 import edu.brown.cs.student.recommender.tables.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Student implements Item {
@@ -63,6 +64,32 @@ public class Student implements Item {
     c.add(this.teamwork);
     c.add(this.frontend);
     c.add(this.exp);
+    return c;
+  }
+
+  public List<Number> getInvertedCoordinates() {
+    List<Number> c = new ArrayList<>();
+    List<Number> originalCoords = this.getCoordinates();
+
+    Number max = Integer.MIN_VALUE;
+    Number min = Integer.MAX_VALUE;
+    for (Number oc : originalCoords) {
+      if (oc.doubleValue() < min.doubleValue()) {
+        min = oc;
+      } else if (oc.doubleValue() > max.doubleValue()) {
+        max = oc;
+      }
+    }
+
+    for (Number oc : originalCoords) {
+      if (oc.doubleValue() == max.doubleValue()) {
+        c.add(min);
+      } else if (oc.doubleValue() == min.doubleValue()) {
+        c.add(max);
+      } else {
+        c.add(oc);
+      }
+    }
     return c;
   }
 
