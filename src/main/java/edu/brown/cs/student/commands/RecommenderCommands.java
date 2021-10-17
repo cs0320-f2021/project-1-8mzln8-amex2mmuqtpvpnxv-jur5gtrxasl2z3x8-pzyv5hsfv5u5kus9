@@ -22,6 +22,7 @@ public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
   private KDTree kdTree;
   private HashMap<String,BloomFilter> bloomFilterHashMap;
+  private HashMap<String,Student> idToStudent;
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -105,10 +106,11 @@ public class RecommenderCommands implements REPLCommand {
             BloomFilter b = new BloomFilter(c,n,k);
             b.add(s.getVectorRepresentation());
             bloomFilterHashMap.put(userID, b);
+            idToStudentMap.put(userID, s);
           }
 
           this.kdTree = new KDTree<>(kdData);
-
+          this.idToStudent = idToStudentMap;
           this.bloomFilterHashMap = bloomFilterHashMap;
 
 
@@ -116,7 +118,11 @@ public class RecommenderCommands implements REPLCommand {
         } else {
           System.out.println("ERROR: unknown argument passed to recsys_load");
         }
-      }
+      } else if(args[0].equals("recsys_recs")){
+
+          RecommendationGenerator gen = new RecommendationGenerator(args,studentList,kdTree,idToStudent,bloomFilterHashMap);
+          gen.recsys_recs();
+    }
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("ERROR: Something wrong happened when ingesting data");

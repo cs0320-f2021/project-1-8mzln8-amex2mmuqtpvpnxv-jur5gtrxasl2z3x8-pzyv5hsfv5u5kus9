@@ -10,8 +10,6 @@ public class ClientRequestGenerator {
 
 
   /**
-   * Similar to the introductory GET request, but restricted to api key holders only. Try calling it without the API
-   * Key configured and see what happens!
    *
    * @return an HttpRequest object for accessing the secured resource.
    */

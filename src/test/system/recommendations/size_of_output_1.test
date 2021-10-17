@@ -1,0 +1,13 @@
+ARGS
+
+INPUT
+recsys_load responses
+recsys_recs 4 4
+OUTPUT
+Status 200
+Loaded Recommender with 61 students
+6
+49
+7
+52
+END
