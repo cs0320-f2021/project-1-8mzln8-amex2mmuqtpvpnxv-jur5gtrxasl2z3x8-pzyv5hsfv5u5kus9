@@ -45,12 +45,12 @@ public class ApiAggregator {
      * @return - The response as a string
      */
     private String generateExtras(String server, String filename, String response) {
-        String error_message = "{\"message\": \"Your API call failed due to a malicious error by the course staff\"}";
         try{
-        for(int i = 0; i < 5; i++){
-            if(response.equals(error_message)){
+        for(int i = 0; i < 5; i++) {
+            String status[] = response.split(" ");
+            if(status[0].equals("Status") && String.valueOf(status[1].charAt(0)).equals("5")) {
                 response = client.makeRequest(ClientRequestGenerator.getSecuredRequest(filename + server + "?auth="));
-            }else break;
+            } else break;
         }
         }catch (Exception ignored) {}
         return response;

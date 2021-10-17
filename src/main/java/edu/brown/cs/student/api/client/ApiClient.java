@@ -29,6 +29,7 @@ public class ApiClient {
       System.out.println("Status " + apiResponse.statusCode());
       if (apiResponse.statusCode() != 200) {
         System.out.println("ERROR: status code error");
+        return "Status " + apiResponse.statusCode();
       }
       return apiResponse.body();
 
