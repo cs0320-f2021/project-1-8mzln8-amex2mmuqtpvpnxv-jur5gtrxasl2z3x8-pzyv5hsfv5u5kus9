@@ -13,6 +13,7 @@ import edu.brown.cs.student.recommender.tables.Positive;
 import edu.brown.cs.student.recommender.tables.Skills;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -85,103 +86,118 @@ public class RecommenderCommands implements REPLCommand {
     try {
       switch (args[0]) {
         case "recsys_load":
-          Random r = new Random();
-          ApiAggregator api = new ApiAggregator();
-          List<APIData> apilist = api.getIntegrationData();
-          Gson gson = new Gson();
-          System.out.println(gson.toJson(apilist));
+          try {
+            Random r = new Random();
+            ApiAggregator api = new ApiAggregator();
+            List<APIData> apilist = api.getIntegrationData();
+            Gson gson = new Gson();
+            System.out.println(gson.toJson(apilist));
 
-          HashMap<String, String> empty = new HashMap<>();
-          Database database = new Database("data/integration/integration.sqlite3");
-          List<Interests> interests = database.select(Interests.class, empty);
-          List<Negative> negatives = database.select(Negative.class, empty);
-          List<Positive> positives = database.select(Positive.class, empty);
-          List<Skills> skills = database.select(Skills.class, empty);
+            HashMap<String, String> empty = new HashMap<>();
+            Database database = new Database("data/integration/integration.sqlite3");
+            List<Interests> interests = database.select(Interests.class, empty);
+            List<Negative> negatives = database.select(Negative.class, empty);
+            List<Positive> positives = database.select(Positive.class, empty);
+            List<Skills> skills = database.select(Skills.class, empty);
 //        System.out.println(interests.size());
 //        System.out.println(positives.size());
 //        System.out.println(negatives.size());
 //        System.out.println(skills.size());
 
-          List<Student> studentList =
-              AggregateData(apilist, interests, negatives, positives, skills);
-          this.studentList = studentList;
+            List<Student> studentList =
+                AggregateData(apilist, interests, negatives, positives, skills);
+            this.studentList = studentList;
 
-          List<List<Number>> kdData = new ArrayList<>();
-          List<List<String>> bloomData = new ArrayList<>();
+            List<List<Number>> kdData = new ArrayList<>();
+            List<List<String>> bloomData = new ArrayList<>();
 
-          for (Student s : studentList) {
-            kdData.add(s.getCoordinates());
-            bloomData.add(s.getVectorRepresentation());
+            for (Student s : studentList) {
+              kdData.add(s.getCoordinates());
+              bloomData.add(s.getVectorRepresentation());
+            }
+
+            double c = r.nextInt(200) + 1;
+            int n = r.nextInt(61) + 1;
+            int k = r.nextInt(20) + 1;
+            this.kdTree = new KDTree(kdData);
+            this.bloomFilter = new BloomFilter(c, n, k);
+            this.bloomFilter.addAll(bloomData);
+
+            System.out.println("Loaded Recommender with " + studentList.size() + " students");
+          } catch (Exception e) {
+            System.out.println("ERROR: Could not load recommender with student data");
           }
-
-          double c = r.nextInt(200) + 1;
-          int n = r.nextInt(61) + 1;
-          int k = r.nextInt(20) + 1;
-          this.kdTree = new KDTree(kdData);
-          this.bloomFilter = new BloomFilter(c, n, k);
-          this.bloomFilter.addAll(bloomData);
-
-          System.out.println("Loaded Recommender with " + studentList.size() + " students");
 
           break;
         case "recsys_recs":
 
           break;
         case "recsys_gen_groups":
-          if ((this.kdTree == null) || (this.bloomFilter == null)) {
-            System.out.println("ERROR: Please run recys_load to load your data");
-            return;
-          }
-          if ((this.studentList == null)) {
-            System.out.println("ERROR: StudentList is empty! Please select different dataset");
-            return;
-          }
+          try {
+            if ((this.kdTree == null) || (this.bloomFilter == null)) {
+              System.out.println("ERROR: Please run recys_load to load your data");
+              return;
+            }
+            if ((this.studentList == null)) {
+              System.out.println("ERROR: StudentList is empty! Please select different dataset");
+              return;
+            }
 
-          int numGroups = Integer.parseInt(args[1]);
+            int numGroups = Integer.parseInt(args[1]);
 
-          int groupSize;
-          int numLargerGroups = 0;
+            int groupSize;
+            int numLargerGroups = 0;
 
-          if (this.studentList.size() % numGroups != 0) {
-            groupSize = this.studentList.size() / numGroups;
-            numLargerGroups = this.studentList.size() - groupSize * numGroups;
-          } else {
-            groupSize = this.studentList.size() / numGroups;
-          }
+            if (this.studentList.size() % numGroups != 0) {
+              groupSize = this.studentList.size() / numGroups;
+              numLargerGroups = this.studentList.size() - groupSize * numGroups;
+            } else {
+              groupSize = this.studentList.size() / numGroups;
+            }
 
-          if ((numGroups <= 0) || (numGroups > this.studentList.size())) {
-            System.out.println("ERROR: Invalid number of students");
-            return;
-          }
+            if ((numGroups <= 0) || (numGroups > this.studentList.size())) {
+              System.out.println("ERROR: Invalid number of students");
+              return;
+            }
 
-          List<Student> studentListCopy = new ArrayList<Student>();
-          studentListCopy.addAll(this.studentList);
+            List<Student> studentListCopy = new ArrayList<Student>();
+            studentListCopy.addAll(this.studentList);
 
-          for (Student s : studentListCopy) {
-            List<Node<Double>> partners;
-            List<Integer> partnerIDs = new ArrayList<>();
-            while (numLargerGroups > 0) {
-              partners = this.kdTree.KNNSearch(groupSize + 1, s.getInvertedCoordinates());
+            for (Student s : studentListCopy) {
+              List<Node<Double>> partners;
+              List<Integer> partnerIDs = new ArrayList<>();
+              while (numLargerGroups > 0) {
+                partners = this.kdTree.KNNSearch(groupSize + 1, s.getInvertedCoordinates());
+                for (Node<Double> node : partners) {
+                  partnerIDs.add(node.getUniqueID());
+                }
+                groups.add(partnerIDs);
+
+              }
+              partners = this.kdTree.KNNSearch(groupSize, s.getInvertedCoordinates());
               for (Node<Double> node : partners) {
                 partnerIDs.add(node.getUniqueID());
               }
               groups.add(partnerIDs);
+            }
 
+            try {
+              FileWriter writer = new FileWriter("data/groups.txt");
+
+              for (List<Integer> group : groups) {
+                writer.write(group.toString());
+              }
+
+              writer.close();
+            } catch (Exception e) {
+              System.out.println("Could not write groups to groups.txt");
             }
-            partners = this.kdTree.KNNSearch(groupSize, s.getInvertedCoordinates());
-            for (Node<Double> node : partners) {
-              partnerIDs.add(node.getUniqueID());
-            }
-            groups.add(partnerIDs);
+
+            System.out.println("Successfully created groups in groups.txt!");
+          } catch (Exception e) {
+            System.out.println("ERROR: Could not create student groups");
           }
 
-          FileWriter writer = new FileWriter("data/groups.txt");
-
-          for (List<Integer> group : groups) {
-            writer.write(group.toString());
-          }
-
-          writer.close();
 
 
           /*
