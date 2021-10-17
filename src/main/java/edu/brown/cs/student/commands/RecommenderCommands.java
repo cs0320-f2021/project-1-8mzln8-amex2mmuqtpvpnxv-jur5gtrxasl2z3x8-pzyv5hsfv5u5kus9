@@ -12,6 +12,7 @@ import edu.brown.cs.student.recommender.tables.Negative;
 import edu.brown.cs.student.recommender.tables.Positive;
 import edu.brown.cs.student.recommender.tables.Skills;
 
+import java.io.FileWriter;
 import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -173,6 +174,14 @@ public class RecommenderCommands implements REPLCommand {
             }
             groups.add(partnerIDs);
           }
+
+          FileWriter writer = new FileWriter("data/groups.txt");
+
+          for (List<Integer> group : groups) {
+            writer.write(group.toString());
+          }
+
+          writer.close();
 
 
           /*
