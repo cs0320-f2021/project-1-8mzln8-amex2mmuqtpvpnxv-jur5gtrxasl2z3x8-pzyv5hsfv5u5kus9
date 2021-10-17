@@ -116,9 +116,6 @@ public class RecommenderCommands implements REPLCommand {
         } else {
           System.out.println("ERROR: unknown argument passed to recsys_load");
         }
-
-
-
       }
     } catch (Exception e) {
       e.printStackTrace();
