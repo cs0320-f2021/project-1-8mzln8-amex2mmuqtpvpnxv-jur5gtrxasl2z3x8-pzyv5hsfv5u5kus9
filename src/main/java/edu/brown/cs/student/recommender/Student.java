@@ -70,8 +70,6 @@ public class Student implements Item {
     if (!this.prefer_group.isBlank()) {
       v.add(prefer_group);
     }
-
-    System.out.println("Vector : " + v);
     return v;
   }
 
