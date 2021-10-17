@@ -14,6 +14,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   private Node<T> parent = null;
   private double distanceToTarget;
   private final int uniqueID;
+  private boolean visited;
 
   /**
    * Constructor for Node object with a list of coordinates.
@@ -110,6 +111,10 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
     return uniqueID;
   }
 
+  public boolean getVisited() {
+    return this.visited;
+  }
+
   /**
    * Sets the left child field with the given Node object.
    * @param leftChild - Node object to set
@@ -138,6 +143,10 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
    */
   public void setAxis(int axis) {
     this.axis = axis;
+  }
+
+  public void setVisited(boolean visited) {
+    this.visited = visited;
   }
 
   /**

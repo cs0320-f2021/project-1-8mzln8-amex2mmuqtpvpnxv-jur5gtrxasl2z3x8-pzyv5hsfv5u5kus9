@@ -101,10 +101,11 @@ public class KDTree<T extends Number> {
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
   private void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
-    if (root == null) {
+    if (root == null || root.getVisited()) {
       return;
     }
     root.setDistanceToTarget(targetCoordinates);
+    root.setVisited(true);
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root);

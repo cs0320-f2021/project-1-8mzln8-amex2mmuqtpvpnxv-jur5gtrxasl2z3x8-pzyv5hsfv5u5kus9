@@ -20,6 +20,7 @@ public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
   private KDTree kdTree;
   private BloomFilter bloomFilter;
+  private List<List<Integer>> groups;
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -81,98 +82,134 @@ public class RecommenderCommands implements REPLCommand {
   public void handle(String[] args) {
 
     try {
-      if (args[0].equals("recsys_load")) {
-        Random r = new Random();
-        ApiAggregator api = new ApiAggregator();
-        List<APIData> apilist = api.getIntegrationData();
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(apilist));
+      switch (args[0]) {
+        case "recsys_load":
+          Random r = new Random();
+          ApiAggregator api = new ApiAggregator();
+          List<APIData> apilist = api.getIntegrationData();
+          Gson gson = new Gson();
+          System.out.println(gson.toJson(apilist));
 
-        HashMap<String, String> empty = new HashMap<>();
-        Database database = new Database("data/integration/integration.sqlite3");
-        List<Interests> interests = database.select(Interests.class,empty);
-        List<Negative> negatives = database.select(Negative.class,empty);
-        List<Positive> positives = database.select(Positive.class, empty);
-        List<Skills> skills = database.select(Skills.class, empty);
+          HashMap<String, String> empty = new HashMap<>();
+          Database database = new Database("data/integration/integration.sqlite3");
+          List<Interests> interests = database.select(Interests.class, empty);
+          List<Negative> negatives = database.select(Negative.class, empty);
+          List<Positive> positives = database.select(Positive.class, empty);
+          List<Skills> skills = database.select(Skills.class, empty);
 //        System.out.println(interests.size());
 //        System.out.println(positives.size());
 //        System.out.println(negatives.size());
 //        System.out.println(skills.size());
 
-        List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
-        this.studentList = studentList;
+          List<Student> studentList =
+              AggregateData(apilist, interests, negatives, positives, skills);
+          this.studentList = studentList;
 
-        List<List<Number>> kdData = new ArrayList<>();
-        List<List<String>> bloomData = new ArrayList<>();
+          List<List<Number>> kdData = new ArrayList<>();
+          List<List<String>> bloomData = new ArrayList<>();
 
-        for (Student s:studentList) {
-          kdData.add(s.getCoordinates());
-          bloomData.add(s.getVectorRepresentation());
-        }
+          for (Student s : studentList) {
+            kdData.add(s.getCoordinates());
+            bloomData.add(s.getVectorRepresentation());
+          }
 
-        double c = r.nextInt(200) + 1;
-        int n = r.nextInt(61) + 1;
-        int k = r.nextInt(20) + 1;
-        this.kdTree = new KDTree(kdData);
-        this.bloomFilter = new BloomFilter(c,n,k);
-        this.bloomFilter.addAll(bloomData);
+          double c = r.nextInt(200) + 1;
+          int n = r.nextInt(61) + 1;
+          int k = r.nextInt(20) + 1;
+          this.kdTree = new KDTree(kdData);
+          this.bloomFilter = new BloomFilter(c, n, k);
+          this.bloomFilter.addAll(bloomData);
 
-        System.out.println("Loaded Recommender with " + studentList.size() + " students");
+          System.out.println("Loaded Recommender with " + studentList.size() + " students");
 
-      }else if(args[0].equals("recsys_recs")){
+          break;
+        case "recsys_recs":
 
-      } else if (args[0].equals("recsys_gen_groups")) {
-        if ((this.kdTree == null) || (this.bloomFilter == null)) {
-          System.out.println("ERROR: Please run recys_load to load your data");
-          return;
-        }
-        if ((this.studentList == null)) {
-          System.out.println("ERROR: StudentList is empty! Please select different dataset");
-          return;
-        }
+          break;
+        case "recsys_gen_groups":
+          if ((this.kdTree == null) || (this.bloomFilter == null)) {
+            System.out.println("ERROR: Please run recys_load to load your data");
+            return;
+          }
+          if ((this.studentList == null)) {
+            System.out.println("ERROR: StudentList is empty! Please select different dataset");
+            return;
+          }
 
-        int numGroups = Integer.parseInt(args[1]);
-        int GroupSize = this.studentList.size()/numGroups;
+          int numGroups = Integer.parseInt(args[1]);
 
-        if ((numGroups <= 0) || (numGroups > this.studentList.size())) {
-          System.out.println("ERROR: Invalid number of students");
-          return;
-        }
+          int groupSize;
+          int numLargerGroups = 0;
 
-        ArrayList<ArrayList<Student>> groups = new ArrayList<ArrayList<Student>>();
-        List<Student> studentListCopy = new ArrayList<Student>();
-        studentListCopy.addAll(this.studentList);
+          if (this.studentList.size() % numGroups != 0) {
+            groupSize = this.studentList.size() / numGroups;
+            numLargerGroups = this.studentList.size() - groupSize * numGroups;
+          } else {
+            groupSize = this.studentList.size() / numGroups;
+          }
+
+          if ((numGroups <= 0) || (numGroups > this.studentList.size())) {
+            System.out.println("ERROR: Invalid number of students");
+            return;
+          }
+
+          List<Student> studentListCopy = new ArrayList<Student>();
+          studentListCopy.addAll(this.studentList);
+
+          for (Student s : studentListCopy) {
+            List<Node<Double>> partners;
+            List<Integer> partnerIDs = new ArrayList<>();
+            while (numLargerGroups > 0) {
+              partners = this.kdTree.KNNSearch(groupSize + 1, s.getCoordinates());
+              for (Node<Double> node : partners) {
+                partnerIDs.add(node.getUniqueID());
+              }
+              groups.add(partnerIDs);
+
+            }
+            partners = this.kdTree.KNNSearch(groupSize, s.getCoordinates());
+            for (Node<Double> node : partners) {
+              partnerIDs.add(node.getUniqueID());
+            }
+            groups.add(partnerIDs);
+          }
 
 
-        int iterator = 0;
-        for (int i = 0; i < numGroups; i++) { //added first n number of students to a different team
-          groups.get(iterator).add((Student) studentListCopy.get(i)); //add students
-          studentListCopy.remove(studentListCopy.get(i)); //remove student from copy
-          iterator++; //iterate through to next Group
-        }
+          /*
+          int iterator = 0;
+          for (int i = 0; i < numGroups;
+               i++) { //added first n number of students to a different team
+            groups.get(iterator).add((Student) studentListCopy.get(i)); //add students
+            studentListCopy.remove(studentListCopy.get(i)); //remove student from copy
+            iterator++; //iterate through to next Group
+          }
 
-        Map<Student, List<Student>> studentPreferences = new HashMap<Student, List<Student>>();
+          Map<Student, List<Student>> studentPreferences = new HashMap<Student, List<Student>>();
 
-        for (Student s : studentListCopy) {
-          //TODO: implement getpreferenceOrder
-          List<Student> preferenceOrder = getPreferenceOrder(s);
+          for (Student s : studentListCopy) {
+            //TODO: implement getpreferenceOrder
+            List<Student> preferenceOrder = getPreferenceOrder(s);
 
 
-          studentPreferences.put(s, preferenceOrder);
-          addStudent(s,preferenceOrder, numGroups, groups,studentListCopy, GroupSize); //see bottom of class for method
+            studentPreferences.put(s, preferenceOrder);
+            addStudent(s, preferenceOrder, numGroups, groups, studentListCopy,
+                groupSize); //see bottom of class for method
 
-        }
+          }
 
-        for(Student s : studentListCopy) { //remaining students added randomly since groups are full
-          int groupRand = ThreadLocalRandom.current().nextInt(0, numGroups - 1);
-          groups.get(groupRand).add(s); //add student to group
-          studentListCopy.remove(s); //remove student from copy
-        }
+          for (Student s : studentListCopy) { //remaining students added randomly since groups are full
+            int groupRand = ThreadLocalRandom.current().nextInt(0, numGroups - 1);
+            groups.get(groupRand).add(s); //add student to group
+            studentListCopy.remove(s); //remove student from copy
+          }
 
-        for(ArrayList<Student> Group : groups) {
-          System.out.println(Group);
-        }
+          for (List<Student> Group : groups) {
+            System.out.println(Group);
+          }
 
+           */
+
+          break;
       }
     } catch (Exception e) {
       e.printStackTrace();
