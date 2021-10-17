@@ -106,6 +106,8 @@ public class RecommenderCommands implements REPLCommand {
           bloomFilterHashMap.put(userID, b);
         }
 
+        this.kdTree = new KDTree<>(kdData);
+
         this.bloomFilterHashMap = bloomFilterHashMap;
 
 
