@@ -57,6 +57,7 @@ public class Student implements Item {
 
   public List<Number> getCoordinates() {
     List<Number> c = new ArrayList<>();
+    c.add(this.id);
     c.add(this.commenting);
     c.add(this.testing);
     c.add(this.OOP);
@@ -69,7 +70,7 @@ public class Student implements Item {
 
   public List<Number> getInvertedCoordinates() {
     List<Number> c = new ArrayList<>();
-    List<Number> originalCoords = this.getCoordinates();
+    List<Number> originalCoords = this.getCoordinates().subList(1, this.getCoordinates().size());
 
     Number max = Integer.MIN_VALUE;
     Number min = Integer.MAX_VALUE;

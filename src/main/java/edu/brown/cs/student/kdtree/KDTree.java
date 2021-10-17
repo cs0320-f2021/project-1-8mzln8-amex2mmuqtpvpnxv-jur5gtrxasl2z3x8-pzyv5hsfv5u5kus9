@@ -105,7 +105,6 @@ public class KDTree<T extends Number> {
       return;
     }
     root.setDistanceToTarget(targetCoordinates);
-    root.setVisited(true);
     this.addNodeToQueue(root, targetCoordinates);
     this.tidyHeap(k);
     int comparison = this.compareNodeToRadius(root);
@@ -141,6 +140,7 @@ public class KDTree<T extends Number> {
     basicBSTSearch(this.root, targetCoordinates, k);
     List<Node<T>> listOfKNN = new ArrayList<>();
     while (this.kNearestNeighbors.peek() != null) {
+      this.kNearestNeighbors.peek().setVisited(true);
       listOfKNN.add(this.kNearestNeighbors.poll());
     }
     Collections.reverse(listOfKNN);

@@ -22,7 +22,7 @@ public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
   private KDTree kdTree;
   private BloomFilter bloomFilter;
-  private List<List<Integer>> groups;
+  private List<List<Integer>> groups = new ArrayList<>();
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -91,7 +91,6 @@ public class RecommenderCommands implements REPLCommand {
             ApiAggregator api = new ApiAggregator();
             List<APIData> apilist = api.getIntegrationData();
             Gson gson = new Gson();
-            System.out.println(gson.toJson(apilist));
 
             HashMap<String, String> empty = new HashMap<>();
             Database database = new Database("data/integration/integration.sqlite3");
@@ -145,14 +144,11 @@ public class RecommenderCommands implements REPLCommand {
 
             int numGroups = Integer.parseInt(args[1]);
 
-            int groupSize;
             int numLargerGroups = 0;
+            int groupSize = this.studentList.size() / numGroups;
 
             if (this.studentList.size() % numGroups != 0) {
-              groupSize = this.studentList.size() / numGroups;
               numLargerGroups = this.studentList.size() - groupSize * numGroups;
-            } else {
-              groupSize = this.studentList.size() / numGroups;
             }
 
             if ((numGroups <= 0) || (numGroups > this.studentList.size())) {
@@ -160,32 +156,26 @@ public class RecommenderCommands implements REPLCommand {
               return;
             }
 
-            List<Student> studentListCopy = new ArrayList<Student>();
-            studentListCopy.addAll(this.studentList);
-
-            for (Student s : studentListCopy) {
+            for (Student s : this.studentList) {
               List<Node<Double>> partners;
               List<Integer> partnerIDs = new ArrayList<>();
-              while (numLargerGroups > 0) {
+              if (numLargerGroups > 0) {
                 partners = this.kdTree.KNNSearch(groupSize + 1, s.getInvertedCoordinates());
-                for (Node<Double> node : partners) {
-                  partnerIDs.add(node.getUniqueID());
-                }
-                groups.add(partnerIDs);
-
+                numLargerGroups -= 1;
+              } else {
+                partners = this.kdTree.KNNSearch(groupSize, s.getInvertedCoordinates());
               }
-              partners = this.kdTree.KNNSearch(groupSize, s.getInvertedCoordinates());
               for (Node<Double> node : partners) {
                 partnerIDs.add(node.getUniqueID());
               }
-              groups.add(partnerIDs);
+              this.groups.add(partnerIDs);
             }
 
             try {
               FileWriter writer = new FileWriter("data/groups.txt");
 
               for (List<Integer> group : groups) {
-                writer.write(group.toString());
+                writer.write(group.toString() + "\n");
               }
 
               writer.close();
@@ -194,6 +184,7 @@ public class RecommenderCommands implements REPLCommand {
             }
 
             System.out.println("Successfully created groups in groups.txt!");
+
           } catch (Exception e) {
             System.out.println("ERROR: Could not create student groups");
           }

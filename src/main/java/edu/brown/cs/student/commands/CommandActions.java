@@ -22,6 +22,8 @@ public class CommandActions {
     commandMap.put("json", apiCommand);
     RecommenderCommands recommenderCommand = new RecommenderCommands();
     commandMap.put("recsys_load", recommenderCommand);
+    commandMap.put("recsys_recs", recommenderCommand);
+    commandMap.put("recsys_gen_groups", recommenderCommand);
   }
 
   public void addNewCommand(String command, REPLCommand commandAction) {
