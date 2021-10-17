@@ -91,10 +91,6 @@ public class RecommenderCommands implements REPLCommand {
         List<Negative> negatives = database.select(Negative.class,empty);
         List<Positive> positives = database.select(Positive.class, empty);
         List<Skills> skills = database.select(Skills.class, empty);
-//        System.out.println(interests.size());
-//        System.out.println(positives.size());
-//        System.out.println(negatives.size());
-//        System.out.println(skills.size());
 
         List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
         this.studentList = studentList;
