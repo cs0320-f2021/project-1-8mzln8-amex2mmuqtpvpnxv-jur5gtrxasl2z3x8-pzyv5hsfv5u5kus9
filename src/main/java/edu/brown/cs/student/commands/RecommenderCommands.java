@@ -23,6 +23,7 @@ public class RecommenderCommands implements REPLCommand {
   private KDTree kdTree;
   private BloomFilter bloomFilter;
   private List<List<Integer>> groups = new ArrayList<>();
+  private List<Integer> visited = new ArrayList<>();
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -157,6 +158,9 @@ public class RecommenderCommands implements REPLCommand {
             }
 
             for (Student s : this.studentList) {
+              if (visited.contains(Integer.parseInt(s.getId()))) {
+                continue;
+              }
               List<Node<Double>> partners;
               List<Integer> partnerIDs = new ArrayList<>();
               if (numLargerGroups > 0) {
@@ -167,6 +171,7 @@ public class RecommenderCommands implements REPLCommand {
               }
               for (Node<Double> node : partners) {
                 partnerIDs.add(node.getUniqueID());
+                visited.add(node.getUniqueID());
               }
               this.groups.add(partnerIDs);
             }

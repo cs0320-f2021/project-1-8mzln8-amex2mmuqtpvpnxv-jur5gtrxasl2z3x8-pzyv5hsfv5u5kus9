@@ -101,12 +101,14 @@ public class KDTree<T extends Number> {
    * @param targetCoordinates - the desired set of coordinates to calculate distance to
    */
   private void basicBSTSearch(Node<T> root, List<T> targetCoordinates, int k) {
-    if (root == null || root.getVisited()) {
+    if (root == null) {
       return;
     }
     root.setDistanceToTarget(targetCoordinates);
-    this.addNodeToQueue(root, targetCoordinates);
-    this.tidyHeap(k);
+    if (!root.getVisited()) {
+      this.addNodeToQueue(root, targetCoordinates);
+      this.tidyHeap(k);
+    }
     int comparison = this.compareNodeToRadius(root);
     if (comparison == 1 || (this.kNearestNeighbors.size() < k)) {
       basicBSTSearch(root.getLeftChild(), targetCoordinates, k);
@@ -140,10 +142,12 @@ public class KDTree<T extends Number> {
     basicBSTSearch(this.root, targetCoordinates, k);
     List<Node<T>> listOfKNN = new ArrayList<>();
     while (this.kNearestNeighbors.peek() != null) {
-      this.kNearestNeighbors.peek().setVisited(true);
       listOfKNN.add(this.kNearestNeighbors.poll());
     }
     Collections.reverse(listOfKNN);
+    for (Node<T> node : listOfKNN) {
+      node.setVisited(true);
+    }
     return listOfKNN;
   }
 

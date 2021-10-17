@@ -14,7 +14,7 @@ public class Node<T extends Number> implements Comparable<Node<T>> {
   private Node<T> parent = null;
   private double distanceToTarget;
   private final int uniqueID;
-  private boolean visited;
+  private boolean visited = false;
 
   /**
    * Constructor for Node object with a list of coordinates.
