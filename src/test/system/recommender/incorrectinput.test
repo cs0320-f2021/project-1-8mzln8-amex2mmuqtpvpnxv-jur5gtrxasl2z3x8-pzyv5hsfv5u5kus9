@@ -1,0 +1,7 @@
+ARGS
+
+INPUT
+recsys_load
+OUTPUT
+ERROR: unknown argument passed to recsys_load
+END
