@@ -118,4 +118,12 @@ public class RecommenderCommands implements REPLCommand {
       System.out.println("ERROR: Something wrong happened when ingesting data");
     }
   }
+
+  public List<Student> getStudentList() {
+    return studentList;
+  }
+
+  public HashMap<String, BloomFilter> getBloomFilterHashMap() {
+    return bloomFilterHashMap;
+  }
 }
