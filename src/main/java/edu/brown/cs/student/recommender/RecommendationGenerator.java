@@ -45,9 +45,9 @@ public class RecommendationGenerator <T extends Number> {
         if(student == null) System.out.println("Student not found");
         List<Number> targetCoordinates = student.getCoordinates(); //This will become whatever input was used to load the kdtree in the previous part
         List<Student> tempBloomRecs = this.bloom.getTopKRecommendations(student,k);
-        List<Node<Number>>  tempKDTreeRecs = this.KDTree.KNNSearch(k+1,targetCoordinates);
-        List<Integer> kDTreeRecs = new ArrayList<>();
-        List<Integer> bloomRecs = new ArrayList<>();
+        List<Node<Number>>  tempKDTreeRecs = this.KDTree.KNNSearch(k,targetCoordinates.subList(1, targetCoordinates.size()));
+        Set<Integer> kDTreeRecs = new HashSet<>();
+        Set<Integer> bloomRecs = new HashSet<>();
         for(Node<Number> node : tempKDTreeRecs){
             kDTreeRecs.add(node.getUniqueID());
         }
@@ -58,19 +58,28 @@ public class RecommendationGenerator <T extends Number> {
         //Now that we have recs from both types, get the ids of people recommended by both
         //Then insert them into the result by highest average placement order.
         //If we need more recommendations use recommendations from the kDTree
-        return intersectionOfLists(bloomRecs,kDTreeRecs,k);
+        return intersectionOfLists(new ArrayList<>(bloomRecs),new ArrayList<>(kDTreeRecs),k);
     }
     private List<Integer> intersectionOfLists(List<Integer> l1, List<Integer> l2, int k){
-        Set<Integer> set = new HashSet<>(l1);
+        Set<Integer> set1 = new HashSet<>(l1);
+        Set<Integer> set2 = new HashSet<>(l2);
         List<Integer> result = new ArrayList<>();
         Map<Integer,Integer> map = new HashMap<>();
-        List<Integer> extras = new ArrayList<>();
+        List<Integer> extras1 = new ArrayList<>();
+        List<Integer> extras2 = new ArrayList<>();
 
         for(Integer num : l2){
-            if(set.contains(num)) {
+            if(set1.contains(num)) {
                 map.put(num, 0);
             }else{
-                extras.add(num);
+                extras1.add(num);
+            }
+        }
+        for(Integer num : l1){
+            if(set2.contains(num)) {
+                map.put(num, 0);
+            }else{
+                extras2.add(num);
             }
         }
         for(int i = 0; i < l1.size(); i++){
@@ -79,23 +88,40 @@ public class RecommendationGenerator <T extends Number> {
                 map.put(num,map.get(num)+i+1);
             }
         }
+
         for(int i = 0; i < l2.size(); i++){
             int num = l2.get(i);
             if(map.containsKey(num)){
                 map.put(num,map.get(num)+i+1);
             }
         }
-        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((n1, n2) -> n1[1] - n2[1]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((n1, n2) -> n1[1] - n2[1]);
         for(int id : map.keySet()){
             pq.add(new int[] {id , map.get(id)});
         }
         while(!pq.isEmpty())result.add(pq.poll()[0]);
-        int size = result.size();
+        int n = result.size();
         int index = 0;
+        List<Integer> extras = merge(extras1,extras2);
         int extrasSize = extras.size();
-        while(size < k && index < extrasSize){
-            result.add(extras.get(index));
+        while(n < k && index < extrasSize){
+            if(!result.contains(extras.get(index))){
+                result.add(extras.get(index));
+                n += 1;
+            }
             index++;
+        }
+        return result;
+    }
+
+    private static <T> ArrayList<T> merge(Collection<T> a, Collection<T> b) {
+        Iterator<T> itA = a.iterator();
+        Iterator<T> itB = b.iterator();
+        ArrayList<T> result = new ArrayList<T>();
+
+        while (itA.hasNext() || itB.hasNext()) {
+            if (itA.hasNext()) result.add(itA.next());
+            if (itB.hasNext()) result.add(itB.next());
         }
         return result;
     }
