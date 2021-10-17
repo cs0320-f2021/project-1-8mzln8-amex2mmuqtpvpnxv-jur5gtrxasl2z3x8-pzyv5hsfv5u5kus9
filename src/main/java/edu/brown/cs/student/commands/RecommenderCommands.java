@@ -81,50 +81,59 @@ public class RecommenderCommands implements REPLCommand {
   public void handle(String[] args) {
     try {
       if (args[0].equals("recsys_load")) {
-        Random r = new Random();
-        ApiAggregator api = new ApiAggregator();
-        List<APIData> apilist = api.getIntegrationData();
+        if (args.length > 1 && args[1].equals("responses")) {
+          Random r = new Random();
+          ApiAggregator api = new ApiAggregator();
+          List<APIData> apilist = api.getIntegrationData();
 
-        HashMap<String, String> empty = new HashMap<>();
-        Database database = new Database("data/integration/integration.sqlite3");
-        List<Interests> interests = database.select(Interests.class,empty);
-        List<Negative> negatives = database.select(Negative.class,empty);
-        List<Positive> positives = database.select(Positive.class, empty);
-        List<Skills> skills = database.select(Skills.class, empty);
+          HashMap<String, String> empty = new HashMap<>();
+          Database database = new Database("data/integration/integration.sqlite3");
+          List<Interests> interests = database.select(Interests.class,empty);
+          List<Negative> negatives = database.select(Negative.class,empty);
+          List<Positive> positives = database.select(Positive.class, empty);
+          List<Skills> skills = database.select(Skills.class, empty);
 
-        List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
-        this.studentList = studentList;
-        List<List<Number>> kdData = new ArrayList<>();
-        HashMap<String, BloomFilter> bloomFilterHashMap = new HashMap<>();
-        HashMap<String, Student> idToStudentMap = new HashMap<>();
-        for (Student s:studentList) {
-          kdData.add(s.getCoordinates());
-          String userID = s.getId();
-          double c = r.nextInt(200) + 1;
-          int n = r.nextInt(61) + 1;
-          int k = r.nextInt(20) + 1;
-          BloomFilter b = new BloomFilter(c,n,k);
-          b.add(s.getVectorRepresentation());
-          bloomFilterHashMap.put(userID, b);
-          idToStudentMap.put(userID, s);
+          List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
+          this.studentList = studentList;
+          List<List<Number>> kdData = new ArrayList<>();
+          HashMap<String, BloomFilter> bloomFilterHashMap = new HashMap<>();
+          for (Student s:studentList) {
+            kdData.add(s.getCoordinates());
+            String userID = s.getId();
+            double c = r.nextInt(200) + 1;
+            int n = r.nextInt(61) + 1;
+            int k = r.nextInt(20) + 1;
+            BloomFilter b = new BloomFilter(c,n,k);
+            b.add(s.getVectorRepresentation());
+            bloomFilterHashMap.put(userID, b);
+            idToStudentMap.put(userID, s);
+          }
 
+          this.kdTree = new KDTree<>(kdData);
+          this.idToStudent = idToStudentMap;
+          this.bloomFilterHashMap = bloomFilterHashMap;
+
+
+          System.out.println("Loaded Recommender with " + studentList.size() + " students");
+        } else {
+          System.out.println("ERROR: unknown argument passed to recsys_load");
         }
-
-        this.bloomFilterHashMap = bloomFilterHashMap;
-        this.idToStudent = idToStudentMap;
-        this.kdTree = new KDTree(kdData);
-
-
-        System.out.println("Loaded Recommender with " + studentList.size() + " students");
-
-      }else if(args[0].equals("recsys_recs")){
+      } else if(args[0].equals("recsys_recs")){
 
           RecommendationGenerator gen = new RecommendationGenerator(args,studentList,kdTree,idToStudent,bloomFilterHashMap);
           gen.recsys_recs();
-      }
+    }
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("ERROR: Something wrong happened when ingesting data");
     }
+  }
+
+  public List<Student> getStudentList() {
+    return studentList;
+  }
+
+  public HashMap<String, BloomFilter> getBloomFilterHashMap() {
+    return bloomFilterHashMap;
   }
 }

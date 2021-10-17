@@ -75,6 +75,7 @@ public class Student implements Item {
 
   public List<Number> getCoordinates() {
     List<Number> c = new ArrayList<>();
+    c.add(this.id);
     c.add(this.commenting);
     c.add(this.testing);
     c.add(this.OOP);
