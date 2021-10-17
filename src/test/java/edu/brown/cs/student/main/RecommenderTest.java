@@ -4,6 +4,8 @@ import edu.brown.cs.student.commands.RecommenderCommands;
 import edu.brown.cs.student.recommender.Recommender;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class RecommenderTest {
@@ -27,4 +29,17 @@ public class RecommenderTest {
     recommenderCommands.handle(args);
     assertEquals(61, recommenderCommands.getBloomFilterHashMap().size());
   }
+  
+  @Test
+  public void testCorrectIngestion() {
+    RecommenderCommands recommenderCommands = new RecommenderCommands();
+    String args[] = new String[2];
+    args[0] = "recsys_load";
+    args[1] = "responses";
+    recommenderCommands.handle(args);
+    for (int i = 1; i < 62; i++) {
+      assertEquals(true, recommenderCommands.getBloomFilterHashMap().containsKey(String.valueOf(i)));
+    }
+  }
+
 }
