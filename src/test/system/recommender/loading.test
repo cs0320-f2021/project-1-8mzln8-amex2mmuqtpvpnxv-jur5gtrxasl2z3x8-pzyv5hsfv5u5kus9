@@ -1,6 +1,7 @@
 ARGS
 
 INPUT
-resys_load response
+recsys_load response
 OUTPUT
 Loaded Recommender with 61 students
+END
