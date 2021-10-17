@@ -110,7 +110,6 @@ public class RecommenderCommands implements REPLCommand {
           }
 
           this.kdTree = new KDTree<>(kdData);
-          this.idToStudentMap = idToStudentMap;
           this.bloomFilterHashMap = bloomFilterHashMap;
 
 
