@@ -158,7 +158,6 @@ public class RecommenderCommands implements REPLCommand {
           List<Student> preferenceOrder = getPreferenceOrder(s);
 
 
-
           studentPreferences.put(s, preferenceOrder);
           addStudent(s,preferenceOrder, numGroups, groups,studentListCopy, GroupSize); //see bottom of class for method
 
@@ -169,14 +168,6 @@ public class RecommenderCommands implements REPLCommand {
           groups.get(groupRand).add(s); //add student to group
           studentListCopy.remove(s); //remove student from copy
         }
-
-
-
-
-
-
-
-
 
         for(ArrayList<Student> Group : groups) {
           System.out.println(Group);
