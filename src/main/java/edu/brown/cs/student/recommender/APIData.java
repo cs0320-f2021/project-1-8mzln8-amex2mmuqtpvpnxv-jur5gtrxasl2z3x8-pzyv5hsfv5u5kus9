@@ -10,15 +10,15 @@ public class APIData {
   private String grade;
   private int exp;
   private String horoscope;
-  private List<String> meeting_times;
+  private String meeting_times;
   private String preferred_language;
-  private List<String> marginalized_groups;
+  private String marginalized_groups;
   private String prefer_group;
 
 
   public APIData(String id, String name, String meeting, String grade, String exp,
-                 String horoscope, List<String> meeting_times, String preferred_language,
-                 List<String> marginalized_groups, String prefer_group) {
+                 String horoscope, String meeting_times, String preferred_language,
+                 String marginalized_groups, String prefer_group) {
     this.id = Integer.parseInt(id);
     this.name = name;
     this.meeting = meeting;
@@ -79,11 +79,11 @@ public class APIData {
     this.horoscope = horoscope;
   }
 
-  public List<String> getMeeting_times() {
+  public String getMeeting_times() {
     return meeting_times;
   }
 
-  public void setMeeting_times(List<String> meeting_times) {
+  public void setMeeting_times(String meeting_times) {
     this.meeting_times = meeting_times;
   }
 
@@ -95,11 +95,11 @@ public class APIData {
     this.preferred_language = preferred_language;
   }
 
-  public List<String> getMarginalized_groups() {
+  public String getMarginalized_groups() {
     return marginalized_groups;
   }
 
-  public void setMarginalized_groups(List<String> marginalized_groups) {
+  public void setMarginalized_groups(String marginalized_groups) {
     this.marginalized_groups = marginalized_groups;
   }
 

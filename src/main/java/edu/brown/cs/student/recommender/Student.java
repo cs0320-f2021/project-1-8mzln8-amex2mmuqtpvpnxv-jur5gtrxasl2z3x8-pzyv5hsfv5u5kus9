@@ -21,9 +21,9 @@ public class Student implements Item {
   private String grade;
   private int exp;
   private String horoscope;
-  private List<String> meeting_times;
+  private String meeting_times;
   private String preferred_language;
-  private List<String> marginalized_groups;
+  private String marginalized_groups;
   private String prefer_group;
 
   public Student(int id) {
@@ -56,7 +56,7 @@ public class Student implements Item {
     }
 
     if (!this.meeting_times.isEmpty()) {
-      v.addAll(this.meeting_times);
+      v.add(this.meeting_times);
     }
 
     if (!this.preferred_language.isBlank()) {
@@ -64,7 +64,7 @@ public class Student implements Item {
     }
 
     if (!this.marginalized_groups.isEmpty()) {
-      v.addAll(this.marginalized_groups);
+      v.add(this.marginalized_groups);
     }
 
     if (!this.prefer_group.isBlank()) {
@@ -251,11 +251,11 @@ public class Student implements Item {
     }
   }
 
-  public List<String> getMeeting_times() {
+  public String getMeeting_times() {
     return meeting_times;
   }
 
-  public void setMeeting_times(List<String> meeting_times) {
+  public void setMeeting_times(String meeting_times) {
     this.meeting_times = meeting_times;
   }
 
@@ -267,11 +267,11 @@ public class Student implements Item {
     this.preferred_language = preferred_language;
   }
 
-  public List<String> getMarginalized_groups() {
+  public String getMarginalized_groups() {
     return marginalized_groups;
   }
 
-  public void setMarginalized_groups(List<String> marginalized_groups) {
+  public void setMarginalized_groups(String marginalized_groups) {
     this.marginalized_groups = marginalized_groups;
   }
 
