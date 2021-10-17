@@ -1,7 +1,6 @@
 package edu.brown.cs.student.recommender;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class APIData {
@@ -11,15 +10,25 @@ public class APIData {
   private String grade;
   private int exp;
   private String horoscope;
+  private List<String> meeting_times;
+  private String preferred_language;
+  private List<String> marginalized_groups;
+  private String prefer_group;
+
 
   public APIData(String id, String name, String meeting, String grade, String exp,
-                 String horoscope) {
+                 String horoscope, List<String> meeting_times, String preferred_language,
+                 List<String> marginalized_groups, String prefer_group) {
     this.id = Integer.parseInt(id);
     this.name = name;
     this.meeting = meeting;
     this.grade = grade;
     this.exp = Integer.parseInt(exp);
     this.horoscope = horoscope;
+    this.meeting_times = meeting_times;
+    this.preferred_language = preferred_language;
+    this.marginalized_groups = marginalized_groups;
+    this.prefer_group = prefer_group;
   }
 
   public int getId() {
@@ -70,4 +79,35 @@ public class APIData {
     this.horoscope = horoscope;
   }
 
+  public List<String> getMeeting_times() {
+    return meeting_times;
+  }
+
+  public void setMeeting_times(List<String> meeting_times) {
+    this.meeting_times = meeting_times;
+  }
+
+  public String getPreferred_language() {
+    return preferred_language;
+  }
+
+  public void setPreferred_language(String preferred_language) {
+    this.preferred_language = preferred_language;
+  }
+
+  public List<String> getMarginalized_groups() {
+    return marginalized_groups;
+  }
+
+  public void setMarginalized_groups(List<String> marginalized_groups) {
+    this.marginalized_groups = marginalized_groups;
+  }
+
+  public String getPrefer_group() {
+    return prefer_group;
+  }
+
+  public void setPrefer_group(String prefer_group) {
+    this.prefer_group = prefer_group;
+  }
 }
