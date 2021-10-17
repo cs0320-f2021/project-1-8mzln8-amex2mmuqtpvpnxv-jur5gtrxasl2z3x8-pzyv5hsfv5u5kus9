@@ -21,6 +21,10 @@ public class Student implements Item {
   private String grade;
   private int exp;
   private String horoscope;
+  private String meeting_times;
+  private String preferred_language;
+  private String marginalized_groups;
+  private String prefer_group;
 
   public Student(int id) {
     this.id = id;
@@ -50,7 +54,22 @@ public class Student implements Item {
     if(!this.horoscope.isBlank()) {
       v.add(this.horoscope);
     }
-    System.out.println("Vector : " + v);
+
+    if (!this.meeting_times.isEmpty()) {
+      v.add(this.meeting_times);
+    }
+
+    if (!this.preferred_language.isBlank()) {
+      v.add(this.preferred_language);
+    }
+
+    if (!this.marginalized_groups.isEmpty()) {
+      v.add(this.marginalized_groups);
+    }
+
+    if (!this.prefer_group.isBlank()) {
+      v.add(prefer_group);
+    }
     return v;
   }
 
@@ -223,7 +242,42 @@ public class Student implements Item {
       this.grade = a.getGrade();
       this.exp = a.getExp();
       this.horoscope = a.getHoroscope();
+      this.meeting_times = a.getMeeting_times();
+      this.preferred_language = a.getPreferred_language();
+      this.prefer_group = a.getPrefer_group();
+      this.marginalized_groups = a.getMarginalized_groups();
     }
   }
 
+  public String getMeeting_times() {
+    return meeting_times;
+  }
+
+  public void setMeeting_times(String meeting_times) {
+    this.meeting_times = meeting_times;
+  }
+
+  public String getPreferred_language() {
+    return preferred_language;
+  }
+
+  public void setPreferred_language(String preferred_language) {
+    this.preferred_language = preferred_language;
+  }
+
+  public String getMarginalized_groups() {
+    return marginalized_groups;
+  }
+
+  public void setMarginalized_groups(String marginalized_groups) {
+    this.marginalized_groups = marginalized_groups;
+  }
+
+  public String getPrefer_group() {
+    return prefer_group;
+  }
+
+  public void setPrefer_group(String prefer_group) {
+    this.prefer_group = prefer_group;
+  }
 }

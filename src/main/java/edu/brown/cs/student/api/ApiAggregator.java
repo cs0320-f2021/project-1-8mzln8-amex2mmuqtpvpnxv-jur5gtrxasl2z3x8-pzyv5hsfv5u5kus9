@@ -12,6 +12,7 @@ import edu.brown.cs.student.runway.User;
 import edu.brown.cs.student.recommender.Item;
 
 import java.lang.reflect.Type;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 public class ApiAggregator {
@@ -62,7 +63,9 @@ public class ApiAggregator {
      */
     public Type setType(String dataType) throws Exception {
         Type type;
-        if(dataType.equals("rent")){
+        if(dataType.equals("responses")) {
+            return new TypeToken<List<APIData>>() {}.getType();
+        }else if(dataType.equals("rent")){
             return new TypeToken<List<Rent>>(){}.getType();
         }else if(dataType.equals("reviews")){
             return new TypeToken<List<Review>>(){}.getType();
