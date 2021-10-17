@@ -22,7 +22,7 @@ public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
   private KDTree kdTree;
   private HashMap<String,BloomFilter> bloomFilterHashMap;
-  private HashMap<String,Student> idToStudent;
+  private HashMap<String,Student> idToStudentMap;
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -110,7 +110,7 @@ public class RecommenderCommands implements REPLCommand {
           }
 
           this.kdTree = new KDTree<>(kdData);
-          this.idToStudent = idToStudentMap;
+          this.idToStudentMap = idToStudentMap;
           this.bloomFilterHashMap = bloomFilterHashMap;
 
 
@@ -120,7 +120,10 @@ public class RecommenderCommands implements REPLCommand {
         }
       } else if(args[0].equals("recsys_recs")){
 
-          RecommendationGenerator gen = new RecommendationGenerator(args,studentList,kdTree,idToStudent,bloomFilterHashMap);
+          RecommendationGenerator gen = new RecommendationGenerator(args,this.studentList,
+              this.kdTree,
+              this.idToStudentMap,
+              this.bloomFilterHashMap);
           gen.recsys_recs();
     }
     } catch (Exception e) {
