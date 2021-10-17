@@ -106,6 +106,8 @@ public class RecommenderCommands implements REPLCommand {
           bloomFilterHashMap.put(userID, b);
         }
 
+        this.kdTree = new KDTree<>(kdData);
+
         this.bloomFilterHashMap = bloomFilterHashMap;
 
 
@@ -118,5 +120,13 @@ public class RecommenderCommands implements REPLCommand {
       e.printStackTrace();
       System.out.println("ERROR: Something wrong happened when ingesting data");
     }
+  }
+
+  public List<Student> getStudentList() {
+    return studentList;
+  }
+
+  public HashMap<String, BloomFilter> getBloomFilterHashMap() {
+    return bloomFilterHashMap;
   }
 }
