@@ -21,7 +21,7 @@ import java.util.Random;
 public class RecommenderCommands implements REPLCommand {
   private List<Student> studentList;
   private KDTree kdTree;
-  private BloomFilter bloomFilter;
+  private HashMap<String,BloomFilter> bloomFilterHashMap;
 
 
   private List<Student> AggregateData(List<APIData> apiDataList, List<Interests> interestsList,
@@ -84,7 +84,6 @@ public class RecommenderCommands implements REPLCommand {
         ApiAggregator api = new ApiAggregator();
         List<APIData> apilist = api.getIntegrationData();
         Gson gson = new Gson();
-        System.out.println(gson.toJson(apilist));
 
         HashMap<String, String> empty = new HashMap<>();
         Database database = new Database("data/integration/integration.sqlite3");
@@ -100,18 +99,20 @@ public class RecommenderCommands implements REPLCommand {
         List<Student> studentList = AggregateData(apilist, interests, negatives, positives, skills);
         this.studentList = studentList;
         List<List<Number>> kdData = new ArrayList<>();
-        List<List<String>> bloomData = new ArrayList<>();
+        HashMap<String, BloomFilter> bloomFilterHashMap = new HashMap<>();
         for (Student s:studentList) {
           kdData.add(s.getCoordinates());
-          bloomData.add(s.getVectorRepresentation());
+          String userID = s.getId();
+          double c = r.nextInt(200) + 1;
+          int n = r.nextInt(61) + 1;
+          int k = r.nextInt(20) + 1;
+          BloomFilter b = new BloomFilter(c,n,k);
+          b.add(s.getVectorRepresentation());
+          bloomFilterHashMap.put(userID, b);
         }
 
-        double c = r.nextInt(200) + 1;
-        int n = r.nextInt(61) + 1;
-        int k = r.nextInt(20) + 1;
-        this.kdTree = new KDTree(kdData);
-        this.bloomFilter = new BloomFilter(c,n,k);
-        this.bloomFilter.addAll(bloomData);
+        this.bloomFilterHashMap = bloomFilterHashMap;
+
 
         System.out.println("Loaded Recommender with " + studentList.size() + " students");
 
