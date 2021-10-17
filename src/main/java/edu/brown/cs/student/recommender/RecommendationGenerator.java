@@ -58,9 +58,9 @@ public class RecommendationGenerator <T extends Number> {
         //Now that we have recs from both types, get the ids of people recommended by both
         //Then insert them into the result by highest average placement order.
         //If we need more recommendations use recommendations from the kDTree
-        return intersectionOfLists(new ArrayList<>(bloomRecs),new ArrayList<>(kDTreeRecs),k);
+        return intersectionOfLists(new ArrayList<>(bloomRecs),new ArrayList<>(kDTreeRecs),k,Integer.parseInt(studentOfInterest.getId()));
     }
-    private List<Integer> intersectionOfLists(List<Integer> l1, List<Integer> l2, int k){
+    private static List<Integer> intersectionOfLists(List<Integer> l1, List<Integer> l2, int k, int idOfInterest){
         Set<Integer> set1 = new HashSet<>(l1);
         Set<Integer> set2 = new HashSet<>(l2);
         List<Integer> result = new ArrayList<>();
@@ -104,7 +104,9 @@ public class RecommendationGenerator <T extends Number> {
         int index = 0;
         List<Integer> extras = merge(extras1,extras2);
         int extrasSize = extras.size();
+        result.remove(Integer.valueOf(idOfInterest));
         while(n < k && index < extrasSize){
+            if(extras.get(index) == idOfInterest) index++;
             if(!result.contains(extras.get(index))){
                 result.add(extras.get(index));
                 n += 1;
