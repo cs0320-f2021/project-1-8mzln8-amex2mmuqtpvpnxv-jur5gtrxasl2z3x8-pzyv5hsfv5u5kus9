@@ -33,6 +33,9 @@ public class RecommendationGenerator <T extends Number> {
         }
     }
 
+    /**
+     * Runs the command recsys_recs
+     */
     public void recsys_recs(){
         int numberOfRecs = Integer.parseInt(args[1]);
         List<Integer> recs = this.generateRecommendations(this.studentOfInterest,numberOfRecs);
@@ -41,6 +44,12 @@ public class RecommendationGenerator <T extends Number> {
         }
     }
 
+    /**
+     *
+     * @param student - the student we are creating recommendations for
+     * @param k - the total number of recommendations
+     * @return - a list of recommendations
+     */
     private List<Integer> generateRecommendations(Student student , int k){
         if(student == null) System.out.println("Student not found");
         List<Number> targetCoordinates = student.getCoordinates(); //This will become whatever input was used to load the kdtree in the previous part
@@ -60,6 +69,15 @@ public class RecommendationGenerator <T extends Number> {
         //If we need more recommendations use recommendations from the kDTree
         return intersectionOfLists(new ArrayList<>(bloomRecs),new ArrayList<>(kDTreeRecs),k,Integer.parseInt(studentOfInterest.getId()));
     }
+
+    /**
+     *
+     * @param l1 - a list of integers
+     * @param l2 - a list of integers
+     * @param k - the total number of recommendations
+     * @param idOfInterest - the id of the student we are creating recommendations for
+     * @return - a list of recommendations
+     */
     private static List<Integer> intersectionOfLists(List<Integer> l1, List<Integer> l2, int k, int idOfInterest){
         Set<Integer> set1 = new HashSet<>(l1);
         Set<Integer> set2 = new HashSet<>(l2);
@@ -116,6 +134,13 @@ public class RecommendationGenerator <T extends Number> {
         return result;
     }
 
+    /**
+     *
+     * @param a - a collection of items
+     * @param b - a collection of items
+     * @param <T> - an arbitrary type of object that is contained within both lists
+     * @return - A list that elements taken alternatively from collections a and b
+     */
     private static <T> ArrayList<T> merge(Collection<T> a, Collection<T> b) {
         Iterator<T> itA = a.iterator();
         Iterator<T> itB = b.iterator();

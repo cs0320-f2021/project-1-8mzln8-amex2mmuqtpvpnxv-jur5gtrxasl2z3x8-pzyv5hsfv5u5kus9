@@ -12,6 +12,7 @@ import edu.brown.cs.student.runway.User;
 import edu.brown.cs.student.recommender.Item;
 
 import java.lang.reflect.Type;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
