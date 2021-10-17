@@ -42,4 +42,16 @@ public class RecommenderTest {
     }
   }
 
+  @Test
+  public void testStudentClassCreation() {
+    RecommenderCommands recommenderCommands = new RecommenderCommands();
+    String args[] = new String[2];
+    args[0] = "recsys_load";
+    args[1] = "responses";
+    recommenderCommands.handle(args);
+    assertEquals(8, recommenderCommands.getStudentList().get(0).getCoordinates().size());
+    for (Number n:recommenderCommands.getStudentList().get(0).getCoordinates()) {
+      assertEquals(true, !(n == null));
+    }
+  }
 }
