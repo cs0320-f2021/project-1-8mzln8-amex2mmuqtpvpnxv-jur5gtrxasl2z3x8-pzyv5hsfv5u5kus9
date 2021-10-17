@@ -1,51 +1,92 @@
 
-# Known Bugs
-- There is an indexing issue with the KDTree construction. Notably, the basic KDTree was working properly, but when we started implementing the REPL commands and interacting with the User class, the coordinates and indices were likely mixed up. This would be a relatively okay fix, but we just did not have enough time to debug.
-- The users command returns an ERROR. We are not sure why this is, and we did not have time to debug this.
-- Since users did not load in the data to our tree, none of our system tests have passed. However, we are confident that our KNN algorithm for our tree works properly, as the JUnit tests for those pass. It's only a matter of the interaction with the API and the REPL class. 
-- If we had more time for this assignment, we would likely have been able to resolve most of the bugs, as we have the different components working. The meshing of the components is still a work in progress.
+#Known Bugs
 
 
-#Client Classes
+
+#API Classes
 **ApiClient** -- class the encapsulates given requests by building an HTTPClient
+
 **ClientAuth** -- class that reads through given API Keys
+
 **ClientRequestGenerator** -- class that generates HTTP Requests
+
+**APIAggregator** -- class that calls and  parses through the API String and creates a List of Objects, the object type
+specifically corresponds to one of the 3 classes created for the user data from the website (Review, Rent and User)
+
+
+#Bloomfilter Classes
+**AndSimilarityComparator** -- class taken from bloomfilter repo
+
+**BloomFilter** -- class taken from bloomfilter repo
+
+**BloomFilterRecommender** -- class taken from bloomfilter repo
+
+**XnorSimilarityComparator** -- class taken from bloomfilter repo
+
+#Commands
+**ApiCommands** -- class containing action items on REPL commands pertaining to API functionality, implements REPLCommand
+
+**CommandActions** -- class containing a HashMap that maps to REPL commands represented as a String to a REPLCommand type, implements REPLCommand
+
+**MathBothCommands** -- class containing action items on REPL commands pertaining to the MathBot class, implements REPLCommand
+
+**NaiveNeighborsCommands** -- class containing action items on REPL commands pertaining to the stars project functionality
+
+**RecommenderCommands** -- class containing action items on REPL commands pertaining to recommender functionality, implements REPLCommand
+
+**REPLCommand** -- interface representing a REPL command type 
+
+**RunwayCommands** -- class representing action items on REPL commands pertaining to Rent the Runway functionality, implements REPLCommand
 
 #Core Classes
 **FileParser** -- class that parses given files passed through
 
 #Main Classes
-**APIAggregator**  -- class that calls and  parses through the API String and creates a List of Objects, the object type 
-specifically corresponds to one of the 3 classes created for the user data from the website (Review, Rent and User)
 
-**CommandAction** -- Interface is an interface that all the command classes implement
+**Main** -- the main class where the REPL is created
 
-**Galaxy** -- class representing the stars as an Object 
+**MathBot** -- a class containing mathematical operations
 
-**Main** --  class for running and executing the REPL
-
-**MathBot** class for MathBot operations, used in combination for MathBot commands to execute commands specified 
-in REPL
-
-**MathBotCommands** class that contains all the operations for MathBot class and commands (i.e subtract add)
-
-**NaiveNeighborsCommands** --  contains all the operations for MathBot class and commands (i.e subtract add)
-
-**Rent** -- class objectifying the rent data for a given user in an API call (i.e all the fields for the rent)
-
-**Review** -- class objectifying the review data for a given user in an API call (i.e all the fields for the review)
-
-**User** -- class objectifying the user data for a given user in an API call (i.e all the fields for the user)
-
-**Star** -- class objectifying the stars data for a row  in a CSV  (i.e all the fields for the Star)
-
+#KD Tree
 **KDTree** -- class representing a K-D Tree object
 
 **Node** -- class representing a Node object in a tree
 
 **NodeComparator** -- class containing a Comparator for a Node object
 
-**RunwayCommands** -- class that contains all the commands for Rent the Runway data, including similar and classify
+#ORM
+**Database** -- class taken from ORM repo
+
+#Recommender
+##Tables
+**Interests** -- a class containing info on the student's id and interests
+
+**Negative** -- a class containing info on the student's id and responses in the question asking about negative traits
+
+**Positive** -- a class containing info on the student's id and responses in the question asking about positive traits
+
+**Skills** -- a class containing info in the student's id and more quantifiable skills
+
+
+**APIData** -- a class containing info pulled from the API
+
+**Item** -- an interface representing an item
+
+**Recommender** -- an interface representing a recommender
+
+**Student** -- a class representing a student in the dataset with fields corresponding to their responses
+
+#Runway
+**Rent** -- class objectifying the rent data for a given user in an API call (i.e all the fields for the rent)
+
+**Review** -- class objectifying the review data for a given user in an API call (i.e all the fields for the review)
+
+**User** -- class objectifying the user data for a given user in an API call (i.e all the fields for the user)
+
+#Stars
+**Star** -- class objectifying the stars data for a row  in a CSV  (i.e all the fields for the Star)
+
+**Galaxy** -- class containing a list of all stars in the dataset
 
 
 
