@@ -80,7 +80,7 @@ public class RecommenderCommands implements REPLCommand {
   public void handle(String[] args) {
     try {
       if (args[0].equals("recsys_load")) {
-        if (args[1].equals("responses")) {
+        if (args.length > 1 && args[1].equals("responses")) {
           Random r = new Random();
           ApiAggregator api = new ApiAggregator();
           List<APIData> apilist = api.getIntegrationData();
